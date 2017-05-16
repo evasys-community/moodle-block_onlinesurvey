@@ -10,20 +10,20 @@ Please note: since version 1.4 of the integration the PHP cURL module needs to b
 
 EvaSys 5.1 (1952+) or higher is required in order for the integration to work.
 
-Installation:
+## Installation:
 
 01) Copy the onlinesurvey folder into the \blocks folder so that you have a \blocks\onlinesurvey folder. 
 02) Log in as administrator and you will see the notification screen with a list of the new plugins.
 03) Click [Upgrade Moodle database now] on the bottom of the page to proceed with the installation.
 04) Click the button labeled [Continue] to get to the next step of the installation.
 05) The option descriptions follow:
- * EvaSys server:				URL of the web service description file of your EvaSys installation     (http://[SERVERNAME]/evasys/services/soapserver-v51.wsdl)
- * EvaSys login:				URL of the EvaSys online survey login (http://[SERVERNAME]/evasys/)
- * EvaSys SOAP user:				User name of the EvaSys SOAP user (default ’soap’)
- * EvaSys SOAP password:			Password of the EvaSys SOAP user (default ’server’)
- * EvaSys connection timeout:			max response time of the EvaSys server
- * Hide block when no open surveys are found:	hides the block in case no open online surveys are found
- * DEBUG:					Turn on / off error reporting on the user interface
+ * EvaSys server:				_URL of the web service description file of your EvaSys installation     (http://[SERVERNAME]/evasys/services/soapserver-v51.wsdl)_
+ * EvaSys login:				_URL of the EvaSys online survey login (http://[SERVERNAME]/evasys/)_
+ * EvaSys SOAP user:				_User name of the EvaSys SOAP user (default ’soap’)_
+ * EvaSys SOAP password:			_Password of the EvaSys SOAP user (default ’server’)_
+ * EvaSys connection timeout:			_max response time of the EvaSys server_
+ * Hide block when no open surveys are found:	_hides the block in case no open online surveys are found_
+ * DEBUG:					_Turn on / off error reporting on the user interface_
 06) Click on the [Save changes] button to continue.
 
-The full documentation is available as PDF "EvaSys - Moodle Portal Connector" in the download package.
+The full documentation is available as PDF ["EvaSys - Moodle Portal Connector.pdf"](https://github.com/EPPlugin/EvaSys---Moodle-Portal-Connector-Moodle-Block-/blob/master/EvaSys%20-%20Moodle%20Portal%20Connector.pdf) in the download package.
