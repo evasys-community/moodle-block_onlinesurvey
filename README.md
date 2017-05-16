@@ -17,14 +17,13 @@ Installation:
 03) Click [Upgrade Moodle database now] on the bottom of the page to proceed with the installation.
 04) Click the button labeled [Continue] to get to the next step of the installation.
 05) The option descriptions follow:
-		- EvaSys server:				URL of the web service description file of your EvaSys installation     (http://[SERVERNAME]/evasys/services/soapserver-v51.wsdl)
-		- EvaSys login:					URL of the EvaSys online survey login (http://[SERVERNAME]/evasys/)
-		- EvaSys SOAP user:				User name of the EvaSys SOAP user (default ’soap’)
-		- EvaSys SOAP password:			Password of the EvaSys SOAP user (default ’server’)
-		- EvaSys connection timeout:	max response time of the EvaSys server
-		- Hide block when no
-		  open surveys are found:		hides the block in case no open online surveys are found
-		- DEBUG:						Turn on / off error reporting on the user interface
+ * EvaSys server:				URL of the web service description file of your EvaSys installation     (http://[SERVERNAME]/evasys/services/soapserver-v51.wsdl)
+ * EvaSys login:				URL of the EvaSys online survey login (http://[SERVERNAME]/evasys/)
+ * EvaSys SOAP user:				User name of the EvaSys SOAP user (default ’soap’)
+ * EvaSys SOAP password:			Password of the EvaSys SOAP user (default ’server’)
+ * EvaSys connection timeout:			max response time of the EvaSys server
+ * Hide block when no open surveys are found:	hides the block in case no open online surveys are found
+ * DEBUG:					Turn on / off error reporting on the user interface
 06) Click on the [Save changes] button to continue.
 
 The full documentation is available as PDF "EvaSys - Moodle Portal Connector" in the download package.
