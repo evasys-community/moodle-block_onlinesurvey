@@ -26,4 +26,4 @@ EvaSys 5.1 (1952+) or higher is required in order for the integration to work.
  * DEBUG:					_Turn on / off error reporting on the user interface_
 06) Click on the [Save changes] button to continue.
 
-The full documentation is available as PDF ["EvaSys - Moodle Portal Connector.pdf"](https://github.com/EPPlugin/EvaSys---Moodle-Portal-Connector-Moodle-Block-/blob/master/EvaSys%20-%20Moodle%20Portal%20Connector.pdf) in the download package.
+The full documentation is available as PDF ["EvaSys - Moodle Portal Connector.pdf"](https://github.com/EPPlugin/EvaSys_Moodle-Block/blob/master/EvaSys%20-%20Moodle%20Portal%20Connector.pdf) in the download package.
