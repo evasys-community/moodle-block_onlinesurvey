@@ -2,7 +2,7 @@
 
 /*
 EvaSys Online Surveys - Moodle Block
-Copyright (C) 2016  Electric Paper Evaluationssysteme GmbH
+Copyright (C) 2018 Soon Systems GmbH on behalf of Electric Paper Evaluationssysteme GmbH
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -18,24 +18,119 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 Contact:
-Electric Paper
-Evaluationssysteme GmbH
-Konrad-Zuse-Allee 13
-21337 Lüneburg
+Soon-Systems GmbH
+Syrlinstr. 5
+89073 Ulm
 Deutschland
 
-E-Mail: info@evasys.de
+E-Mail: info@soon-systems.de
 */
 
 $string['pluginname'] = 'Evaluationen (EvaSys)';
+
+// settings page - general
+$string['blocktitle'] = 'Titel';
+$string['blocktitle_description'] = '';
+
+$string['communication_interface'] = 'Kommunikationsweg';
+$string['communication_interface_description'] = 'Die Kommunikation mit EvaSys kann per LTI oder SOAP erfolgen. Bitte nehmen Sie im unteren Bereich dieser Maske die notwendigen Einstellungen für den hier gewählten Kommunikationsweg vor.';
+$string['soap'] = 'SOAP';
+$string['lti'] = 'LTI';
+
+$string['useridentifier'] = 'Nutzer-Identifikator';
+$string['useridentifier_description'] = 'Als eindeutiger Identifikator eines Nutzers kann wahlweise der Nutzername oder die E-Mail-Adresse übermittelt werden.';
+
+$string['customfieldnumberinevasys'] = 'Benutzerdatenfeld in EvaSys';
+$string['customfieldnumberinevasys_description'] = 'Bei Verwendung des Nutzernamens als Identifikator können Sie hier festlegen, welches der ersten drei EvaSys-Benutzerdatenfelder zur Authentifizierung verwendet werden soll.';
+$string['customfieldnumber'] = 'Benutzerdatenfeld Nr.';
+
+$string['survey_show_popupinfo'] = 'Pop-up-Meldung aktiv';
+$string['survey_show_popupinfo_description'] = 'Wenn aktiviert, wird Teilnehmern nach dem Login eine Pop-up-Meldung zum Hinweis auf offene Umfragen angezeigt.';
+
+$string['survey_timeout'] = 'Verbindungstimeout in Sekunden';
+$string['survey_timeout_description'] = '';
+
+$string['survey_debug'] = 'DEBUG';
+$string['survey_debug_description'] = '';
+// END: settings page - general
+
+// settings page - SOAP
+$string['generalheadingsoap'] = 'SOAP';
+$string['soap_general_information'] = 'Die folgenden Angaben sind nur erforderlich, wenn Sie "SOAP" zur Kommunikation ausgewählt haben.';
+
+$string['survey_server'] = 'EvaSys Server (SOAP)';
+$string['survey_server_description'] = '';
+
+$string['survey_login'] = 'EvaSys Pfad f&uuml;r Onlineumfragen (SOAP)';
+$string['survey_login_description'] = '';
+
+$string['survey_user'] = 'EvaSys SOAP-Benutzername';
+$string['survey_user_description'] = '';
+
+$string['survey_pwd'] = 'EvaSys SOAP-Kennwort';
+$string['survey_pwd_description'] = '';
+// END: settings page - SOAP
+
+// settings page - LTI
+$string['generalheadinglti'] = 'LTI';
+$string['lti_general_information'] = 'Die folgenden Angaben sind nur erforderlich, wenn Sie "LTI" zur Kommunikation ausgewählt haben.';
+
+$string['survey_lti_url'] = 'URL des LTI-Providers';
+$string['survey_lti_url_description'] = '';
+
+// "survey_lti_resourcekey" currently not used -> kept for future
+$string['survey_lti_resourcekey'] = 'Anwenderschlüssel';
+$string['survey_lti_resourcekey_description'] = '';
+
+$string['survey_lti_password'] = 'LTI-Passwort';
+$string['survey_lti_password_description'] = '';
+
+$string['lti_customparameters'] = 'Custom Parameter';
+$string['lti_customparameters_description'] = 'Custom Parameter sind Einstellungen, die vom Tool-Provider verwendet werden. Ein Custom-Parameter kann z.B. verwendet werden, um eine bestimmte Information des Providers anzuzeigen. Jeder Parameter sollte in einer eigenen Zeile eingegeben werden, wobei das Format „Name=Wert“ verwendet wird, z.B. "learner_show_completed_surveys=1". Für weitere Informationen konsultieren Sie bitte das EvaSys LTI-Handbuch.';
+
+// lti_regard_coursecontext is not yet supported by EvaSys LTI provider -> kept for future
+$string['regard_coursecontext'] = 'Kurskontext berücksichtigen';
+$string['regard_coursecontext_description'] = 'Kurskontext berücksichtigen: falls ausgewählt, werden nur Umfragen zum aktuellen Kurs gelistet (sofern) vorhanden';
+
+$string['lti_instructormapping'] = 'Rollenzuweisung "Instructor"';
+$string['lti_instructormapping_description'] = 'Hier legen sie fest, welche Moodle-Rollen der LTI-Rolle "Instructor" (= Dozent/in) zugeordnet werden sollen.';
+
+$string['lti_learnermapping'] = 'Rollenzuweisung "Learner"';
+$string['lti_learnermapping_description'] = 'Hier legen Sie fest, welche Moodle-Rollen der LTI-Rolle "Learner" (= Studierende/r) zugeordnet werden sollen.';
+
+$string['lti_regex_learner'] = 'Regulärer Ausdruck "Learner"';
+$string['lti_regex_learner_description'] = 'Regulärer Ausdruck, der den Inhalt des LTI-Ergebnisses für "Learner" nach offenen Onlineumfragen durchsucht.';
+// END: settings page - LTI
+
+// capabilities
+$string['onlinesurvey:addinstance'] = 'Instanz des Blocks Evaluationen (EvaSys) hinzufügen';
+$string['onlinesurvey:myaddinstance'] = 'Instanz des Blocks Evaluationen (EvaSys) zu meiner Seite hinzufügen';
+// END: capabilities
+
+// Block content
 $string['tech_error'] = 'Es besteht ein technisches Problem mit dem EvaSys Server.<p>';
 $string['conn_works'] = 'Verbindung zum EvaSys-Server erfolgreich getestet.<p>';
 $string['no_surveys'] = 'Keine offenen Onlineumfragen.<p>';
-$string['survey_server'] = 'EvaSys Server';
-$string['survey_login'] = 'EvaSys Pfad f&uuml;r Onlineumfragen';
-$string['survey_user'] = 'EvaSys SOAP Benutzername';
-$string['survey_pwd'] = 'EvaSys SOAP Kennwort';
-$string['survey_timeout'] = 'Verbindungstimeout in Sekunden';
-$string['onlinesurvey:addinstance'] = 'Instanz des Blocks Evaluationen (EvaSys) hinzufügen';
-$string['onlinesurvey:myaddinstance'] = 'Instanz des Blocks Evaluationen (EvaSys) zu meiner Seite hinzufügen';
-$string['hide_block'] = 'Block ausblenden wenn keine offenen Umfragen vorhanden sind';
+$string['popupinfo_dialog_title'] = 'Offene Evaluationen';
+$string['popupinfo'] = 'Liebe(r) Studierende,<br />
+<br />
+aktuell sind Sie für eine oder mehrere Onlineumfragen zur Evaluation der von Ihnen besuchten Lehrveranstaltungen freigeschaltet. Mit Ihrer Teilnahme helfen Sie uns sehr, unser Studienangebot zu verbessern.<br />
+Die Links zu den Befragungen werden Ihnen im Block "Evaluationen" angezeigt.<br />
+<br />
+Vielen Dank für Ihre Unterstützung!<br />
+<br />
+Ihr Evaluationsteam';
+
+$string['survey_list_header'] = '';
+
+$string['lti_settings_error'] = 'LTI - Einstellungsfehler';
+$string['lti_url_missing'] = 'URL des LTI-Providers fehlt';
+$string['lti_resourcekey_missing'] = 'Anwenderschlüssel fehlt';
+$string['lti_password_missing'] = 'LTI Passwort fehlt';
+$string['lti_learnermapping_missing'] = 'Learner Rollenmapping fehlt';
+$string['userid_not_found'] = 'User-ID nicht gefunden';
+$string['config_not_accessible'] = 'Konfiguration nicht zugreifbar';
+$string['error_occured'] = '<b>Ein Fehler ist aufgetreten:</b><br /> {$a} <br />';
+$string['warning_message'] = '<b>Warnung:</b><br />{$a}<br />';
+$string['wsdl_namespace'] = 'WSDL Namespace Fehler beim Parsen<br />';
+// END: Block content
