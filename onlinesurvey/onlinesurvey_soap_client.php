@@ -2,7 +2,7 @@
 
 /*
 EvaSys Online Surveys - Moodle Block
-Copyright (C) 2016  Electric Paper Evaluationssysteme GmbH
+Copyright (C) 2018 Soon Systems GmbH on behalf of Electric Paper Evaluationssysteme GmbH
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -18,13 +18,12 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 Contact:
-Electric Paper
-Evaluationssysteme GmbH
-Konrad-Zuse-Allee 13
-21337 Lüneburg
+Soon-Systems GmbH
+Syrlinstr. 5
+89073 Ulm
 Deutschland
 
-E-Mail: info@evasys.de
+E-Mail: info@soon-systems.de
 */
 
 class onlinesurvey_soap_client extends SoapClient {
@@ -54,6 +53,7 @@ class onlinesurvey_soap_client extends SoapClient {
         }
 
         preg_match('/<soap:address location="https*:\/\/([0-9a-z\.\-_]+)/i', $wsdlxml, $match);
+        $wsdlserveraddress = null;
         if (count($match) == 2) {
             $wsdlserveraddress = $match[1];
         }
@@ -70,7 +70,7 @@ class onlinesurvey_soap_client extends SoapClient {
         parent::__construct($uri, $options);
     }
 
-    public function __doRequest($request, $location, $action, $version) {
+    public function __doRequest($request, $location, $action, $version, $one_way = NULL) {
         $headers = array(
             'Content-Type: text/xml;charset=UTF-8',
             "SOAPAction: \"$action\"",

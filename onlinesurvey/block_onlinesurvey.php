@@ -1,7 +1,7 @@
 <?php
 /*
 EvaSys Online Surveys - Moodle Block
-Copyright (C) 2016  Electric Paper Evaluationssysteme GmbH
+Copyright (C) 2018 Soon Systems GmbH on behalf of Electric Paper Evaluationssysteme GmbH
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -17,187 +17,158 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 Contact:
-Electric Paper
-Evaluationssysteme GmbH
-Konrad-Zuse-Allee 13
-21337 Lüneburg
+Soon-Systems GmbH
+Syrlinstr. 5
+89073 Ulm
 Deutschland
 
-E-Mail: info@evasys.de
+E-Mail: info@soon-systems.de
 */
 
+
+/**
+ * Onlinesurvey block.
+ *
+ * @package    block_onlinesurvey
+ * @copyright  2018 Soon Systems GmbH on behalf of Electric Paper Evaluationssysteme GmbH
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class block_onlinesurvey extends block_base {
-    const SURVEY_URL = 'indexstud.php?type=html&user_tan=';
 
+    /** @var boolean Indicates whether the DEBUG mode is set or not */
     private $debugmode;
-    private $hideblock;
+    
+    /** @var boolean Indicates whether the block is minimally configured or not */
     private $isconfigured;
-    private $warning;
+    
+    /** @var String Error string */
     private $error;
-    private $connectionok;
-
-    private $surveyurl;
-
+    
+    /** @var String Type of connection - LTI or SOAP */
+    private $connectiontype;
+    
+    /** @var String Path to .wsdl used for SOAP */
     private $wsdl;
-    private $soapuser;
-    private $soappassword;
-    private $timeout;
-    private $wsdlnamespace;
-
+    
+    /** @var Int Id of the current user */
     private $moodleuserid;
-    private $moodleusername;
-    private $moodleemail;
 
+    /**
+     * Initialises the block.
+     *
+     * @return void
+     */
     public function init() {
-        global $CFG;
-
+        
         $this->title = get_string('pluginname', 'block_onlinesurvey');
-
-        if (isset($CFG)) {
-            // Block settings.
-            $this->debugmode = $CFG->block_onlinesurvey_survey_debug == 1;
-            $this->hideblock = $CFG->block_onlinesurvey_survey_hide_block == 1;
-            $this->surveyurl = $CFG->block_onlinesurvey_survey_login;
-            $this->wsdl = $CFG->block_onlinesurvey_survey_server;
-            $this->soapuser = $CFG->block_onlinesurvey_survey_user;
-            $this->soappassword = $CFG->block_onlinesurvey_survey_pwd;
-            $this->timeout = $CFG->block_onlinesurvey_survey_timeout;
-            if (!$this->timeout) {
-                $this->timeout = 3;
+        
+        // Block settings.
+        $config = get_config("block_onlinesurvey");
+        
+        if (isset($config) && !empty($config)) {
+            
+            // Get block title from block setting
+            if(!empty($config->blocktitle)){
+                $this->title = format_string($config->blocktitle);
             }
-
+            
+            $this->connectiontype = (!empty($config->connectiontype)) ? $config->connectiontype : '';
+            $this->debugmode = (!empty($config->survey_debug)) ? $config->survey_debug : false;
+            
             // Session information.
             global $USER;
             if ($this->moodleuserid = $USER->id) {
-                $this->moodleusername = $USER->username;
-                $this->moodleemail = $USER->email;
-
-                // Parse wsdlnamespace from the wsdl url.
-                preg_match('/\/([^\/]+\.wsdl)$/', $this->wsdl, $matches);
-
-                if (count($matches) == 2) {
-                    $this->wsdlnamespace = $matches[1];
-                    $this->isconfigured = true;
-                } else {
-                    $this->isconfigured = false;
-                    $this->handle_error("WSDL namespace parse error");
+                
+                if($this->connectiontype == 'SOAP'){
+                    $this->wsdl = $config->survey_server;
+                    
+                    // Parse wsdlnamespace from the wsdl url.
+                    preg_match('/\/([^\/]+\.wsdl)$/', $this->wsdl, $matches);
+    
+                    if (count($matches) == 2) {
+                        $this->isconfigured = true;
+                    } else {
+                        $this->isconfigured = false;
+                        $this->error = "WSDL namespace parse error";
+                    }
+                }
+                else if($this->connectiontype == 'LTI'){
+                    // Quick check of some LTI settings
+                    if(empty($config->lti_url) || empty($config->lti_password) || empty($config->lti_learnermapping)){
+                        $this->isconfigured = false;
+                        $this->error = get_string('lti_settings_error', 'block_onlinesurvey');
+                    
+                        $error_info = '';
+                        if(empty($config->lti_url)){
+                            $error_info .= get_string('lti_url_missing', 'block_onlinesurvey').'<br>';
+                        }
+                        // Consumer key currently not used
+//                         if(empty($config->lti_resourcekey)){
+//                             $error_info .= get_string('lti_resourcekey_missing', 'block_onlinesurvey').'<br>';
+//                         }
+                        if(empty($config->lti_password)){
+                            $error_info .= get_string('lti_password_missing', 'block_onlinesurvey').'<br>';
+                        }
+                        if(empty($config->lti_learnermapping)){
+                            $error_info .= get_string('lti_learnermapping_missing', 'block_onlinesurvey').'<br>';
+                        }
+                    
+                        if(!empty($error_info)){
+                            $this->error .= "<br>".$error_info;
+                        }
+                    }else{
+                        $this->isconfigured = true;
+                    }
                 }
             } else {
                 $this->isconfigured = false;
-                $this->handle_error("User ID not found");
+                $this->error = get_string('userid_not_found', 'block_onlinesurvey');
             }
         } else {
-            $this->handle_error("Configuration not accessible");
+            $this->error = get_string('config_not_accessible', 'block_onlinesurvey');
             $this->isconfigured = false;
         }
     }
-
+    
+    /**
+     * Display the block content.
+     *
+     * @return void
+     */
     public function get_content() {
-        global $SESSION;
+        global $CFG, $PAGE, $USER;
 
-        if ($this->moodleuserid && $this->isconfigured) {
-            $this->content = new stdClass();
-
-            if (!isset($SESSION->block_onlinesurvey_surveykeys) || $this->debugmode) {
-                $SESSION->block_onlinesurvey_surveykeys = $this->get_surveys();
-            }
-
-            if ($SESSION->block_onlinesurvey_surveykeys === false && !$this->debugmode) {
-                if ($this->hideblock) {
-                    $this->content->text = '';
-                } else {
-                    $this->content->text = get_string('no_surveys', 'block_onlinesurvey');
-                }
-
-                return;
-            }
-
-            $context = context_system::instance();
-            if (has_capability('moodle/site:config', $context)) {
-                if ($this->connectionok) {
-                    $this->content->text = get_string('conn_works', 'block_onlinesurvey');
-                }
-            } else if (is_object($SESSION->block_onlinesurvey_surveykeys)) {
-                if (!is_array($SESSION->block_onlinesurvey_surveykeys->OnlineSurveyKeys)) {
-                    $SESSION->block_onlinesurvey_surveykeys->OnlineSurveyKeys = array(
-                        $SESSION->block_onlinesurvey_surveykeys->OnlineSurveyKeys
-                    );
-                }
-
-                $count = count($SESSION->block_onlinesurvey_surveykeys->OnlineSurveyKeys);
-                if ($count) {
-                    foreach ($SESSION->block_onlinesurvey_surveykeys->OnlineSurveyKeys as $surveykey) {
-                        $this->content->text .= "<a href=\"{$this->surveyurl}" . self::SURVEY_URL .
-                                                "{$surveykey->TransactionNumber}\" target=\"_blank\">".
-                                                "{$surveykey->CourseName}</a><br>";
-                    }
-                }
-            }
+        if ($this->content !== null) {
+            return $this->content;
         }
 
+        $this->content = new stdClass();
+        $this->content->text = '';
+        if ($this->moodleuserid && $this->isconfigured) {
+            
+            $context = $PAGE->context;
+            $course = $PAGE->course;
+            $url_params = 'ctxid='.$context->id.'&cid='.$course->id;
+            $url = $CFG->wwwroot.'/blocks/onlinesurvey/show_surveys.php?'.$url_params;
+            
+            $this->content->text .= '<div id="surveys_content">';
+            $this->content->text .= '<iframe id="contentframe" height="100%" width="100%" src="'.$url.'"></iframe>';
+            $this->content->text .= '</div>';
+            
+            $popupinfo_title = get_string('popupinfo_dialog_title', 'block_onlinesurvey');
+            $popupinfo_content = get_string('popupinfo', 'block_onlinesurvey');
+            
+            $PAGE->requires->js_call_amd('block_onlinesurvey/modal-zoom', 'init', array($popupinfo_title, $popupinfo_content, $USER->currentlogin));
+            $PAGE->requires->css('/blocks/onlinesurvey/style/modal-zoom.css');
+        }
+        
         $context = context_system::instance();
         if (has_capability('moodle/site:config', $context)) {
-            if ($this->debugmode && $this->error && !$this->connectionok) {
+            if ($this->error) {
                 $this->content->text = "<b>An error has occured:</b><br />{$this->error}<br />" . $this->content->text;
             }
         } else if ($this->debugmode && $this->error) {
             $this->content->text = "<b>An error has occured:</b><br />{$this->error}<br />" . $this->content->text;
-        }
-
-        if ($this->debugmode && $this->warning) {
-            $this->content->text = "<b>Warning:</b><br />{$this->warning}<hr />" . $this->content->text;
-        }
-    }
-
-    private function get_surveys() {
-        try {
-            require_once('onlinesurvey_soap_client.php');
-            $client = new onlinesurvey_soap_client( $this->wsdl,
-                array(
-                    'trace' => 1,
-                    'feature' => SOAP_SINGLE_ELEMENT_ARRAYS,
-                    'connection_timeout' => $this->timeout),
-                $this->timeout,
-                $this->debugmode
-            );
-
-            $header = array(
-                'Login' => $this->soapuser,
-                'Password' => $this->soappassword
-            );
-
-            if (is_object($client)) {
-                if ($client->haswarning) {
-                    $this->warning = $client->warnmessage;
-                }
-
-                $soapheader = new SoapHeader($this->wsdlnamespace, 'Header', $header);
-                $client->__setSoapHeaders($soapheader);
-            } else {
-                $this->handle_error("SOAP client configuration error");
-                return false;
-            }
-
-            $this->connectionok = true;
-            return $client->GetPswdsByParticipant($this->moodleemail);
-        } catch (Exception $e) {
-            $this->handle_error($e);
-            return false;
-        }
-    }
-
-    private function handle_error($err) {
-        if (is_array($err)) {
-            // Configuration validation error.
-            if (!$err[0]) {
-                $this->log_error($err[1]);
-            }
-        } else if (is_string($err)) {
-            // Simple error message.
-            $this->log_error($err);
-        } else {
-            // Error should be an exception.
-            $this->log_error($this->pretty_print_exceptions($err));
         }
     }
 
@@ -232,19 +203,15 @@ class block_onlinesurvey extends block_base {
             );
         }
     }
-
-    private function pretty_print_exceptions($e) {
-        $msg = '';
-        if (get_class($e) == "SoapFault") {
-            $msg = "{$e->faultstring}: {$e->detail}";
-        } else {
-            $msg = $e->getMessage();
-        }
-
-        return $msg;
-    }
-
-    private function log_error($error) {
-        $this->error = $error;
+    
+    /**
+     * Returns the class $title var value.
+     *
+     * Intentionally doesn't check if a title is set.
+     *
+     * @return string $this->title
+     */
+    function get_title() {
+        return $this->title;
     }
 }

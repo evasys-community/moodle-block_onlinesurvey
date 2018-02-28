@@ -2,7 +2,7 @@
 
 /*
 EvaSys Online Surveys - Moodle Block
-Copyright (C) 2016  Electric Paper Evaluationssysteme GmbH
+Copyright (C) 2018 Soon Systems GmbH on behalf of Electric Paper Evaluationssysteme GmbH
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -18,14 +18,16 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 Contact:
-Electric Paper
-Evaluationssysteme GmbH
-Konrad-Zuse-Allee 13
-21337 Lüneburg
+Soon-Systems GmbH
+Syrlinstr. 5
+89073 Ulm
 Deutschland
 
-E-Mail: info@evasys.de
+E-Mail: info@soon-systems.de
 */
 
-$plugin->version = 2016052300;
+$plugin->version = 2018011701;
 $plugin->component = 'block_onlinesurvey';
+$plugin->release = 'v3.1-r1';
+$plugin->requires = '2016052307';
+$plugin->maturity = MATURITY_STABLE;
