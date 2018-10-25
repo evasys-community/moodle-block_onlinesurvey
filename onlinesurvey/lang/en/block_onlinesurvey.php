@@ -37,6 +37,18 @@ $string['communication_interface_description'] = 'Moodle and EvaSys can communic
 $string['soap'] = 'SOAP';
 $string['lti'] = 'LTI';
 
+// #8984
+$string['presentation'] = 'Display mode';
+$string['presentation_description'] = 'In compact mode, the EvaSys Block displays the number of open surveys by means of a graphic. In detailed mode, a list of available surveys is displayed. In both modes, an enlarged list view can be opened upon mouse click.';
+$string['presentation_brief'] = 'compact';
+$string['presentation_detailed'] = 'detailed';
+// END #8984
+
+// #8977
+$string['survey_hide_empty'] = 'Hide empty block';
+$string['survey_hide_empty_description'] = 'If activated, the EvaSys block is hidden when the user has no open surveys.';
+// END #8977
+
 $string['useridentifier'] = 'User Identifier';
 $string['useridentifier_description'] = 'You can either transmit the user login name or email address as unique identifier.';
 
@@ -52,6 +64,9 @@ $string['survey_timeout_description'] = '';
 
 $string['survey_debug'] = 'DEBUG';
 $string['survey_debug_description'] = '';
+
+$string['additionalcss'] = 'Additional CSS for iframe';
+$string['additionalcss_description'] = 'Content here will be added as CSS to the bottom of HEAD in iframe.';
 // END: settings page - general
 
 // settings page - SOAP
@@ -69,6 +84,9 @@ $string['survey_user_description'] = '';
 
 $string['survey_pwd'] = 'EvaSys SOAP password';
 $string['survey_pwd_description'] = '';
+
+$string['soap_request_eachtime'] = 'SOAP request at pageview';
+$string['soap_request_eachtime_description'] = 'If activated, the content of the EvaSys Block will be updated each time the user opens the starting page. If not activated, the block is only updated upon login / at the beginning of the session.';
 // END: settings page - SOAP
 
 // settings page - LTI
@@ -101,17 +119,25 @@ $string['lti_learnermapping_description'] = 'Here you can define which Moodle ro
 
 $string['lti_regex_learner'] = 'Learner regular expression';
 $string['lti_regex_learner_description'] = 'Regular expression to search for open online surveys for "learners" in the LTI result.';
+
+$string['lti_regex_instructor'] = 'Instructor regular expression';
+$string['lti_regex_instructor_description'] = 'Regular expression to search for open online surveys for "instructor" in the LTI result.';
 // END: settings page - LTI
 
 // capabilities
 $string['onlinesurvey:addinstance'] = 'Add instance of the Evaluations (EvaSys) block';
 $string['onlinesurvey:myaddinstance'] = 'Add instance of the Evaluations (EvaSys) block to my page';
+$string['onlinesurvey:view'] = 'View Evaluations (EvaSys) block';
+$string['onlinesurvey:view_debugdetails'] = 'View debug details';
 // END: capabilities
 
 // Block content
 $string['tech_error'] = 'A technical problem occured while connecting to EvaSys.<p>';
 $string['conn_works'] = 'Connection to EvaSys server tested successfully.<p>';
-$string['no_surveys'] = 'No open online surveys available.<p>';
+// #8977
+$string['no_surveys'] = 'No open surveys available';
+$string['surveys_exist'] = 'Open surveys available';
+// END #8977
 $string['popupinfo_dialog_title'] = 'Open evaluations';
 $string['popupinfo'] = 'Dear student,<br />
 <br />
@@ -123,6 +149,12 @@ Your evaluation team';
 
 $string['survey_list_header'] = '';
 
+$string['soap_settings_error'] = 'SOAP settings error';
+$string['survey_server_missing'] = 'URL for EvaSys server missing';
+$string['survey_login_missing'] = 'Path for online surveys missing';
+$string['survey_user_missing'] = 'SOAP user missing';
+$string['survey_pwd_missing'] = 'SOAP password missing';
+
 $string['lti_settings_error'] = 'LTI settings error';
 $string['lti_url_missing'] = 'URL for LTI provider missing';
 $string['lti_resourcekey_missing'] = 'Consumer key missing';
@@ -133,4 +165,6 @@ $string['config_not_accessible'] = 'Configuration not accessible';
 $string['error_occured'] = '<b>An error has occured:</b><br />{$a}<br />';
 $string['warning_message'] = '<b>Warning:</b><br />{$a}<br />';
 $string['wsdl_namespace'] = 'WSDL namespace parse error<br />';
+
+$string['debugmode_missing_capability'] = 'The block is in debug mode. You do not have permission to view content.';
 // END: Block content

@@ -1,0 +1,120 @@
+body.block_onlinesurvey_custom-modal-open {
+  overflow: hidden;
+}
+#block_onlinesurvey_surveys_content {
+  position: relative;
+}
+
+.block_onlinesurvey_custom-modal_container {
+  position: fixed;
+  z-index: 1050;
+  text-align: center;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  padding: 60px 20px 20px;
+  background: rgba(0, 0, 0, 0.35);
+  cursor: pointer;
+  overflow-y: auto;
+  box-sizing: border-box;
+  
+}
+.block_onlinesurvey_custom-modal {
+  position: relative;
+  display: inline-block;
+  top: 0;
+  left: 0;
+  margin: 0;
+  width: 100%;
+  max-width: 1280px;
+  cursor: auto;
+  background: #fff;
+  z-index: 10;
+  overflow: visible;
+  border-radius: 8px;
+  box-shadow: 0 0 16px rgba(0, 0, 0, 0.5);
+}
+.block_onlinesurvey_custom-modal iframe {
+  width: 1280px;
+  max-width: 100%;
+  height: 500px;
+  max-height: 100%;
+  border: none;
+}
+.block_onlinesurvey_custom-modal_title {
+  font-weight: bold;
+  padding: 20px;
+  border-bottom: 1px solid #ddd;
+  background: #fafafa;
+  border-radius: 8px 8px 0 0;
+}
+.block_onlinesurvey_custom-modal--popupinfo .block_onlinesurvey_custom-modal_content {
+  padding: 30px;
+}
+.block_onlinesurvey_custom-modal--iframe .block_onlinesurvey_custom-modal_content {
+  padding: 0;
+}
+.block_onlinesurvey_custom-modal_close-button {
+  border-radius: 16px;
+  width: 32px;
+  height: 32px;
+  background: #222;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+  position: absolute;
+  right: -16px;
+  top: -16px;
+  cursor: pointer;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22UTF-8%22%20standalone%3D%22no%22%3F%3E%0A%3Csvg%0A%20%20%20xmlns%3Adc%3D%22http%3A%2F%2Fpurl.org%2Fdc%2Felements%2F1.1%2F%22%0A%20%20%20xmlns%3Acc%3D%22http%3A%2F%2Fcreativecommons.org%2Fns%23%22%0A%20%20%20xmlns%3Ardf%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2F02%2F22-rdf-syntax-ns%23%22%0A%20%20%20xmlns%3Asvg%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%0A%20%20%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%0A%20%20%20xmlns%3Asodipodi%3D%22http%3A%2F%2Fsodipodi.sourceforge.net%2FDTD%2Fsodipodi-0.dtd%22%0A%20%20%20xmlns%3Ainkscape%3D%22http%3A%2F%2Fwww.inkscape.org%2Fnamespaces%2Finkscape%22%0A%20%20%20width%3D%2216%22%0A%20%20%20height%3D%2216%22%0A%20%20%20viewBox%3D%220%200%2016%2016%22%0A%20%20%20version%3D%221.1%22%0A%20%20%20id%3D%22svg4%22%0A%20%20%20sodipodi%3Adocname%3D%22close.svg%22%0A%20%20%20inkscape%3Aversion%3D%220.92.2%205c3e80d%2C%202017-08-06%22%3E%0A%20%20%3Cmetadata%0A%20%20%20%20%20id%3D%22metadata10%22%3E%0A%20%20%20%20%3Crdf%3ARDF%3E%0A%20%20%20%20%20%20%3Ccc%3AWork%0A%20%20%20%20%20%20%20%20%20rdf%3Aabout%3D%22%22%3E%0A%20%20%20%20%20%20%20%20%3Cdc%3Aformat%3Eimage%2Fsvg%2Bxml%3C%2Fdc%3Aformat%3E%0A%20%20%20%20%20%20%20%20%3Cdc%3Atype%0A%20%20%20%20%20%20%20%20%20%20%20rdf%3Aresource%3D%22http%3A%2F%2Fpurl.org%2Fdc%2Fdcmitype%2FStillImage%22%20%2F%3E%0A%20%20%20%20%20%20%20%20%3Cdc%3Atitle%3E%3C%2Fdc%3Atitle%3E%0A%20%20%20%20%20%20%3C%2Fcc%3AWork%3E%0A%20%20%20%20%3C%2Frdf%3ARDF%3E%0A%20%20%3C%2Fmetadata%3E%0A%20%20%3Cdefs%0A%20%20%20%20%20id%3D%22defs8%22%20%2F%3E%0A%20%20%3Csodipodi%3Anamedview%0A%20%20%20%20%20pagecolor%3D%22%23ffffff%22%0A%20%20%20%20%20bordercolor%3D%22%23666666%22%0A%20%20%20%20%20borderopacity%3D%221%22%0A%20%20%20%20%20objecttolerance%3D%2210%22%0A%20%20%20%20%20gridtolerance%3D%2210%22%0A%20%20%20%20%20guidetolerance%3D%2210%22%0A%20%20%20%20%20inkscape%3Apageopacity%3D%220%22%0A%20%20%20%20%20inkscape%3Apageshadow%3D%222%22%0A%20%20%20%20%20inkscape%3Awindow-width%3D%222560%22%0A%20%20%20%20%20inkscape%3Awindow-height%3D%221023%22%0A%20%20%20%20%20id%3D%22namedview6%22%0A%20%20%20%20%20showgrid%3D%22false%22%0A%20%20%20%20%20inkscape%3Asnap-bbox%3D%22true%22%0A%20%20%20%20%20inkscape%3Abbox-nodes%3D%22true%22%0A%20%20%20%20%20inkscape%3Asnap-page%3D%22true%22%0A%20%20%20%20%20inkscape%3Azoom%3D%2216.857143%22%0A%20%20%20%20%20inkscape%3Acx%3D%2213.705136%22%0A%20%20%20%20%20inkscape%3Acy%3D%2211.474499%22%0A%20%20%20%20%20inkscape%3Awindow-x%3D%220%22%0A%20%20%20%20%20inkscape%3Awindow-y%3D%2230%22%0A%20%20%20%20%20inkscape%3Awindow-maximized%3D%221%22%0A%20%20%20%20%20inkscape%3Acurrent-layer%3D%22svg4%22%20%2F%3E%0A%20%20%3Cpath%0A%20%20%20%20%20d%3D%22m%2013.302565%2C11.802679%20q%200%2C0.357116%20-0.249981%2C0.607097%20l%20-1.214193%2C1.214194%20q%20-0.249981%2C0.249981%20-0.607098%2C0.249981%20-0.357115%2C0%20-0.607097%2C-0.249981%20L%207.9993951%2C10.999168%205.3745936%2C13.62397%20q%20-0.2499812%2C0.249981%20-0.607097%2C0.249981%20-0.3571158%2C0%20-0.607097%2C-0.249981%20L%202.9462058%2C12.409776%20q%20-0.2499811%2C-0.249981%20-0.2499811%2C-0.607097%200%2C-0.357116%200.2499811%2C-0.607097%20L%205.5710072%2C8.5707805%202.9462058%2C5.945979%20Q%202.6962247%2C5.6959982%202.6962247%2C5.3388825%20q%200%2C-0.3571166%200.2499811%2C-0.6070976%20L%204.1603996%2C3.5175915%20q%200.2499812%2C-0.2499811%200.607097%2C-0.2499811%200.3571158%2C0%200.607097%2C0.2499811%20L%207.9993951%2C6.1423928%2010.624196%2C3.5175915%20q%200.249982%2C-0.2499811%200.607097%2C-0.2499811%200.357117%2C0%200.607098%2C0.2499811%20l%201.214193%2C1.2141934%20q%200.249981%2C0.249981%200.249981%2C0.6070976%200%2C0.3571157%20-0.249981%2C0.6070965%20l%20-2.624801%2C2.6248015%202.624801%2C2.6248015%20q%200.249981%2C0.249981%200.249981%2C0.607097%20z%22%0A%20%20%20%20%20id%3D%22path2%22%0A%20%20%20%20%20inkscape%3Aconnector-curvature%3D%220%22%0A%20%20%20%20%20style%3D%22fill%3A%23ffffff%3Bstroke-width%3A0.0089279%22%20%2F%3E%0A%3C%2Fsvg%3E%0A");
+  background-size: 20px;
+}
+.block_onlinesurvey_custom-modal {
+  animation: .25s BlockOnlinesurveyCustomModalFadeInSlideFromBottom forwards;
+}
+.block_onlinesurvey_custom-modal_container.fading .modal {
+  animation: .25s BlockOnlinesurveyCustomModalFadeOutSlideFromTop forwards;
+}
+.block_onlinesurvey_custom-modal_container {
+  animation: .25s BlockOnlinesurveyCustomModalSimpleFadeIn forwards;
+}
+.block_onlinesurvey_custom-modal_container.fading {
+  animation: .25s BlockOnlinesurveyCustomModalSimpleFadeOut forwards;
+}
+@keyframes BlockOnlinesurveyCustomModalFadeInSlideFromBottom {
+  from {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes BlockOnlinesurveyCustomModalFadeOutSlideFromTop {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+}
+@keyframes BlockOnlinesurveyCustomModalSimpleFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes BlockOnlinesurveyCustomModalSimpleFadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}

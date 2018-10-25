@@ -1,14 +1,14 @@
 define(['core/templates', 'core/str'], function(templates, str) {
 
 	var modalTitle = '';
-	var modalZoomSelector = '#surveys_content';
+	var modalZoomSelector = '#block_onlinesurvey_surveys_content';
 	
 	var popupinfotitle = '';
 	var popupinfocontent = '';
 	var userlogintime = 0;
 	
 	var doRefresh = function() {
-		var myElement = document.getElementById("contentframe");
+		var myElement = document.getElementById("block_onlinesurvey_contentframe");
 		if(myElement){
 			var oldsrc = myElement.src;
 			myElement.src = '';
@@ -23,10 +23,27 @@ define(['core/templates', 'core/str'], function(templates, str) {
 
 		var originalIframe = modalZoomElem.querySelector('iframe');
 
-		var templatePromise = templates.render('block_onlinesurvey/modal-iframe', {
-			src: originalIframe.src,
-			title: modalTitle
-		});
+		// #8984
+		var templatePromise = null;
+
+
+        if (originalIframe !== null) {
+        	// open from Moodle page, i.e., onlinesurvey iframe exists
+            templatePromise = templates.render('block_onlinesurvey/modal-iframe', {
+                // copy iframe target URL from block, but inform that now in modalZoom window
+            	src: originalIframe.src + "&modalZoom=1",
+                title: modalTitle
+            });
+        } else {
+            // open from iframe, i.e., needs to switch to parent Moodle page
+            originalIframe = parent.document.querySelector('iframe');
+            templatePromise = templates.render('block_onlinesurvey/modal-iframe', {
+                // copy iframe target URL from block, but inform that now in modalZoom window
+            	src: originalIframe.src + "&modalZoom=1",
+                title: modalTitle
+            });
+        }
+        // END #8984
 
 		templatePromise.done(function(source, javascript) {
 
@@ -36,13 +53,13 @@ define(['core/templates', 'core/str'], function(templates, str) {
 			var modalContainer = div.firstChild;
 
 			document.body.insertBefore(modalContainer, document.body.firstChild);
-			document.body.className += ' custom-modal-open';
+			document.body.className += ' block_onlinesurvey_custom-modal-open';
 
 			var closeCallback = function(e) {
 
 				var target = e.target
 
-				document.body.className = document.body.className.replace(' custom-modal-open', '');
+				document.body.className = document.body.className.replace(' block_onlinesurvey_custom-modal-open', '');
 
 				doRefresh();
 
@@ -55,7 +72,7 @@ define(['core/templates', 'core/str'], function(templates, str) {
 				}, 250);
 			}
 
-			modalContainer.querySelector('.custom-modal_close-button')
+			modalContainer.querySelector('.block_onlinesurvey_custom-modal_close-button')
 				.addEventListener('click', function(e) {
 					e.preventDefault();
 					return closeCallback(e);
@@ -86,9 +103,9 @@ define(['core/templates', 'core/str'], function(templates, str) {
 			// namespace in window for EVASYS-functions etc
             window.EVASYS = {
                 // define "global" functions in namespace -> later "external" access from iframe possible
-                generate_popupinfo: this.generate_popupinfo
+            		generate_popupinfo: this.generate_popupinfo
             };
-            window.evasys_generate_popupinfo = this.generate_popupinfo;
+            window.evasysGeneratePopupinfo = this.generate_popupinfo;
 		},
 		generate_popupinfo: function() {
 			
@@ -113,13 +130,13 @@ define(['core/templates', 'core/str'], function(templates, str) {
 					var modalContainer = div.firstChild;
 					
 					document.body.insertBefore(modalContainer, document.body.firstChild);
-					document.body.className += ' custom-modal-open popupinfo';
+					document.body.className += ' block_onlinesurvey_custom-modal-open popupinfo';
 					
 					var closeCallback = function(e) {
 						
 						var target = e.target
 						
-						document.body.className = document.body.className.replace(' custom-modal-open', '');
+						document.body.className = document.body.className.replace(' block_onlinesurvey_custom-modal-open', '');
 						
 						modalContainer.className += ' fading';
 						
@@ -130,7 +147,7 @@ define(['core/templates', 'core/str'], function(templates, str) {
 						}, 250);
 					}
 					
-					modalContainer.querySelector('.custom-modal_close-button')
+					modalContainer.querySelector('.block_onlinesurvey_custom-modal_close-button')
 					.addEventListener('click', function(e) {
 						e.preventDefault();
 						return closeCallback(e);

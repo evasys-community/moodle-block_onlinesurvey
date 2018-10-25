@@ -1,0 +1,17 @@
+.block_onlinesurvey #block_onlinesurvey_contentframe {
+    border: 0;
+    border-radius: 0;
+}
+
+#onlinesurvey_glasses .block_onlinesurvey_glasses_content {
+    content: '';
+    display: block;
+    cursor: pointer;
+    position: absolute;
+    right: -10px;
+    bottom: -10px;
+    font-size: 23px;
+    background-size: 24px;
+    width: 24px;
+    height: 24px;
+}

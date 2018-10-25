@@ -25,6 +25,10 @@ Deutschland
 E-Mail: info@soon-systems.de
 */
 
+// #8984
+define('BLOCK_ONLINESURVEY_PRESENTATION_BRIEF', "brief");
+define('BLOCK_ONLINESURVEY_PRESENTATION_DETAILED', "detailed");
+// END #8984
 
 /**
  * Onlinesurvey block.
@@ -80,7 +84,39 @@ class block_onlinesurvey extends block_base {
             if ($this->moodleuserid = $USER->id) {
                 
                 if($this->connectiontype == 'SOAP'){
+                    
                     $this->wsdl = $config->survey_server;
+                    
+                    // Quick check of SOAP settings
+                    if(empty($config->survey_server) || empty($config->survey_login) || empty($config->survey_user) || empty($config->survey_pwd)){
+                        $this->isconfigured = false;
+                        $this->error = get_string('soap_settings_error', 'block_onlinesurvey');
+                    
+                        $error_info = '';
+                        if(empty($config->survey_server)){
+                            $error_info .= get_string('survey_server_missing', 'block_onlinesurvey').'<br>';
+                        }
+                        if(empty($config->survey_login)){
+                            $error_info .= get_string('survey_login_missing', 'block_onlinesurvey').'<br>';
+                        }
+                        if(empty($config->survey_user)){
+                            $error_info .= get_string('survey_user_missing', 'block_onlinesurvey').'<br>';
+                        }
+                        if(empty($config->survey_pwd)){
+                            $error_info .= get_string('survey_pwd_missing', 'block_onlinesurvey').'<br>';
+                        }
+                
+                        // #8975
+                        $context = context_system::instance();
+                        if (has_capability('block/onlinesurvey:view_debugdetails', $context)) {
+                            if(!empty($error_info)){
+                                $this->error .= "<br>".$error_info;
+                            }
+                        }
+                        // END #8975
+                    }else{
+                        $this->isconfigured = true;
+                    }
                     
                     // Parse wsdlnamespace from the wsdl url.
                     preg_match('/\/([^\/]+\.wsdl)$/', $this->wsdl, $matches);
@@ -112,10 +148,16 @@ class block_onlinesurvey extends block_base {
                         if(empty($config->lti_learnermapping)){
                             $error_info .= get_string('lti_learnermapping_missing', 'block_onlinesurvey').'<br>';
                         }
-                    
-                        if(!empty($error_info)){
-                            $this->error .= "<br>".$error_info;
+                        
+                        // #8975
+                        $context = context_system::instance();
+                        if (has_capability('block/onlinesurvey:view_debugdetails', $context)) {
+                            if(!empty($error_info)){
+                                $this->error .= "<br>".$error_info;
+                            }
                         }
+                        // END #8975
+                        
                     }else{
                         $this->isconfigured = true;
                     }
@@ -138,6 +180,14 @@ class block_onlinesurvey extends block_base {
     public function get_content() {
         global $CFG, $PAGE, $USER;
 
+        // #8978
+        $context = context_system::instance();
+        if (! has_capability('block/onlinesurvey:view', $context)) {
+            $this->content = null;
+            return $this->content;
+        }
+        // END #8978
+
         if ($this->content !== null) {
             return $this->content;
         }
@@ -151,25 +201,48 @@ class block_onlinesurvey extends block_base {
             $url_params = 'ctxid='.$context->id.'&cid='.$course->id;
             $url = $CFG->wwwroot.'/blocks/onlinesurvey/show_surveys.php?'.$url_params;
             
-            $this->content->text .= '<div id="surveys_content">';
-            $this->content->text .= '<iframe id="contentframe" height="100%" width="100%" src="'.$url.'"></iframe>';
+            $this->content->text .= '<div id="block_onlinesurvey_surveys_content">';
+            
+            // #8984 Adjustment of the representation in "detail", so that the same magnifying glass is used here as in compact
+            $this->content->text .= "<div id=\"onlinesurvey_glasses\"  class=\"block_onlinesurvey_glasses\" >";
+            $bgimg_url = $CFG->wwwroot."/blocks/onlinesurvey/images/magnify-plus-outline.png";
+            $this->content->text .= "<i class=\"block_onlinesurvey_glasses_content\" style=\"background-image:url($bgimg_url);\"></i>";
+            $this->content->text .= "</div>";
+            // END #8984
+            
+            // testing reveals that the iframe requires the permissions "allow-same-origin allow-scripts"
+            // hence the sandbox attribute can not be used
+            $this->content->text .= '<iframe id="block_onlinesurvey_contentframe" height="100%" width="100%" src="'.$url.'"></iframe>';
             $this->content->text .= '</div>';
             
             $popupinfo_title = get_string('popupinfo_dialog_title', 'block_onlinesurvey');
             $popupinfo_content = get_string('popupinfo', 'block_onlinesurvey');
             
             $PAGE->requires->js_call_amd('block_onlinesurvey/modal-zoom', 'init', array($popupinfo_title, $popupinfo_content, $USER->currentlogin));
-            $PAGE->requires->css('/blocks/onlinesurvey/style/modal-zoom.css');
+            $PAGE->requires->css('/blocks/onlinesurvey/style/block_onlinesurvey_modal-zoom.css');
+            
+            // #8984 
+            if (get_config('block_onlinesurvey','presentation') == BLOCK_ONLINESURVEY_PRESENTATION_DETAILED) {
+
+                $PAGE->requires->css('/blocks/onlinesurvey/style/block_onlinesurvey_glasses_outside.css');
+            }
+            // END #8984
+            
+            // #8977
+            if (get_config('block_onlinesurvey','survey_hide_empty')) {
+            
+                $PAGE->requires->css('/blocks/onlinesurvey/style/block_onlinesurvey_hide.css');
+            }
+            // END #8977
         }
         
-        $context = context_system::instance();
-        if (has_capability('moodle/site:config', $context)) {
-            if ($this->error) {
-                $this->content->text = "<b>An error has occured:</b><br />{$this->error}<br />" . $this->content->text;
-            }
-        } else if ($this->debugmode && $this->error) {
-            $this->content->text = "<b>An error has occured:</b><br />{$this->error}<br />" . $this->content->text;
+        // #8975
+        if(!empty($this->error)){
+            $this->content->text =   get_string('error_occured', 'block_onlinesurvey', $this->error);
         }
+        // END #8975
+
+        return $this->content;
     }
 
     public function has_config() {

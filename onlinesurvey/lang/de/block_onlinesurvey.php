@@ -44,6 +44,18 @@ $string['customfieldnumberinevasys'] = 'Benutzerdatenfeld in EvaSys';
 $string['customfieldnumberinevasys_description'] = 'Bei Verwendung des Nutzernamens als Identifikator können Sie hier festlegen, welches der ersten drei EvaSys-Benutzerdatenfelder zur Authentifizierung verwendet werden soll.';
 $string['customfieldnumber'] = 'Benutzerdatenfeld Nr.';
 
+// #8984
+$string['presentation'] = 'Darstellungsmodus';
+$string['presentation_description'] = 'In der Kompaktdarstellung wird im Block die Anzahl offener Umfragen mit Hilfe einer Grafik angezeigt. In der detaillierten Darstellung wird ein Liste der verfügbaren Umfragen anzeigt. Für beide Darstellungen lässt sich per Klick eine vergrößerte Listenansicht aufrufen.';
+$string['presentation_brief'] = 'Kompakt';
+$string['presentation_detailed'] = 'Detailliert';
+// END #8984
+
+// #8977
+$string['survey_hide_empty'] = 'Leeren Block verbergen';
+$string['survey_hide_empty_description'] = 'Wenn aktiviert, wird der EvaSys-Block ausgeblendet sofern keine Umfragen für den Nutzer vorhanden sind.';
+// END #8977
+        
 $string['survey_show_popupinfo'] = 'Pop-up-Meldung aktiv';
 $string['survey_show_popupinfo_description'] = 'Wenn aktiviert, wird Teilnehmern nach dem Login eine Pop-up-Meldung zum Hinweis auf offene Umfragen angezeigt.';
 
@@ -52,6 +64,9 @@ $string['survey_timeout_description'] = '';
 
 $string['survey_debug'] = 'DEBUG';
 $string['survey_debug_description'] = '';
+
+$string['additionalcss'] = 'Zusätzliches CSS für iframe';
+$string['additionalcss_description'] = 'Dieses CSS wird am Ende des HEAD im iframe eingefügt.';
 // END: settings page - general
 
 // settings page - SOAP
@@ -69,6 +84,9 @@ $string['survey_user_description'] = '';
 
 $string['survey_pwd'] = 'EvaSys SOAP-Kennwort';
 $string['survey_pwd_description'] = '';
+
+$string['soap_request_eachtime'] = 'SOAP Request bei Seitenaufruf';
+$string['soap_request_eachtime_description'] = 'Wenn aktiviert, wird bei jedem Aufruf der Startseite der Inhalt des Blocks per SOAP aktualisiert. Wenn nicht aktiviert, wird der Block nur beim Login / zu Beginn einer Session aktualisiert.';
 // END: settings page - SOAP
 
 // settings page - LTI
@@ -100,17 +118,27 @@ $string['lti_learnermapping_description'] = 'Hier legen Sie fest, welche Moodle-
 
 $string['lti_regex_learner'] = 'Regulärer Ausdruck "Learner"';
 $string['lti_regex_learner_description'] = 'Regulärer Ausdruck, der den Inhalt des LTI-Ergebnisses für "Learner" nach offenen Onlineumfragen durchsucht.';
+
+$string['lti_regex_instructor'] = 'Regulärer Ausdruck "Instructor"';
+$string['lti_regex_instructor_description'] = 'Regulärer Ausdruck, der den Inhalt des LTI-Ergebnisses für "Instructor" nach offenen Onlineumfragen durchsucht.';
 // END: settings page - LTI
 
 // capabilities
 $string['onlinesurvey:addinstance'] = 'Instanz des Blocks Evaluationen (EvaSys) hinzufügen';
 $string['onlinesurvey:myaddinstance'] = 'Instanz des Blocks Evaluationen (EvaSys) zu meiner Seite hinzufügen';
+$string['onlinesurvey:view'] = 'Block Evaluationen (EvaSys) anzeigen';
+$string['onlinesurvey:view_debugdetails'] = 'Debug-Details anzeigen';
 // END: capabilities
 
 // Block content
 $string['tech_error'] = 'Es besteht ein technisches Problem mit dem EvaSys Server.<p>';
 $string['conn_works'] = 'Verbindung zum EvaSys-Server erfolgreich getestet.<p>';
-$string['no_surveys'] = 'Keine offenen Onlineumfragen.<p>';
+
+// #8977
+$string['no_surveys'] = 'Keine offenen Evaluationen';
+$string['surveys_exist'] = 'Offene Evaluationen';
+// END #8977
+
 $string['popupinfo_dialog_title'] = 'Offene Evaluationen';
 $string['popupinfo'] = 'Liebe(r) Studierende,<br />
 <br />
@@ -123,6 +151,12 @@ Ihr Evaluationsteam';
 
 $string['survey_list_header'] = '';
 
+$string['soap_settings_error'] = 'SOAP - Einstellungsfehler';
+$string['survey_server_missing'] = 'URL des EvaSys Servers fehlt';
+$string['survey_login_missing'] = 'Pfad für Onlineumfragen fehlt';
+$string['survey_user_missing'] = 'SOAP-Benutzername fehlt';
+$string['survey_pwd_missing'] = 'SOAP-Kennwort fehlt';
+
 $string['lti_settings_error'] = 'LTI - Einstellungsfehler';
 $string['lti_url_missing'] = 'URL des LTI-Providers fehlt';
 $string['lti_resourcekey_missing'] = 'Anwenderschlüssel fehlt';
@@ -133,4 +167,6 @@ $string['config_not_accessible'] = 'Konfiguration nicht zugreifbar';
 $string['error_occured'] = '<b>Ein Fehler ist aufgetreten:</b><br /> {$a} <br />';
 $string['warning_message'] = '<b>Warnung:</b><br />{$a}<br />';
 $string['wsdl_namespace'] = 'WSDL Namespace Fehler beim Parsen<br />';
+
+$string['debugmode_missing_capability'] = 'Der Block befindet sich im Debug-Modus. Ihnen fehlen die Rechte, um Inhalte gelistet zu bekommen.';
 // END: Block content

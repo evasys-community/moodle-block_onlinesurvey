@@ -1,0 +1,60 @@
+body {
+    font-family: Arial, Helvetica;
+    color: #444;
+    margin: 0px;
+    padding: 0px;
+}
+
+div.block_onlinesurvey_text {
+    padding-top:20px;
+    position:absolute;
+    width:100%;
+    text-align:center;
+}
+
+.block_onlinesurvey_area{
+    width: 100%;
+    margin-left:auto;
+    margin-right:auto;
+}
+
+.block_onlinesurvey_surveysexist {
+    cursor: pointer;
+}
+
+.block_onlinesurvey_circle {
+    position: relative;
+    text-align: center;
+    vertical-align: middle;
+    width: 110px;
+    height: 110px;
+    margin-left: auto;
+    margin-right: auto;
+    
+    background-image: url("../images/EvaSys_2.png");
+    background-position: center center;
+    background-size: 110px 110px;
+    background-color: transparent !important;
+}
+
+.block_onlinesurvey_area.block_onlinesurvey_surveysexist .block_onlinesurvey_circle{
+    background-image: url("../images/EvaSys_1.png");
+}
+
+.block_onlinesurvey_number {
+    font-size: 33px;
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 30%;
+    transform: translate(-50%, -50%);
+    color: white;
+}
+
+.block_onlinesurvey_glasses{
+    display: none;
+    position: absolute;
+    bottom: 0px;
+    right: -10px;
+    font-size: 23px;
+}

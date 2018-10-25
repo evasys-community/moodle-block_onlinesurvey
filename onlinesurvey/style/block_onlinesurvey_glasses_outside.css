@@ -1,0 +1,11 @@
+#block_onlinesurvey_surveys_content:before {
+}
+
+.block_onlinesurvey_glasses .fa-search-plus:before {
+    display: block !important;
+    cursor: pointer !important;
+    position: absolute !important;
+    right: -10px !important;
+    bottom: -10px !important;
+    font-size: 23px !important;
+}

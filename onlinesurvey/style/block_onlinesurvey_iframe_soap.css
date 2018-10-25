@@ -1,0 +1,250 @@
+#block_onlinesurvey_contentframe body {
+    font-family: Arial, Helvetica;
+    color: #444;
+    margin: 0px;
+    padding: 0px;
+}
+
+#block_onlinesurvey_contentframe .main {
+    width: 100%;
+    clear: both;
+}
+
+#block_onlinesurvey_contentframe .text-secondary {
+    font-size: .7em;
+}
+
+#block_onlinesurvey_contentframe .text-primary {
+    font-size: 1em;
+}
+
+#block_onlinesurvey_contentframe .text-bold {
+    font-weight: 600;
+}
+
+#block_onlinesurvey_contentframe h3 small {
+    color: #3b453f;
+    font-size: .7em;
+}
+
+#block_onlinesurvey_contentframe .message {
+    background-color: #F8F8F8;
+    margin: 3px;
+    line-height: 50px;
+    height: 50px;
+    padding-left: 5px;
+}
+
+.block_onlinesurvey_survey_list, 
+.block_onlinesurvey_survey_list .row {
+    border-collapse: collapse;
+}
+
+.block_onlinesurvey_survey_list .caption, 
+.block_onlinesurvey_survey_list .row {
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, .2);
+}
+
+.block_onlinesurvey_survey_list.table {
+    width: 100%;
+    display: table;
+}
+
+.block_onlinesurvey_survey_list .row {
+    display: table-row;
+    min-height: 85px;
+}
+
+.block_onlinesurvey_survey_list .cell {
+    display: table-cell;
+}
+
+.block_onlinesurvey_survey_list .cell .nomargin, 
+.block_onlinesurvey_survey_list .cell h3 {
+    margin: 0;
+}
+
+.block_onlinesurvey_survey_list .row, 
+.block_onlinesurvey_survey_list .row:nth-child(odd) {
+    background-color: #E4E5E0;
+}
+
+.block_onlinesurvey_survey_list .row:nth-child(even) {
+    background-color: #F8F8F8;
+}
+
+.block_onlinesurvey_survey_list .cell {
+    padding: 5px 20px;
+}
+
+.block_onlinesurvey_survey_list .cell h3 {
+    font-size: 1em;
+}
+
+.block_onlinesurvey_survey_list .cell.instructor {
+    width: 165px;
+    padding: 0 5px;
+}
+
+.block_onlinesurvey_survey_list .cell.information {
+    width: 140px;
+    padding: 0 5px;
+}
+
+.block_onlinesurvey_survey_list .cell.participate {
+    padding: 0 20px 0 5px;
+    width: 32px;
+}
+
+.block_onlinesurvey_survey_list .cell .submitted.positiv {
+    color: #007934;
+}
+
+.block_onlinesurvey_survey_list .cell .negativ {
+    color: #A31F34;
+}
+
+.block_onlinesurvey_survey_list .hint .row {
+    font-size: .7em;
+    color: #000;
+    background-color: #FFF;
+}
+
+.block_onlinesurvey_survey_list .hint .hint-icon {
+    padding: 5px 0 5px 10px;
+}
+
+.block_onlinesurvey_survey_list .hint .hint-text {
+    padding: 10px 20px 0 0;
+}
+
+.block_onlinesurvey_survey_list .profile-image, 
+.block_onlinesurvey_survey_list .secondary-profile-image {
+    width: 48px;
+    height: 48px;
+    border-radius: 48px;
+}
+
+.block_onlinesurvey_survey_list .instructor-table {
+    width: 100%;
+}
+
+.block_onlinesurvey_survey_list .image-link {
+    display: block;
+    width: 32px;
+    height: 32px;
+    background-size: 32px 32px;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.block_onlinesurvey_survey_list .arrow-red {
+    background-image: url("../images/arrow-red.png");
+}
+
+.block_onlinesurvey_survey_list .arrow-positiv {
+    background-image: url("../images/arrow-blue.png");
+}
+
+.block_onlinesurvey_survey_list .result-html {
+    background-image: url("../images/Report-HTML-icon.png");
+}
+
+.block_onlinesurvey_survey_list .cell .positiv {
+    color: #267CA7;
+}
+
+.block_onlinesurvey_survey_list .participated .lti-logo {
+    width: 32px;
+    height: 32px;
+}
+
+@media ( min-width :601px) and (max-width:900px) {
+    .block_onlinesurvey_survey_list.table {
+        font-size: 0.85em;
+    }
+    .block_onlinesurvey_survey_list .cell.information {
+        width: 100px;
+    }
+    .block_onlinesurvey_survey_list .cell.survey {
+        width: 70%;
+    }
+    .block_onlinesurvey_survey_list .profile-image, 
+    .block_onlinesurvey_survey_list .secondary-profile-image {
+        width: 32px;
+        height: 32px;
+        border-radius: 32px;
+    }
+}
+
+@media ( min-width :410px) and (max-width:600px) {
+    .block_onlinesurvey_survey_list .cell.instructor {
+        display: none;
+    }
+    .block_onlinesurvey_survey_list .cell, 
+    .block_onlinesurvey_survey_list .lti-header {
+        padding: 5px;
+    }
+    .block_onlinesurvey_survey_list.table {
+        font-size: 0.85em;
+    }
+    .block_onlinesurvey_survey_list .lti-header .lti-logo {
+        max-width: 150px;
+    }
+    .block_onlinesurvey_survey_list .cell.information {
+        width: 100px;
+    }
+    .block_onlinesurvey_survey_list .cell.survey {
+        width: 70%;
+    }
+    .block_onlinesurvey_survey_list .arrow-positiv, 
+    .block_onlinesurvey_survey_list .image-link, 
+    .block_onlinesurvey_survey_list .participated .lti-logo {
+        width: 28px;
+        height: 28px;
+    }
+    .block_onlinesurvey_survey_list .image-link {
+        background-size: 28px 28px;
+    }
+}
+
+@media ( max-width :409px) {
+    .block_onlinesurvey_survey_list .cell.information, 
+    .block_onlinesurvey_survey_list .cell.instructor, 
+    .block_onlinesurvey_survey_list .hint.table {
+        display: none;
+    }
+    .block_onlinesurvey_survey_list .cell.survey {
+        width: 100%;
+    }
+    .block_onlinesurvey_survey_list .cell, 
+    .block_onlinesurvey_survey_list .lti-header {
+        padding: 5px;
+    }
+    .block_onlinesurvey_survey_list.table {
+        font-size: 0.8em;
+    }
+    .block_onlinesurvey_survey_list .lti-header .lti-logo {
+        max-width: 90px;
+        margin-top: -5px;
+    }
+    .block_onlinesurvey_survey_list .lti-header h2 {
+        font-size: 1.3em;
+    }
+    .block_onlinesurvey_survey_list .arrow-positiv, 
+    .block_onlinesurvey_survey_list .image-link, 
+    .block_onlinesurvey_survey_list .participated .lti-logo {
+        width: 24px;
+        height: 24px;
+    }
+    .block_onlinesurvey_survey_list .image-link {
+        background-size: 24px 24px;
+    }
+}
+
+div.block_onlinesurvey_info {
+    padding: 20px;
+}
+.block_onlinesurvey_survey_list.table .row {
+    min-height: 0px;
+}

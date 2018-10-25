@@ -30,6 +30,14 @@ defined('MOODLE_INTERNAL') || die();
 
 $capabilities = array(
 
+    'block/onlinesurvey:view' => array(
+        'captype'      => 'read',
+        'contextlevel' => CONTEXT_BLOCK,
+        'archetypes' => array(
+            'user' => CAP_ALLOW
+        ),
+    ),
+
     'block/onlinesurvey:addinstance' => array(
         'captype' => 'write',
         'contextlevel' => CONTEXT_BLOCK,
@@ -49,6 +57,14 @@ $capabilities = array(
         ),
 
         'clonepermissionsfrom' => 'moodle/my:manageblocks'
+    ),
+
+    'block/onlinesurvey:view_debugdetails' => array(
+        'captype'      => 'read',
+        'contextlevel' => CONTEXT_BLOCK,
+        'archetypes' => array(
+            'manager' => CAP_ALLOW
+        ),
     ),
 
 );
