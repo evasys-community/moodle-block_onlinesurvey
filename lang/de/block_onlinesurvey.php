@@ -55,7 +55,7 @@ $string['presentation_detailed'] = 'Detailliert';
 $string['survey_hide_empty'] = 'Leeren Block verbergen';
 $string['survey_hide_empty_description'] = 'Wenn aktiviert, wird der EvaSys-Block ausgeblendet sofern keine Umfragen für den Nutzer vorhanden sind.';
 // END #8977
-        
+
 $string['survey_show_popupinfo'] = 'Pop-up-Meldung aktiv';
 $string['survey_show_popupinfo_description'] = 'Wenn aktiviert, wird Teilnehmern nach dem Login eine Pop-up-Meldung zum Hinweis auf offene Umfragen angezeigt.';
 

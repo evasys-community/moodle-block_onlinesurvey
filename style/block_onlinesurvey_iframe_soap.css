@@ -35,12 +35,12 @@
     padding-left: 5px;
 }
 
-.block_onlinesurvey_survey_list, 
+.block_onlinesurvey_survey_list,
 .block_onlinesurvey_survey_list .row {
     border-collapse: collapse;
 }
 
-.block_onlinesurvey_survey_list .caption, 
+.block_onlinesurvey_survey_list .caption,
 .block_onlinesurvey_survey_list .row {
     box-shadow: 1px 1px 3px rgba(0, 0, 0, .2);
 }
@@ -59,12 +59,12 @@
     display: table-cell;
 }
 
-.block_onlinesurvey_survey_list .cell .nomargin, 
+.block_onlinesurvey_survey_list .cell .nomargin,
 .block_onlinesurvey_survey_list .cell h3 {
     margin: 0;
 }
 
-.block_onlinesurvey_survey_list .row, 
+.block_onlinesurvey_survey_list .row,
 .block_onlinesurvey_survey_list .row:nth-child(odd) {
     background-color: #E4E5E0;
 }
@@ -118,7 +118,7 @@
     padding: 10px 20px 0 0;
 }
 
-.block_onlinesurvey_survey_list .profile-image, 
+.block_onlinesurvey_survey_list .profile-image,
 .block_onlinesurvey_survey_list .secondary-profile-image {
     width: 48px;
     height: 48px;
@@ -169,7 +169,7 @@
     .block_onlinesurvey_survey_list .cell.survey {
         width: 70%;
     }
-    .block_onlinesurvey_survey_list .profile-image, 
+    .block_onlinesurvey_survey_list .profile-image,
     .block_onlinesurvey_survey_list .secondary-profile-image {
         width: 32px;
         height: 32px;
@@ -181,7 +181,7 @@
     .block_onlinesurvey_survey_list .cell.instructor {
         display: none;
     }
-    .block_onlinesurvey_survey_list .cell, 
+    .block_onlinesurvey_survey_list .cell,
     .block_onlinesurvey_survey_list .lti-header {
         padding: 5px;
     }
@@ -197,8 +197,8 @@
     .block_onlinesurvey_survey_list .cell.survey {
         width: 70%;
     }
-    .block_onlinesurvey_survey_list .arrow-positiv, 
-    .block_onlinesurvey_survey_list .image-link, 
+    .block_onlinesurvey_survey_list .arrow-positiv,
+    .block_onlinesurvey_survey_list .image-link,
     .block_onlinesurvey_survey_list .participated .lti-logo {
         width: 28px;
         height: 28px;
@@ -209,15 +209,15 @@
 }
 
 @media ( max-width :409px) {
-    .block_onlinesurvey_survey_list .cell.information, 
-    .block_onlinesurvey_survey_list .cell.instructor, 
+    .block_onlinesurvey_survey_list .cell.information,
+    .block_onlinesurvey_survey_list .cell.instructor,
     .block_onlinesurvey_survey_list .hint.table {
         display: none;
     }
     .block_onlinesurvey_survey_list .cell.survey {
         width: 100%;
     }
-    .block_onlinesurvey_survey_list .cell, 
+    .block_onlinesurvey_survey_list .cell,
     .block_onlinesurvey_survey_list .lti-header {
         padding: 5px;
     }
@@ -231,8 +231,8 @@
     .block_onlinesurvey_survey_list .lti-header h2 {
         font-size: 1.3em;
     }
-    .block_onlinesurvey_survey_list .arrow-positiv, 
-    .block_onlinesurvey_survey_list .image-link, 
+    .block_onlinesurvey_survey_list .arrow-positiv,
+    .block_onlinesurvey_survey_list .image-link,
     .block_onlinesurvey_survey_list .participated .lti-logo {
         width: 24px;
         height: 24px;

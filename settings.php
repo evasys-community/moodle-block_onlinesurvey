@@ -3,26 +3,26 @@
 /*
  EvaSys Online Surveys - Moodle Block
  Copyright (C) 2018 Soon Systems GmbH on behalf of Electric Paper Evaluationssysteme GmbH
- 
+
  This program is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
  the Free Software Foundation, either version 3 of the License, or
  (at your option) any later version.
- 
+
  This program is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  GNU General Public License for more details.
- 
+
  You should have received a copy of the GNU General Public License
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
- 
+
  Contact:
  Soon-Systems GmbH
  Syrlinstr. 5
  89073 Ulm
  Deutschland
- 
+
  E-Mail: info@soon-systems.de
  */
 
@@ -31,7 +31,7 @@ defined('MOODLE_INTERNAL') || die;
 require_once $CFG->dirroot . '/blocks/onlinesurvey/lib.php';
 
 if ($ADMIN->fulltree) {
-    
+
     /* Block title */
     $settings->add(
             new admin_setting_configtext(
@@ -41,7 +41,7 @@ if ($ADMIN->fulltree) {
                     get_string('pluginname', 'block_onlinesurvey')
             )
     );
-    
+
     $communicationoptions = array();
     $communicationoptions["SOAP"] = get_string('soap', 'block_onlinesurvey');
     $communicationoptions["LTI"] = get_string('lti', 'block_onlinesurvey');
@@ -52,7 +52,7 @@ if ($ADMIN->fulltree) {
             )
     );
     unset($communicationoptions);
-    
+
     $userdataoptions = array();
     $userdataoptions["email"] = get_string('email');
     $userdataoptions["username"] = get_string('username');
@@ -63,7 +63,7 @@ if ($ADMIN->fulltree) {
             )
     );
     unset($userdataoptions);
-    
+
     $customfieldidoptions = array();
     $customfieldnr = get_string('customfieldnumber', 'block_onlinesurvey');
     $customfieldidoptions[1] = $customfieldnr." 1";
@@ -76,8 +76,8 @@ if ($ADMIN->fulltree) {
             )
     );
     unset($customfieldidoptions);
-    
-    
+
+
     // #8984
     $presentationoptions = array();
     $presentationoptions["brief"] = get_string('presentation_brief', 'block_onlinesurvey');
@@ -87,7 +87,7 @@ if ($ADMIN->fulltree) {
             "brief", $presentationoptions));
     unset($presentationoptions);
     // END #8984
-    
+
     // #8977
     $settings->add(
             new admin_setting_configcheckbox(
@@ -98,7 +98,7 @@ if ($ADMIN->fulltree) {
             )
     );
     // END #8977
-    
+
     $settings->add(
             new admin_setting_configcheckbox(
                     'block_onlinesurvey/survey_show_popupinfo',
@@ -107,7 +107,7 @@ if ($ADMIN->fulltree) {
                     0
             )
     );
-    
+
     $settings->add(
             new admin_setting_configtext(
                     'block_onlinesurvey/survey_timeout',
@@ -117,7 +117,7 @@ if ($ADMIN->fulltree) {
                     PARAM_INT
             )
     );
-    
+
     $settings->add(
             new admin_setting_configcheckbox(
                     'block_onlinesurvey/survey_debug',
@@ -126,7 +126,7 @@ if ($ADMIN->fulltree) {
                     0
             )
     );
-    
+
     // Addition CSS for iframe content
     $settings->add(
             new admin_setting_configtextarea(
@@ -139,7 +139,7 @@ if ($ADMIN->fulltree) {
                     6
             )
     );
-    
+
     // Add SOAP heading.
     $settings->add(
             new admin_setting_heading('block_onlinesurvey/generalheadingsoap',
@@ -147,7 +147,7 @@ if ($ADMIN->fulltree) {
                     get_string('soap_general_information', 'block_onlinesurvey')
             )
     );
-    
+
     /* SOAP settings */
     $settings->add(
             new admin_setting_configtext(
@@ -159,7 +159,7 @@ if ($ADMIN->fulltree) {
                     80
             )
     );
-    
+
     $settings->add(
             new admin_setting_configtext(
                     'block_onlinesurvey/survey_login',
@@ -170,7 +170,7 @@ if ($ADMIN->fulltree) {
                     80
             )
     );
-    
+
     $settings->add(
             new admin_setting_configtext(
                     'block_onlinesurvey/survey_user',
@@ -180,7 +180,7 @@ if ($ADMIN->fulltree) {
                     PARAM_RAW
             )
     );
-    
+
     $settings->add(
             new admin_setting_configpasswordunmask(
                     'block_onlinesurvey/survey_pwd',
@@ -189,7 +189,7 @@ if ($ADMIN->fulltree) {
                     ''
             )
     );
-    
+
     // #8983
     $settings->add(
             new admin_setting_configcheckbox(
@@ -199,7 +199,7 @@ if ($ADMIN->fulltree) {
                     0
             )
     );
-    
+
     // Add LTI heading.
     $settings->add(
             new admin_setting_heading('block_onlinesurvey/generalheadinglti',
@@ -207,7 +207,7 @@ if ($ADMIN->fulltree) {
                     get_string('lti_general_information', 'block_onlinesurvey')
             )
     );
-    
+
     /* LTI settings */
     $settings->add(
             new admin_setting_configtext(
@@ -228,7 +228,7 @@ if ($ADMIN->fulltree) {
 //                             ''
 //             )
 //     );
-    
+
     $settings->add(
             new admin_setting_configpasswordunmask(
                     'block_onlinesurvey/lti_password',
@@ -237,7 +237,7 @@ if ($ADMIN->fulltree) {
                     ''
             )
     );
-    
+
     // lti custom parameters
     $settings->add(
             new admin_setting_configtextarea(
@@ -250,7 +250,7 @@ if ($ADMIN->fulltree) {
                     6
             )
     );
-    
+
     // lti role mapping Instructor
     $choices = array();
     // Get some basic data we are going to need.
@@ -286,7 +286,7 @@ if ($ADMIN->fulltree) {
     unset($roles);
     unset($rolenames);
     unset($choices);
-    
+
     $settings->add(
             new admin_setting_configtext(
                     'block_onlinesurvey/lti_regex_learner',
@@ -297,7 +297,7 @@ if ($ADMIN->fulltree) {
                     80
             )
     );
-    
+
     $settings->add(
             new admin_setting_configtext(
                     'block_onlinesurvey/lti_regex_instructor',

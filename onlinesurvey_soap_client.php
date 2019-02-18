@@ -43,20 +43,20 @@ class onlinesurvey_soap_client extends SoapClient {
         curl_setopt($ch, CURLOPT_TIMEOUT, $this->timeout);
 
         $wsdlxml = curl_exec($ch);
-        
+
         // #9403
         if ($error_number = curl_errno($ch)) {
             $error_msg = curl_error($ch);
-            
+
             $msg_output = get_string('survey_curl_timeout_msg', 'block_onlinesurvey');
-            
+
             $context = context_system::instance();
             if (has_capability('block/onlinesurvey:view_debugdetails', $context)) {
                 if(!empty($msg_output)){
                     $msg_output .= "<br><br>"."curl_errno $error_number: $error_msg";
                 }
             }
-            
+
             if (in_array($error_number, array(CURLE_OPERATION_TIMEDOUT, CURLE_OPERATION_TIMEOUTED))) {
                 curl_close($ch);
                 throw new Exception("$msg_output");
@@ -66,8 +66,8 @@ class onlinesurvey_soap_client extends SoapClient {
             curl_close($ch);
         }
         // END #9403
-        
-        
+
+
         if (!$wsdlxml) {
             throw new Exception('ERROR: Could not fetch WSDL');
         }
@@ -115,28 +115,28 @@ class onlinesurvey_soap_client extends SoapClient {
 
         // Execute post.
         $ret = curl_exec($ch);
-        
+
         // #9403
         if ($error_number = curl_errno($ch)) {
             $error_msg = curl_error($ch);
-            
+
             $msg_output = get_string('survey_curl_timeout_msg', 'block_onlinesurvey');
-            
+
             $context = context_system::instance();
             if (has_capability('block/onlinesurvey:view_debugdetails', $context)) {
                 if(!empty($msg_output)){
                     $msg_output .= "<br><br>"."curl_errno $error_number: $error_msg";
                 }
             }
-            
+
             if (in_array($error_number, array(CURLE_OPERATION_TIMEDOUT, CURLE_OPERATION_TIMEOUTED))) {
                 curl_close($ch);
                 throw new Exception("$msg_output");
             }
         }
         // END #9403
-        
-        
+
+
         if (!$ret) {
             $ret = '<SOAP-ENV:Envelope
                     xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">

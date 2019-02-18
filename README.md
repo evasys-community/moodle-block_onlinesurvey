@@ -2,17 +2,17 @@ moodle-block_onlinesurvey
 =====================================
 The moodle plugin allows you to view open surveys within a block in Moodle.
 
-Detail: 
-By using the "onlinesurvey" plug-in, open surveys for a user are displayed within a block in Moodle. The data request for open surveys of a user can be carried out via SOAP or LTI. 
-The connection to a user can be established either on the basis of the user name or the email address. 
-If the user name is used, a specified EvaSys custom field can serve as a method of authentication. 
+Detail:
+By using the "onlinesurvey" plug-in, open surveys for a user are displayed within a block in Moodle. The data request for open surveys of a user can be carried out via SOAP or LTI.
+The connection to a user can be established either on the basis of the user name or the email address.
+If the user name is used, a specified EvaSys custom field can serve as a method of authentication.
 In the case of LTI, it is possible to define customized LTI parameters and to map the LTI specific roles "Instructor" and "Learner" in Moodle, e.g. "Learner" --> "Student".
-It is also possible to use a pop-up message to alert participants about open surveys. 
+It is also possible to use a pop-up message to alert participants about open surveys.
 
 
 Requirements
 ------------
-This plug-in requires Moodle version 3.1 or higher and EvaSys version 7.1 (2151). 
+This plug-in requires Moodle version 3.1 or higher and EvaSys version 7.1 (2151).
 
 
 Installation
@@ -40,5 +40,5 @@ Connection data for SOAP is entered here.
 
 ### LTI Settings
 
-Connection data for LTI is entered here. Furthermore, additional parameters can be defined which will be transferred as well. You can also define role mappings. 
+Connection data for LTI is entered here. Furthermore, additional parameters can be defined which will be transferred as well. You can also define role mappings.
 If the pop-up dialog shall be used, a regular expression must be specified in order to determine whether the LTI result contains open surveys.
