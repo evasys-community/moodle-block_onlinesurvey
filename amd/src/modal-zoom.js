@@ -23,27 +23,24 @@ define(['core/templates', 'core/str'], function(templates, str) {
 
         var originalIframe = modalZoomElem.querySelector('iframe');
 
-        // #8984
         var templatePromise = null;
 
-
         if (originalIframe !== null) {
-            // open from Moodle page, i.e., onlinesurvey iframe exists
+            // Open from Moodle page, i.e., onlinesurvey iframe exists.
             templatePromise = templates.render('block_onlinesurvey/modal-iframe', {
-                // copy iframe target URL from block, but inform that now in modalZoom window
+                // Copy iframe target URL from block, but inform that now in modalZoom window.
                 src: originalIframe.src + "&modalZoom=1",
                 title: modalTitle
             });
         } else {
-            // open from iframe, i.e., needs to switch to parent Moodle page
+            // Open from iframe, i.e., needs to switch to parent Moodle page.
             originalIframe = parent.document.querySelector('iframe');
             templatePromise = templates.render('block_onlinesurvey/modal-iframe', {
-                // copy iframe target URL from block, but inform that now in modalZoom window
+                // Copy iframe target URL from block, but inform that now in modalZoom window.
                 src: originalIframe.src + "&modalZoom=1",
                 title: modalTitle
             });
         }
-        // END #8984
 
         templatePromise.done(function(source, javascript) {
 
@@ -96,25 +93,25 @@ define(['core/templates', 'core/str'], function(templates, str) {
 
             var zoomContainer = document.querySelectorAll(modalZoomSelector);
 
-            for (var i=0; i<zoomContainer.length; i++) {
+            for (var i = 0; i < zoomContainer.length; i++) {
                 zoomContainer[i].addEventListener('click', handleClickSmallModal);
             }
 
-            // namespace in window for EVASYS-functions etc
+            // Namespace in window for EVASYS-functions etc.
             window.EVASYS = {
-                // define "global" functions in namespace -> later "external" access from iframe possible
-                    generate_popupinfo: this.generate_popupinfo
+                // Define "global" functions in namespace -> later "external" access from iframe possible.
+                generate_popupinfo: this.generate_popupinfo
             };
             window.evasysGeneratePopupinfo = this.generate_popupinfo;
         },
         generate_popupinfo: function() {
 
-            // Get saved data from sessionStorage
+            // Get saved data from sessionStorage.
             var popupinfo = sessionStorage.getItem('onlinesurvey_popupinfo');
 
-            if(popupinfo == false || popupinfo == null || popupinfo != userlogintime){
+            if (popupinfo == false || popupinfo == null || popupinfo != userlogintime) {
 
-                // Save data to sessionStorage
+                // Save data to sessionStorage.
                 sessionStorage.setItem('onlinesurvey_popupinfo', userlogintime);
 
                 var templatePromise = templates.render('block_onlinesurvey/popupinfo', {

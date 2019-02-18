@@ -1,34 +1,31 @@
 <?php
-/*
-EvaSys Online Surveys - Moodle Block
-Copyright (C) 2018 Soon Systems GmbH on behalf of Electric Paper Evaluationssysteme GmbH
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+/**
+ * Plugin "Evaluations (EvaSys)"
+ *
+ * @package    block_onlinesurvey
+ * @copyright  2018 Soon Systems GmbH on behalf of Electric Paper Evaluationssysteme GmbH
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+defined('MOODLE_INTERNAL') || die();
 
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
-Contact:
-Soon-Systems GmbH
-Syrlinstr. 5
-89073 Ulm
-Deutschland
-
-E-Mail: info@soon-systems.de
-*/
-
-// #8984
 define('BLOCK_ONLINESURVEY_PRESENTATION_BRIEF', "brief");
 define('BLOCK_ONLINESURVEY_PRESENTATION_DETAILED', "detailed");
-// END #8984
 
 /**
  * Onlinesurvey block.
@@ -71,8 +68,8 @@ class block_onlinesurvey extends block_base {
 
         if (isset($config) && !empty($config)) {
 
-            // Get block title from block setting
-            if(!empty($config->blocktitle)){
+            // Get block title from block setting.
+            if (!empty($config->blocktitle)) {
                 $this->title = format_string($config->blocktitle);
             }
 
@@ -83,38 +80,37 @@ class block_onlinesurvey extends block_base {
             global $USER;
             if ($this->moodleuserid = $USER->id) {
 
-                if($this->connectiontype == 'SOAP'){
+                if ($this->connectiontype == 'SOAP') {
 
                     $this->wsdl = $config->survey_server;
 
-                    // Quick check of SOAP settings
-                    if(empty($config->survey_server) || empty($config->survey_login) || empty($config->survey_user) || empty($config->survey_pwd)){
+                    // Quick check of SOAP settings.
+                    if (empty($config->survey_server) || empty($config->survey_login) || empty($config->survey_user) ||
+                            empty($config->survey_pwd)) {
                         $this->isconfigured = false;
                         $this->error = get_string('soap_settings_error', 'block_onlinesurvey');
 
-                        $error_info = '';
-                        if(empty($config->survey_server)){
-                            $error_info .= get_string('survey_server_missing', 'block_onlinesurvey').'<br>';
+                        $errorinfo = '';
+                        if (empty($config->survey_server)) {
+                            $errorinfo .= get_string('survey_server_missing', 'block_onlinesurvey').'<br>';
                         }
-                        if(empty($config->survey_login)){
-                            $error_info .= get_string('survey_login_missing', 'block_onlinesurvey').'<br>';
+                        if (empty($config->survey_login)) {
+                            $errorinfo .= get_string('survey_login_missing', 'block_onlinesurvey').'<br>';
                         }
-                        if(empty($config->survey_user)){
-                            $error_info .= get_string('survey_user_missing', 'block_onlinesurvey').'<br>';
+                        if (empty($config->survey_user)) {
+                            $errorinfo .= get_string('survey_user_missing', 'block_onlinesurvey').'<br>';
                         }
-                        if(empty($config->survey_pwd)){
-                            $error_info .= get_string('survey_pwd_missing', 'block_onlinesurvey').'<br>';
+                        if (empty($config->survey_pwd)) {
+                            $errorinfo .= get_string('survey_pwd_missing', 'block_onlinesurvey').'<br>';
                         }
 
-                        // #8975
                         $context = context_system::instance();
                         if (has_capability('block/onlinesurvey:view_debugdetails', $context)) {
-                            if(!empty($error_info)){
-                                $this->error .= "<br>".$error_info;
+                            if (!empty($errorinfo)) {
+                                $this->error .= "<br>".$errorinfo;
                             }
                         }
-                        // END #8975
-                    }else{
+                    } else {
                         $this->isconfigured = true;
                     }
 
@@ -127,38 +123,36 @@ class block_onlinesurvey extends block_base {
                         $this->isconfigured = false;
                         $this->error = "WSDL namespace parse error";
                     }
-                }
-                else if($this->connectiontype == 'LTI'){
-                    // Quick check of some LTI settings
-                    if(empty($config->lti_url) || empty($config->lti_password) || empty($config->lti_learnermapping)){
+                } else if ($this->connectiontype == 'LTI') {
+                    // Quick check of some LTI settings.
+                    if (empty($config->lti_url) || empty($config->lti_password) || empty($config->lti_learnermapping)) {
                         $this->isconfigured = false;
                         $this->error = get_string('lti_settings_error', 'block_onlinesurvey');
 
-                        $error_info = '';
-                        if(empty($config->lti_url)){
-                            $error_info .= get_string('lti_url_missing', 'block_onlinesurvey').'<br>';
+                        $errorinfo = '';
+                        if (empty($config->lti_url)) {
+                            $errorinfo .= get_string('lti_url_missing', 'block_onlinesurvey').'<br>';
                         }
-                        // Consumer key currently not used
-//                         if(empty($config->lti_resourcekey)){
-//                             $error_info .= get_string('lti_resourcekey_missing', 'block_onlinesurvey').'<br>';
-//                         }
-                        if(empty($config->lti_password)){
-                            $error_info .= get_string('lti_password_missing', 'block_onlinesurvey').'<br>';
+                        /* Consumer key currently not used.
+                        if (empty($config->lti_resourcekey)) {
+                            $errorinfo .= get_string('lti_resourcekey_missing', 'block_onlinesurvey').'<br>';
                         }
-                        if(empty($config->lti_learnermapping)){
-                            $error_info .= get_string('lti_learnermapping_missing', 'block_onlinesurvey').'<br>';
+                        */
+                        if (empty($config->lti_password)) {
+                            $errorinfo .= get_string('lti_password_missing', 'block_onlinesurvey').'<br>';
+                        }
+                        if (empty($config->lti_learnermapping)) {
+                            $errorinfo .= get_string('lti_learnermapping_missing', 'block_onlinesurvey').'<br>';
                         }
 
-                        // #8975
                         $context = context_system::instance();
                         if (has_capability('block/onlinesurvey:view_debugdetails', $context)) {
-                            if(!empty($error_info)){
-                                $this->error .= "<br>".$error_info;
+                            if (!empty($errorinfo)) {
+                                $this->error .= "<br>".$errorinfo;
                             }
                         }
-                        // END #8975
 
-                    }else{
+                    } else {
                         $this->isconfigured = true;
                     }
                 }
@@ -180,13 +174,11 @@ class block_onlinesurvey extends block_base {
     public function get_content() {
         global $CFG, $PAGE, $USER;
 
-        // #8978
         $context = context_system::instance();
         if (! has_capability('block/onlinesurvey:view', $context)) {
             $this->content = null;
             return $this->content;
         }
-        // END #8978
 
         if ($this->content !== null) {
             return $this->content;
@@ -198,49 +190,43 @@ class block_onlinesurvey extends block_base {
 
             $context = $PAGE->context;
             $course = $PAGE->course;
-            $url_params = 'ctxid='.$context->id.'&cid='.$course->id;
-            $url = $CFG->wwwroot.'/blocks/onlinesurvey/show_surveys.php?'.$url_params;
+            $urlparams = 'ctxid='.$context->id.'&cid='.$course->id;
+            $url = $CFG->wwwroot.'/blocks/onlinesurvey/show_surveys.php?'.$urlparams;
 
             $this->content->text .= '<div id="block_onlinesurvey_surveys_content">';
 
-            // #8984 Adjustment of the representation in "detail", so that the same magnifying glass is used here as in compact
+            // Adjustment of the representation in "detail", so that the same magnifying glass is used here as in compact.
             $this->content->text .= "<div id=\"onlinesurvey_glasses\"  class=\"block_onlinesurvey_glasses\" >";
-            $bgimg_url = $CFG->wwwroot."/blocks/onlinesurvey/images/magnify-plus-outline.png";
-            $this->content->text .= "<i class=\"block_onlinesurvey_glasses_content\" style=\"background-image:url($bgimg_url);\"></i>";
+            $bgimgurl = $CFG->wwwroot."/blocks/onlinesurvey/images/magnify-plus-outline.png";
+            $this->content->text .= "<i class=\"block_onlinesurvey_glasses_content\" style=\"background-image:url($bgimgurl);\">".
+                    "</i>";
             $this->content->text .= "</div>";
-            // END #8984
 
-            // testing reveals that the iframe requires the permissions "allow-same-origin allow-scripts"
-            // hence the sandbox attribute can not be used
-            $this->content->text .= '<iframe id="block_onlinesurvey_contentframe" height="100%" width="100%" src="'.$url.'"></iframe>';
+            // Testing reveals that the iframe requires the permissions "allow-same-origin allow-scripts",
+            // hence the sandbox attribute can not be used.
+            $this->content->text .= '<iframe id="block_onlinesurvey_contentframe" height="100%" width="100%" src="'.$url.'">".
+                    "</iframe>';
             $this->content->text .= '</div>';
 
-            $popupinfo_title = get_string('popupinfo_dialog_title', 'block_onlinesurvey');
-            $popupinfo_content = get_string('popupinfo', 'block_onlinesurvey');
+            $popupinfotitle = get_string('popupinfo_dialog_title', 'block_onlinesurvey');
+            $popupinfocontent = get_string('popupinfo', 'block_onlinesurvey');
 
-            $PAGE->requires->js_call_amd('block_onlinesurvey/modal-zoom', 'init', array($popupinfo_title, $popupinfo_content, $USER->currentlogin));
+            $PAGE->requires->js_call_amd('block_onlinesurvey/modal-zoom', 'init',
+                    array($popupinfotitle, $popupinfocontent, $USER->currentlogin));
             $PAGE->requires->css('/blocks/onlinesurvey/style/block_onlinesurvey_modal-zoom.css');
 
-            // #8984
-            if (get_config('block_onlinesurvey','presentation') == BLOCK_ONLINESURVEY_PRESENTATION_DETAILED) {
-
+            if (get_config('block_onlinesurvey', 'presentation') == BLOCK_ONLINESURVEY_PRESENTATION_DETAILED) {
                 $PAGE->requires->css('/blocks/onlinesurvey/style/block_onlinesurvey_glasses_outside.css');
             }
-            // END #8984
 
-            // #8977
-            if (get_config('block_onlinesurvey','survey_hide_empty')) {
-
+            if (get_config('block_onlinesurvey', 'survey_hide_empty')) {
                 $PAGE->requires->css('/blocks/onlinesurvey/style/block_onlinesurvey_hide.css');
             }
-            // END #8977
         }
 
-        // #8975
-        if(!empty($this->error)){
-            $this->content->text =   get_string('error_occured', 'block_onlinesurvey', $this->error);
+        if (!empty($this->error)) {
+            $this->content->text = get_string('error_occured', 'block_onlinesurvey', $this->error);
         }
-        // END #8975
 
         return $this->content;
     }
@@ -284,7 +270,7 @@ class block_onlinesurvey extends block_base {
      *
      * @return string $this->title
      */
-    function get_title() {
+    public function get_title() {
         return $this->title;
     }
 }

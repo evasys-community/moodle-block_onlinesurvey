@@ -15,6 +15,14 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * Plugin "Evaluations (EvaSys)"
+ *
+ * @package    block_onlinesurvey
+ * @copyright  2018 Soon Systems GmbH on behalf of Electric Paper Evaluationssysteme GmbH
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
+/**
  * This file keeps track of upgrades to the onlinesurvey block
  *
  * Sometimes, changes between versions involve alterations to database structures

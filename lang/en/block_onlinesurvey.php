@@ -1,34 +1,30 @@
 <?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-/*
-EvaSys Online Surveys - Moodle Block
-Copyright (C) 2018 Soon Systems GmbH on behalf of Electric Paper Evaluationssysteme GmbH
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
-Contact:
-Soon-Systems GmbH
-Syrlinstr. 5
-89073 Ulm
-Deutschland
-
-E-Mail: info@soon-systems.de
-*/
+/**
+ * Plugin "Evaluations (EvaSys)"
+ *
+ * @package    block_onlinesurvey
+ * @copyright  2018 Soon Systems GmbH on behalf of Electric Paper Evaluationssysteme GmbH
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 
 $string['pluginname'] = 'Evaluations (EvaSys)';
 
-// settings page - general
+// Settings page - General.
 $string['blocktitle'] = 'Title';
 $string['blocktitle_description'] = '';
 
@@ -37,17 +33,13 @@ $string['communication_interface_description'] = 'Moodle and EvaSys can communic
 $string['soap'] = 'SOAP';
 $string['lti'] = 'LTI';
 
-// #8984
 $string['presentation'] = 'Display mode';
 $string['presentation_description'] = 'In compact mode, the EvaSys Block displays the number of open surveys by means of a graphic. In detailed mode, a list of available surveys is displayed. In both modes, an enlarged list view can be opened upon mouse click.';
 $string['presentation_brief'] = 'compact';
 $string['presentation_detailed'] = 'detailed';
-// END #8984
 
-// #8977
 $string['survey_hide_empty'] = 'Hide empty block';
 $string['survey_hide_empty_description'] = 'If activated, the EvaSys block is hidden when the user has no open surveys.';
-// END #8977
 
 $string['useridentifier'] = 'User Identifier';
 $string['useridentifier_description'] = 'You can either transmit the user login name or email address as unique identifier.';
@@ -67,9 +59,8 @@ $string['survey_debug_description'] = '';
 
 $string['additionalcss'] = 'Additional CSS for iframe';
 $string['additionalcss_description'] = 'Content here will be added as CSS to the bottom of HEAD in iframe.';
-// END: settings page - general
 
-// settings page - SOAP
+// Settings page - SOAP.
 $string['generalheadingsoap'] = 'SOAP';
 $string['soap_general_information'] = 'The following information is required only if you selected "SOAP" for communication.';
 
@@ -87,16 +78,15 @@ $string['survey_pwd_description'] = '';
 
 $string['soap_request_eachtime'] = 'SOAP request at pageview';
 $string['soap_request_eachtime_description'] = 'If activated, the content of the EvaSys Block will be updated each time the user opens the starting page. If not activated, the block is only updated upon login / at the beginning of the session.';
-// END: settings page - SOAP
 
-// settings page - LTI
+// Settings page - LTI.
 $string['generalheadinglti'] = 'LTI';
 $string['lti_general_information'] = 'The following information is required only if you selected "LTI" for communication.';
 
 $string['survey_lti_url'] = 'URL of the LTI Provider';
 $string['survey_lti_url_description'] = '';
 
-// "survey_lti_resourcekey" currently not used -> kept for future
+// Survey_lti_resourcekey currently not used -> Kept for future.
 $string['survey_lti_resourcekey'] = 'Consumer key';
 $string['survey_lti_resourcekey_description'] = '';
 
@@ -107,7 +97,7 @@ $string['lti_customparameters'] = 'Custom parameters';
 $string['lti_customparameters_description'] = 'Custom parameters are settings used by the tool provider. For example, a custom parameter may be used to display
 a specific resource from the provider. Each parameter should be entered on a separate line using a format of "name=value"; for example, "learner_show_completed_surveys=1". For further information please refer to the EvaSys LTI Manual.';
 
-// lti_regard_coursecontext is not yet supported by EvaSys LTI provider -> kept for future
+// Lti_regard_coursecontext is not yet supported by EvaSys LTI provider -> Kept for future.
 $string['regard_coursecontext'] = 'Consider course context';
 $string['regard_coursecontext_description'] = 'Consider course context: If selected, only surveys of the current course are shown.';
 
@@ -122,22 +112,18 @@ $string['lti_regex_learner_description'] = 'Regular expression to search for ope
 
 $string['lti_regex_instructor'] = 'Instructor regular expression';
 $string['lti_regex_instructor_description'] = 'Regular expression to search for open online surveys for "instructor" in the LTI result.';
-// END: settings page - LTI
 
-// capabilities
+// Capabilities.
 $string['onlinesurvey:addinstance'] = 'Add instance of the Evaluations (EvaSys) block';
 $string['onlinesurvey:myaddinstance'] = 'Add instance of the Evaluations (EvaSys) block to my page';
 $string['onlinesurvey:view'] = 'View Evaluations (EvaSys) block';
 $string['onlinesurvey:view_debugdetails'] = 'View debug details';
-// END: capabilities
 
-// Block content
+// Block content.
 $string['tech_error'] = 'A technical problem occured while connecting to EvaSys.<p>';
 $string['conn_works'] = 'Connection to EvaSys server tested successfully.<p>';
-// #8977
 $string['no_surveys'] = 'No open surveys available';
 $string['surveys_exist'] = 'Open surveys available';
-// END #8977
 $string['popupinfo_dialog_title'] = 'Open evaluations';
 $string['popupinfo'] = 'Dear student,<br />
 <br />
@@ -168,6 +154,4 @@ $string['wsdl_namespace'] = 'WSDL namespace parse error<br />';
 
 $string['debugmode_missing_capability'] = 'The block is in debug mode. You do not have permission to view content.';
 
-// #9403
 $string['survey_curl_timeout_msg'] = 'The surveys could not be queried.';
-// END: Block content

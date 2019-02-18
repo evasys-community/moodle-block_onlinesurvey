@@ -1,29 +1,25 @@
 <?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-/*
- EvaSys Online Surveys - Moodle Block
- Copyright (C) 2018 Soon Systems GmbH on behalf of Electric Paper Evaluationssysteme GmbH
-
- This program is free software: you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- (at your option) any later version.
-
- This program is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
- Contact:
- Soon-Systems GmbH
- Syrlinstr. 5
- 89073 Ulm
- Deutschland
-
- E-Mail: info@soon-systems.de
+/**
+ * Plugin "Evaluations (EvaSys)"
+ *
+ * @package    block_onlinesurvey
+ * @copyright  2018 Soon Systems GmbH on behalf of Electric Paper Evaluationssysteme GmbH
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die;
@@ -33,7 +29,8 @@ define('BLOCK_ONLINESURVEY_COMM_LTI', "LTI");
 define('BLOCK_ONLINESURVEY_DEFAULT_TIMEOUT', 15);
 
 define('BLOCK_ONLINESURVEY_LTI_REGEX_LEARNER_DEFAULT', '/<(p){1}(.){0,}[\s]{0,}(data-participated="false"){1}[\s]{0,}/');
-define('BLOCK_ONLINESURVEY_LTI_REGEX_INSTRUCTOR_DEFAULT', '/<(div){1}[\s]{1,}(class=){1}["|\']{1}[a-z]{0,}[\s]{0,}(response-box){1}[\s]{0,}[a-z]{0,}[\s]{0,}["|\']{1}>/');
+define('BLOCK_ONLINESURVEY_LTI_REGEX_INSTRUCTOR_DEFAULT',
+        '/<(div){1}[\s]{1,}(class=){1}["|\']{1}[a-z]{0,}[\s]{0,}(response-box){1}[\s]{0,}[a-z]{0,}[\s]{0,}["|\']{1}>/');
 
 /**
  * Request surveys for the current user according to email or username and displays the result.
@@ -41,69 +38,63 @@ define('BLOCK_ONLINESURVEY_LTI_REGEX_INSTRUCTOR_DEFAULT', '/<(div){1}[\s]{1,}(cl
  * @param string $moodleusername username for SOAP request
  * @param string $moodleemail email for SOAP request
  */
-function block_onlinesurvey_get_soap_content($config = null, $moodleusername = '', $moodleemail = '', $modalZoom = 0){
+function block_onlinesurvey_get_soap_content($config = null, $moodleusername = '', $moodleemail = '', $modalzoom = 0) {
     global $SESSION;
 
-    $survey_url = 'indexstud.php?type=html&user_tan=';
+    $surveyurl = 'indexstud.php?type=html&user_tan=';
 
-    if(empty($config)){
+    if (empty($config)) {
         $config = get_config("block_onlinesurvey");
     }
 
     $connectiontype = $config->connectiontype;
-    $survey_url = $config->survey_login.$survey_url;
+    $surveyurl = $config->survey_login.$surveyurl;
     $wsdl = $config->survey_server;
     $soapuser = $config->survey_user;
     $soappassword = $config->survey_pwd;
     $debugmode = $config->survey_debug;
 
-    // #8977
     $hideempty = $config->survey_hide_empty;
 
-    // #9393
     $timeout = isset($config->survey_timeout) ? $config->survey_timeout : BLOCK_ONLINESURVEY_DEFAULT_TIMEOUT;
 
     // Parse wsdlnamespace from the wsdl url.
     preg_match('/\/([^\/]+\.wsdl)$/', $wsdl, $matches);
 
-    $soap_content_str = '';
+    $soapcontentstr = '';
 
     if (count($matches) == 2) {
         $wsdlnamespace = $matches[1];
 
-        $soap_config_obj = new stdClass();
-        $soap_config_obj->connectiontype = $connectiontype;
-        $soap_config_obj->wsdl = $wsdl;
-        $soap_config_obj->timeout = $timeout;
-        $soap_config_obj->debugmode = $debugmode;
-        $soap_config_obj->soapuser = $soapuser;
-        $soap_config_obj->soappassword = $soappassword;
-        $soap_config_obj->wsdlnamespace = $wsdlnamespace;
-        $soap_config_obj->useridentifier = $config->useridentifier;
-        $soap_config_obj->moodleemail = $moodleemail;
-        $soap_config_obj->moodleusername = $moodleusername;
-        $soap_config_obj->customfieldnumber = $config->customfieldnumber;
-        $soap_config_obj->coursecode = '';
+        $soapconfigobj = new stdClass();
+        $soapconfigobj->connectiontype = $connectiontype;
+        $soapconfigobj->wsdl = $wsdl;
+        $soapconfigobj->timeout = $timeout;
+        $soapconfigobj->debugmode = $debugmode;
+        $soapconfigobj->soapuser = $soapuser;
+        $soapconfigobj->soappassword = $soappassword;
+        $soapconfigobj->wsdlnamespace = $wsdlnamespace;
+        $soapconfigobj->useridentifier = $config->useridentifier;
+        $soapconfigobj->moodleemail = $moodleemail;
+        $soapconfigobj->moodleusername = $moodleusername;
+        $soapconfigobj->customfieldnumber = $config->customfieldnumber;
+        $soapconfigobj->coursecode = '';
 
         $result = new stdClass();
 
-        // #8983
-        $soap_request_eachtime = $config->soap_request_eachtime;
+        $soaprequesteachtime = $config->soap_request_eachtime;
 
-        // Get surveys if no surveys in SESSION or debug mode for the block is enabled
-        if (!isset($SESSION->block_onlinesurvey_surveykeys) || $debugmode || $soap_request_eachtime) {
-            $result = block_onlinesurvey_get_surveys($soap_config_obj);
+        // Get surveys if no surveys in SESSION or debug mode for the block is enabled.
+        if (!isset($SESSION->block_onlinesurvey_surveykeys) || $debugmode || $soaprequesteachtime) {
+            $result = block_onlinesurvey_get_surveys($soapconfigobj);
             $SESSION->block_onlinesurvey_surveykeys = $result->surveys;
 
-            // #8975
             $SESSION->block_onlinesurvey_error = $result->error;
         }
 
-        // #8975
-        if(isset($SESSION->block_onlinesurvey_error)){
+        if (isset($SESSION->block_onlinesurvey_error)) {
             $result->error = $SESSION->block_onlinesurvey_error;
         }
-        // END #8975
 
         if (is_object($SESSION->block_onlinesurvey_surveykeys)) {
             if (!is_array($SESSION->block_onlinesurvey_surveykeys->OnlineSurveyKeys)) {
@@ -114,133 +105,128 @@ function block_onlinesurvey_get_soap_content($config = null, $moodleusername = '
 
             $count = count($SESSION->block_onlinesurvey_surveykeys->OnlineSurveyKeys);
 
-            // #8977
             $count2 = 0;
 
-            $surveys_found = false;
+            $surveysfound = false;
             foreach ($SESSION->block_onlinesurvey_surveykeys->OnlineSurveyKeys as $surveykey) {
-                if(!empty($surveykey->TransactionNumber) && ($surveykey->TransactionNumber != null && $surveykey->TransactionNumber !== 'null')){
-                    $surveys_found = true;
+                if (!empty($surveykey->TransactionNumber) && ($surveykey->TransactionNumber != null &&
+                        $surveykey->TransactionNumber !== 'null')) {
+                    $surveysfound = true;
 
-                    // #8977
                     $count2++;
                 }
             }
 
-            // #8977
             if ($hideempty && $count2 > 0) {
-                $soap_content_str .= block_onlinesurvey_viewScript();
+                $soapcontentstr .= block_onlinesurvey_viewscript();
             }
-            // END #8977
 
+            if ($config->presentation == BLOCK_ONLINESURVEY_PRESENTATION_BRIEF && !$modalzoom) {
 
-            // #8984
-            if ($config->presentation == BLOCK_ONLINESURVEY_PRESENTATION_BRIEF && !$modalZoom) {
+                $soapcontentstr .= block_onlinesurvey_createsummary($count2);
 
-                $soap_content_str .= block_onlinesurvey_createSummary($count2);
-
-                // Surveys found
-                if ($count2 && $surveys_found) {
-                    if(!empty($config->survey_show_popupinfo)){
-                        $soap_content_str .= '<script language="JavaScript">if (typeof window.parent.evasysGeneratePopupinfo == "function"){ window.parent.evasysGeneratePopupinfo(); }</script>';
+                // Surveys found.
+                if ($count2 && $surveysfound) {
+                    if (!empty($config->survey_show_popupinfo)) {
+                        $soapcontentstr .= '<script language="JavaScript">'.
+                                'if (typeof window.parent.evasysGeneratePopupinfo == "function") { '.
+                                'window.parent.evasysGeneratePopupinfo(); }</script>';
                     }
                 }
 
             } else {
 
-                // Surveys found
-                if ($count && $surveys_found) {
-                    $soap_content_str .= '<div class="block_onlinesurvey_survey_list table">';
+                // Surveys found.
+                if ($count && $surveysfound) {
+                    $soapcontentstr .= '<div class="block_onlinesurvey_survey_list table">';
 
                     $cnt = 0;
                     foreach ($SESSION->block_onlinesurvey_surveykeys->OnlineSurveyKeys as $surveykey) {
-                        if($surveykey->TransactionNumber !== 'null'){
+                        if ($surveykey->TransactionNumber !== 'null') {
                             $cnt++;
 
-                            $soap_content_str .=  '<div class="row">';
-                            $soap_content_str .=     '<div class="cell survey">';
-                            $soap_content_str .=         "<a id=\"surveylink_button_".$cnt."\" ".
-                                    "href=\"$survey_url" . "{$surveykey->TransactionNumber}\" ".
+                            $soapcontentstr .= '<div class="row">';
+                            $soapcontentstr .= '<div class="cell survey">';
+                            $soapcontentstr .= "<a id=\"surveylink_button_".$cnt."\" ".
+                                    "href=\"$surveyurl" . "{$surveykey->TransactionNumber}\" ".
                                     "target=\"_blank\">$surveykey->CourseName</a>";
-                            $soap_content_str .=    '</div>';
-                            $soap_content_str .=  '</div>';
+                            $soapcontentstr .= '</div>';
+                            $soapcontentstr .= '</div>';
 
                         }
                     }
-                    $soap_content_str .= '</div>';
+                    $soapcontentstr .= '</div>';
 
-                    if(!empty($config->survey_show_popupinfo)){
-                        $soap_content_str .= '<script language="JavaScript">if (typeof window.parent.evasysGeneratePopupinfo == "function"){ window.parent.evasysGeneratePopupinfo(); }</script>';
+                    if (!empty($config->survey_show_popupinfo)) {
+                        $soapcontentstr .= '<script language="JavaScript">'.
+                                'if (typeof window.parent.evasysGeneratePopupinfo == "function") { '.
+                                'window.parent.evasysGeneratePopupinfo(); }</script>';
                     }
-                }
-                else{
-                    $soap_content_str =  '<div class="block_onlinesurvey_info">'.get_string('no_surveys', 'block_onlinesurvey').'</div>';
+                } else {
+                    $soapcontentstr = '<div class="block_onlinesurvey_info">'.
+                            get_string('no_surveys', 'block_onlinesurvey').'</div>';
                 }
             }
-            // END #8984
-
-        }
-        else if(empty($SESSION->block_onlinesurvey_surveykeys)){
-            $soap_content_str = '<div class="block_onlinesurvey_info">'.get_string('no_surveys', 'block_onlinesurvey').'</div>';
+        } else if (empty($SESSION->block_onlinesurvey_surveykeys)) {
+            $soapcontentstr = '<div class="block_onlinesurvey_info">'.get_string('no_surveys', 'block_onlinesurvey').'</div>';
         }
 
-        // #8975
         if (isset($result->error) && !empty($result->error)) {
-            $soap_content_str = get_string('error_occured', 'block_onlinesurvey', $result->error);
+            $soapcontentstr = get_string('error_occured', 'block_onlinesurvey', $result->error);
         }
 
         // #8975: TODO: Check, was hier angezeigt werden soll
         if ($debugmode && isset($result->warning) && !empty($result->warning)) {
-            $soap_content_str = get_string('warning_message', 'block_onlinesurvey', $result->warning) ."<br>" . $soap_content_str;
+            $soapcontentstr = get_string('warning_message', 'block_onlinesurvey', $result->warning) ."<br>" . $soapcontentstr;
         }
     } else {
-        if($debugmode)$soap_content_str = get_string('wsdl_namespace', 'block_onlinesurvey');
+        if ($debugmode) {
+            $soapcontentstr = get_string('wsdl_namespace', 'block_onlinesurvey');
+        }
     }
 
-    echo $soap_content_str;
+    echo $soapcontentstr;
 }
 
 /**
- * @param $surveyCount number of surveys
+ * @param $surveycount number of surveys
  *
  * @return string
  */
-function block_onlinesurvey_createSummary($surveyCount) {
+function block_onlinesurvey_createsummary($surveycount) {
     global $USER;
 
-    if ($surveyCount == 0) {
-        $content_str = "<div id=\"block_onlinesurvey_area\" class=\"block_onlinesurvey_area\">";
+    if ($surveycount == 0) {
+        $contentstr = "<div id=\"block_onlinesurvey_area\" class=\"block_onlinesurvey_area\">";
 
-        $content_str .=     "<div class=\"block_onlinesurvey_circle\" >";
-        $content_str .=         "<span class=\"block_onlinesurvey_number\">";
-        $content_str .=             "<i class=\"block_onlinesurvey_number_content\"></i>";
-        $content_str .=         "</span>";
-        $content_str .=     "</div>";
+        $contentstr .= "<div class=\"block_onlinesurvey_circle\" >";
+        $contentstr .= "<span class=\"block_onlinesurvey_number\">";
+        $contentstr .= "<i class=\"block_onlinesurvey_number_content\"></i>";
+        $contentstr .= "</span>";
+        $contentstr .= "</div>";
 
-        $content_str .=     '<div class="block_onlinesurvey_text">' . get_string('no_surveys', 'block_onlinesurvey') . '</div>';
+        $contentstr .= '<div class="block_onlinesurvey_text">' . get_string('no_surveys', 'block_onlinesurvey') . '</div>';
 
-        $content_str .= "</div>";
-    }
-    else {
-        $content_str = "<div id=\"block_onlinesurvey_area\" class=\"block_onlinesurvey_area block_onlinesurvey_surveysexist\" ".
+        $contentstr .= "</div>";
+    } else {
+        $contentstr = "<div id=\"block_onlinesurvey_area\" class=\"block_onlinesurvey_area block_onlinesurvey_surveysexist\" ".
                 "onClick=\"parent.document.getElementById('block_onlinesurvey_surveys_content').click(parent.document);\">";
 
-        $content_str .= "<div class=\"block_onlinesurvey_circle\" >";
-        $content_str .= "<span class=\"block_onlinesurvey_number\">";
-        $content_str .= $surveyCount;
-        $content_str .= "</span>";
-        $content_str .= "</div>";
+        $contentstr .= "<div class=\"block_onlinesurvey_circle\" >";
+        $contentstr .= "<span class=\"block_onlinesurvey_number\">";
+        $contentstr .= $surveycount;
+        $contentstr .= "</span>";
+        $contentstr .= "</div>";
 
-        $content_str .= '<div class="block_onlinesurvey_text">' . get_string('surveys_exist', 'block_onlinesurvey') . '</div>';
+        $contentstr .= '<div class="block_onlinesurvey_text">' . get_string('surveys_exist', 'block_onlinesurvey') . '</div>';
 
-        $content_str .= "</div>";
+        $contentstr .= "</div>";
     }
 
-    return $content_str;
+    return $contentstr;
 }
 
-// #8977
-function block_onlinesurvey_viewScript() {
+function block_onlinesurvey_viewscript() {
     return '<script language="JavaScript">'."\n".
             //'   var hiddenelements = parent.document.getElementsByClassName("block_onlinesurvey card");'."\n".
     '   var hiddenelements = parent.document.getElementsByClassName("block_onlinesurvey");'."\n".
@@ -253,31 +239,31 @@ function block_onlinesurvey_viewScript() {
 /**
  * Perform SOAP request for surveys of a user according to user email or username.
  *
- * @param object $soap_config_obj Object containing data for SOAP request.
+ * @param object $soapconfigobj Object containing data for SOAP request.
  * @return object Object containing surveys if present and errors or warnings of the onlinesurvey_soap_client
  */
-function block_onlinesurvey_get_surveys($soap_config_obj) {
+function block_onlinesurvey_get_surveys($soapconfigobj) {
     $retval = new stdClass();
     $retval->error = null;
     $retval->warning = null;
     $retval->surveys = false;
     try {
-        // Check connectiontype for SOAP
-        if($soap_config_obj->connectiontype == 'SOAP'){
+        // Check connectiontype for SOAP.
+        if ($soapconfigobj->connectiontype == 'SOAP') {
             require_once('onlinesurvey_soap_client.php');
 
-            $client = new onlinesurvey_soap_client( $soap_config_obj->wsdl,
+            $client = new onlinesurvey_soap_client( $soapconfigobj->wsdl,
                     array(
                                     'trace' => 1,
                                     'feature' => SOAP_SINGLE_ELEMENT_ARRAYS,
-                                    'connection_timeout' => $soap_config_obj->timeout),
-                    $soap_config_obj->timeout,
-                    $soap_config_obj->debugmode
+                                    'connection_timeout' => $soapconfigobj->timeout),
+                    $soapconfigobj->timeout,
+                    $soapconfigobj->debugmode
                     );
 
             $header = array(
-                            'Login' => $soap_config_obj->soapuser,
-                            'Password' => $soap_config_obj->soappassword
+                            'Login' => $soapconfigobj->soapuser,
+                            'Password' => $soapconfigobj->soappassword
             );
 
             if (is_object($client)) {
@@ -285,21 +271,21 @@ function block_onlinesurvey_get_surveys($soap_config_obj) {
                     $retval->warning = $client->warnmessage;
                 }
 
-                $soapheader = new SoapHeader($soap_config_obj->wsdlnamespace, 'Header', $header);
+                $soapheader = new SoapHeader($soapconfigobj->wsdlnamespace, 'Header', $header);
                 $client->__setSoapHeaders($soapheader);
             } else {
                 $retval->error = block_onlinesurvey_handle_error("SOAP client configuration error");
                 return $result;
             }
 
-            if(!empty($soap_config_obj->useridentifier)){
-                if($soap_config_obj->useridentifier == 'email'){
-                    if($soap_config_obj->moodleemail){
-                        $retval->surveys = $client->GetPswdsByParticipant($soap_config_obj->moodleemail);
+            if (!empty($soapconfigobj->useridentifier)) {
+                if ($soapconfigobj->useridentifier == 'email') {
+                    if ($soapconfigobj->moodleemail) {
+                        $retval->surveys = $client->GetPswdsByParticipant($soapconfigobj->moodleemail);
                     }
-                }
-                else if($soap_config_obj->useridentifier == 'username'){
-                    $retval->surveys = $client->GetPswdsByParticipant($soap_config_obj->moodleusername, $soap_config_obj->coursecode, $soap_config_obj->customfieldnumber);
+                } else if ($soapconfigobj->useridentifier == 'username') {
+                    $retval->surveys = $client->GetPswdsByParticipant($soapconfigobj->moodleusername,
+                            $soapconfigobj->coursecode, $soapconfigobj->customfieldnumber);
                 }
             }
         }
@@ -338,19 +324,17 @@ function block_onlinesurvey_handle_error($err) {
  * @return string formatted error message of the excetion
  */
 function block_onlinesurvey_print_exceptions($e) {
-    $msg = '';
     if (get_class($e) == "SoapFault") {
         $msg = "{$e->faultstring}";
 
-        // #8975
         $context = context_system::instance();
         if (has_capability('block/onlinesurvey:view_debugdetails', $context)) {
             $detail = '';
-            if(isset($e->detail) && !empty($e->detail)){
+            if (isset($e->detail) && !empty($e->detail)) {
                 $detail = $e->detail;
-                if(is_object($detail) && isset($detail->tSoapfault)){
+                if (is_object($detail) && isset($detail->tSoapfault)) {
                     $detail = $detail->tSoapfault;
-                    if(isset($detail->sDetails)){
+                    if (isset($detail->sDetails)) {
                         $detail = $detail->sDetails;
                     }
                 }
@@ -358,32 +342,30 @@ function block_onlinesurvey_print_exceptions($e) {
                 $msg .= "<br>".$detail;
             }
         }
-        // END #8975
-
     } else {
         $msg = $e->getMessage();
     }
+
     return $msg;
 }
 
 /**
  * Request surveys via LTI for the current user according to email or username and displays the result.
  * This functions uses functions of '/mod/lti/locallib.php'.
- * Performs a second request via curl to check the result for learner content in order to include code to display popupinfo dialog - if option is selected in the settings.
+ * Performs a second request via curl to check the result for learner content in order to include code to display popupinfo dialog -
+ * if option is selected in the settings.
  * @param string $config block settings of "block_onlinesurvey"
  * @param string $context context for LTI request - not yet supported by LTI provider
  * @param string $course course for LTI request - not yet supported by LTI provider
  */
-function block_onlinesurvey_get_lti_content($config = null, $context = null, $course = null, $modalZoom = 0){
+function block_onlinesurvey_get_lti_content($config = null, $context = null, $course = null, $modalzoom = 0) {
     global $CFG, $SESSION;
 
-    require_once $CFG->dirroot.'/mod/lti/locallib.php';
+    require_once($CFG->dirroot.'/mod/lti/locallib.php');
 
-    // #8977
-    if(empty($config)){
+    if (empty($config)) {
         $config = get_config("block_onlinesurvey");
     }
-    // END #8977
 
     $courseid = (!empty($course->id)) ? $course->id : 1;
 
@@ -391,93 +373,82 @@ function block_onlinesurvey_get_lti_content($config = null, $context = null, $co
 
     $debuglaunch = $config->survey_debug;
 
-    // #8977
-    $surveyCount = 0;
+    $surveycount = 0;
 
-    // Check for learner content in LTI result
-    // #8977 + #8984
-    if($config->presentation == BLOCK_ONLINESURVEY_PRESENTATION_BRIEF || $config->survey_hide_empty || (!isset($SESSION->block_onlinesurvey_curl_checked) && !empty($config->survey_show_popupinfo))){
+    // Check for learner content in LTI result.
+    if ($config->presentation == BLOCK_ONLINESURVEY_PRESENTATION_BRIEF || $config->survey_hide_empty ||
+            (!isset($SESSION->block_onlinesurvey_curl_checked) && !empty($config->survey_show_popupinfo))) {
 
-        // #9403
         try {
             $content2 = block_onlinesurvey_lti_post_launch_html_curl($parameter, $endpoint, $config);
         } catch (Exception $e) {
-            $lti_content_str = $e->getMessage();
-            echo $lti_content_str;
+            $lticontentstr = $e->getMessage();
+            echo $lticontentstr;
             return '';
         }
-        // END #9403
 
-
-        // Search in $content2 for e.g.: <div class="cell participate centered">
-        // If match found and survey_show_popupinfo is set, add code to generate popup
-        if(!empty($content2)){
-            if(isset($config->lti_regex_learner) && !empty($config->lti_regex_learner)){
+        // Search in $content2 for e.g.: <div class="cell participate centered">.
+        // If match found and survey_show_popupinfo is set, add code to generate popup.
+        if (!empty($content2)) {
+            if (isset($config->lti_regex_learner) && !empty($config->lti_regex_learner)) {
                 $re = $config->lti_regex_learner;
-            }
-            // No regex in config -> use default regex
-            else{
+
+                // No regex in config -> use default regex.
+            } else {
                 $re = BLOCK_ONLINESURVEY_LTI_REGEX_LEARNER_DEFAULT;
             }
 
-            if(!empty($re)){
-                $surveyCount = preg_match_all($re, $content2, $matches, PREG_SET_ORDER, 0);
+            if (!empty($re)) {
+                $surveycount = preg_match_all($re, $content2, $matches, PREG_SET_ORDER, 0);
 
                 $SESSION->block_onlinesurvey_curl_checked = true;
 
-                if(!empty($matches) && !empty($config->survey_show_popupinfo)){
-                    // Check to display dialog is (also) done in JS function "evasysGeneratePopupinfo"
-                    echo '<script language="JavaScript">if (typeof window.parent.evasysGeneratePopupinfo == "function"){ window.parent.evasysGeneratePopupinfo(); }</script>';
+                if (!empty($matches) && !empty($config->survey_show_popupinfo)) {
+                    // Check to display dialog is (also) done in JS function "evasysGeneratePopupinfo".
+                    echo '<script language="JavaScript">if (typeof window.parent.evasysGeneratePopupinfo == "function") { '.
+                            'window.parent.evasysGeneratePopupinfo(); }</script>';
                 }
             }
 
-            if(isset($config->lti_regex_instructor) && !empty($config->lti_regex_instructor)){
-                $re_instructor = $config->lti_regex_instructor;
+            if (isset($config->lti_regex_instructor) && !empty($config->lti_regex_instructor)) {
+                $reinstructor = $config->lti_regex_instructor;
+
+                // No regex in config -> use default regex.
+            } else {
+                $reinstructor = BLOCK_ONLINESURVEY_LTI_REGEX_INSTRUCTOR_DEFAULT;
             }
-            // No regex in config -> use default regex
-            else{
-                $re_instructor = BLOCK_ONLINESURVEY_LTI_REGEX_INSTRUCTOR_DEFAULT;
-            }
-            if(empty($matches) && !empty($re_instructor)){
-                $surveyCount = preg_match_all($re_instructor, $content2, $matches, PREG_SET_ORDER, 0);
+            if (empty($matches) && !empty($reinstructor)) {
+                $surveycount = preg_match_all($reinstructor, $content2, $matches, PREG_SET_ORDER, 0);
             }
         }
     }
 
-    $lti_content_str = '';
+    $lticontentstr = '';
 
-    // #8977
-    if ($config->survey_hide_empty && $surveyCount > 0 && !$modalZoom) {
-        $lti_content_str .= block_onlinesurvey_viewScript();
+    if ($config->survey_hide_empty && $surveycount > 0 && !$modalzoom) {
+        $lticontentstr .= block_onlinesurvey_viewscript();
     }
-    // END #8977
 
-    // #8984
-    if ($config->presentation == BLOCK_ONLINESURVEY_PRESENTATION_BRIEF && !$modalZoom) {
-        $lti_content_str .= block_onlinesurvey_createSummary($surveyCount);
+    if ($config->presentation == BLOCK_ONLINESURVEY_PRESENTATION_BRIEF && !$modalzoom) {
+        $lticontentstr .= block_onlinesurvey_createsummary($surveycount);
     } else {
-
-        // #8975
-        if(empty($context)){
+        if (empty($context)) {
             $context = context_system::instance();
         }
-        if(empty($debuglaunch) || has_capability('block/onlinesurvey:view_debugdetails', $context)){
-            $lti_content_str .= lti_post_launch_html($parameter, $endpoint, $debuglaunch);
+        if (empty($debuglaunch) || has_capability('block/onlinesurvey:view_debugdetails', $context)) {
+            $lticontentstr .= lti_post_launch_html($parameter, $endpoint, $debuglaunch);
 
-            if($debuglaunch && has_capability('block/onlinesurvey:view_debugdetails', $context)){
+            if ($debuglaunch && has_capability('block/onlinesurvey:view_debugdetails', $context)) {
                 $debuglaunch = false;
                 //$lti_content_str2 = lti_post_launch_html($parameter, $endpoint, $debuglaunch);
                 //echo "$lti_content_str2 <br><br>";
             }
+        } else {
+            $lticontentstr = get_string('debugmode_missing_capability', 'block_onlinesurvey');
         }
-        else{
-            $lti_content_str = get_string('debugmode_missing_capability', 'block_onlinesurvey');
-        }
-        // END #8975
     }
-    // END #8984
 
-    echo $lti_content_str;
+    echo $lticontentstr;
 }
 
 /**
@@ -491,9 +462,9 @@ function block_onlinesurvey_get_lti_content($config = null, $context = null, $co
 function block_onlinesurvey_get_launch_data($config = null, $context = null, $course = null) {
     global $CFG, $PAGE;
 
-    require_once $CFG->dirroot.'/mod/lti/locallib.php';
+    require_once($CFG->dirroot.'/mod/lti/locallib.php');
 
-    if(empty($config)){
+    if (empty($config)) {
         $config = get_config("block_onlinesurvey");
     }
     // Default the organizationid if not specified.
@@ -503,9 +474,8 @@ function block_onlinesurvey_get_launch_data($config = null, $context = null, $co
     }
 
     if (isset($config->proxyid)) {
-        // No proxy support
-    }
-    else {
+        // No proxy support.
+    } else {
         $toolproxy = null;
         if (!empty($config->lti_resourcekey)) {
             $key = $config->lti_resourcekey;
@@ -546,7 +516,7 @@ function block_onlinesurvey_get_launch_data($config = null, $context = null, $co
 
     $orgid = $config->lti_tool_consumer_instance_guid;
 
-    if(empty($course)){
+    if (empty($course)) {
         $course = $PAGE->course;
     }
 
@@ -554,7 +524,7 @@ function block_onlinesurvey_get_launch_data($config = null, $context = null, $co
 
     $allparams = block_onlinesurvey_build_request_lti($config, $course);
 
-    if(!isset($config->id)){
+    if (!isset($config->id)) {
         $config->id = null;
     }
     $requestparams = $allparams;
@@ -564,7 +534,8 @@ function block_onlinesurvey_get_launch_data($config = null, $context = null, $co
         $customstr = $config->lti_customparameters;
     }
 
-    // The function 'lti_build_custom_parameters' expects some parameters that are not part of the block setting - so we build "dummys"
+    // The function 'lti_build_custom_parameters' expects some parameters that are not part of the block setting -
+    // so we build "dummys".
     $toolproxy = new stdClass();
     $tool = new stdClass();
     $tool->parameter = '';
@@ -572,14 +543,15 @@ function block_onlinesurvey_get_launch_data($config = null, $context = null, $co
     $instance = null;
     $instructorcustomstr = null;
 
-    $requestparams = array_merge($requestparams, lti_build_custom_parameters($toolproxy, $tool, $instance, $allparams, $customstr, $instructorcustomstr, $islti2));
+    $requestparams = array_merge($requestparams, lti_build_custom_parameters($toolproxy, $tool, $instance, $allparams, $customstr,
+            $instructorcustomstr, $islti2));
 
     $target = 'iframe';
     if (!empty($target)) {
         $requestparams['launch_presentation_document_target'] = $target;
     }
 
-    // Consumer key currently not used -> $key can be '' --> check "(true or !empty(key))"
+    // Consumer key currently not used -> $key can be '' -> check "(true or !empty(key))".
     if ((true or !empty($key)) && !empty($secret)) {
         $parms = lti_sign_parameters($requestparams, $endpoint, "POST", $key, $secret);
 
@@ -594,7 +566,6 @@ function block_onlinesurvey_get_launch_data($config = null, $context = null, $co
                 }
             }
         }
-
     } else {
         // If no key and secret, do the launch unsigned.
         $returnurlparams['unsigned'] = '1';
@@ -615,7 +586,6 @@ function block_onlinesurvey_build_request_lti($config, $course) {
 
     $roles = block_onlinesurvey_get_ims_roles($USER, $config);
 
-    $intro = '';
     $requestparams = array(
                     'user_id' => $USER->id,
                     'lis_person_sourcedid' => $USER->idnumber,
@@ -631,15 +601,14 @@ function block_onlinesurvey_build_request_lti($config, $course) {
         $requestparams['lis_course_section_sourcedid'] = $course->idnumber;
     }
 
-    // E-mail address is evaluated in EVERY case, even if it is decided to use the Username instead
+    // E-mail address is evaluated in EVERY case, even if it is decided to use the Username instead.
     $requestparams['lis_person_contact_email_primary'] = $USER->email;
 
     if (strpos($roles, 'Learner') !== false) {
-        if($config->useridentifier == 'email'){
+        if ($config->useridentifier == 'email') {
             $requestparams['custom_learner_lms_identifier'] = 'lis_person_contact_email_primary';
             $requestparams['lis_person_contact_email_primary'] = $USER->email;
-        }
-        else if($config->useridentifier == 'username'){
+        } else if ($config->useridentifier == 'username') {
             $requestparams['custom_learner_lms_identifier'] = 'ext_user_username';
             $requestparams['ext_user_username'] = $USER->username;
             $requestparams['custom_learner_provider_identifier'] = "custom".$config->customfieldnumber;
@@ -649,11 +618,10 @@ function block_onlinesurvey_build_request_lti($config, $course) {
         //$requestparams['custom_instructor_lms_identifier'] = 'ext_user_username';
         //$requestparams['ext_user_username'] = $USER->username;
 
-        if($config->useridentifier == 'email'){
+        if ($config->useridentifier == 'email') {
             $requestparams['custom_instructor_lms_identifier'] = 'lis_person_contact_email_primary';
             $requestparams['lis_person_contact_email_primary'] = $USER->email;
-        }
-        else if($config->useridentifier == 'username'){
+        } else if ($config->useridentifier == 'username') {
             $requestparams['custom_instructor_lms_identifier'] = 'ext_user_username';
             $requestparams['ext_user_username'] = $USER->username;
             //$requestparams['custom_instructor_provider_identifier'] = "custom".$config->customfieldnumber;
@@ -676,13 +644,13 @@ function block_onlinesurvey_get_ims_roles($user, $config) {
 
     $roles = array();
 
-    // Check if user has "mapped" roles
+    // Check if user has "mapped" roles.
     $isinstructor = false;
-    $lti_mapping = $config->lti_instructormapping;
-    if(!empty($lti_mapping)){
+    $ltimapping = $config->lti_instructormapping;
+    if (!empty($ltimapping)) {
         try {
-            $lti_mapping = explode(',', $lti_mapping);
-            list($sql, $params) = $DB->get_in_or_equal($lti_mapping, SQL_PARAMS_NAMED, 'lti_mapping');
+            $ltimapping = explode(',', $ltimapping);
+            list($sql, $params) = $DB->get_in_or_equal($ltimapping, SQL_PARAMS_NAMED, 'lti_mapping');
             $params['userid'] = $user->id;
             $isinstructor = $DB->record_exists_select('role_assignments', "userid = :userid and roleid $sql", $params);
         } catch (Exception $e) {
@@ -690,18 +658,17 @@ function block_onlinesurvey_get_ims_roles($user, $config) {
         }
     }
     $islearner = false;
-    $lti_mapping = $config->lti_learnermapping;
-    if(!empty($lti_mapping)){
+    $ltimapping = $config->lti_learnermapping;
+    if (!empty($ltimapping)) {
         try {
-            $lti_mapping = explode(',', $lti_mapping);
-            list($sql, $params) = $DB->get_in_or_equal($lti_mapping, SQL_PARAMS_NAMED, 'lti_mapping');
+            $ltimapping = explode(',', $ltimapping);
+            list($sql, $params) = $DB->get_in_or_equal($ltimapping, SQL_PARAMS_NAMED, 'lti_mapping');
             $params['userid'] = $user->id;
             $islearner = $DB->record_exists_select('role_assignments', "userid = :userid and roleid $sql", $params);
         } catch (Exception $e) {
             error_log("error check user roles for 'learner': ".$e->getMessage());
         }
     }
-
 
     if (!empty($isinstructor)) {
         array_push($roles, 'Instructor');
@@ -710,11 +677,10 @@ function block_onlinesurvey_get_ims_roles($user, $config) {
         array_push($roles, 'Learner');
     }
 
-    // #9382: User has NO role in moodle -> use role mapping for learner
-    if(empty($roles)){
+    // User has NO role in moodle -> use role mapping for learner.
+    if (empty($roles)) {
         array_push($roles, 'Learner');
     }
-    // END #9382
 
     if (is_siteadmin($user)) {
         array_push($roles, 'urn:lti:sysrole:ims/lis/Administrator', 'urn:lti:instrole:ims/lis/Administrator');
@@ -735,10 +701,10 @@ function block_onlinesurvey_lti_post_launch_html_curl($parameter, $endpoint, $co
 
     $url = $endpoint;
 
-    // Set POST variables
+    // Set POST variables.
     $fields = array();
 
-    // Contruct html for the launch parameters.
+    // Construct html for the launch parameters.
     foreach ($parameter as $key => $value) {
         $key = htmlspecialchars($key);
         $value = htmlspecialchars($value);
@@ -748,53 +714,50 @@ function block_onlinesurvey_lti_post_launch_html_curl($parameter, $endpoint, $co
             $fields[$key] = urlencode($value);
         }
     }
-    // url-ify the data for the POST
-    $fields_string = '';
-    foreach($fields as $key=>$value) { $fields_string .= $key.'='.$value.'&'; }
-    rtrim($fields_string, '&');
-
+    // Url-ify the data for the POST.
+    $fieldsstring = '';
+    foreach ($fields as $key => $value) {
+        $fieldsstring .= $key.'='.$value.'&';
+    }
+    rtrim($fieldsstring, '&');
 
     $ch = curl_init($url);
-    // Set the url, number of POST vars, POST data
-    curl_setopt($ch,CURLOPT_URL, $url);
-    curl_setopt($ch,CURLOPT_POST, count($fields));
-    curl_setopt($ch,CURLOPT_POSTFIELDS, $fields_string);
+    // Set the url, number of POST vars, POST data.
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_POST, count($fields));
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $fieldsstring);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 
-    // #9393
     $timeout = isset($config->survey_timeout) ? $config->survey_timeout : BLOCK_ONLINESURVEY_DEFAULT_TIMEOUT;
     curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
 
     $xmlstr = curl_exec($ch);
 
-    if ($error_number = curl_errno($ch)) {
-        $error_msg_str = curl_error($ch);
+    if ($errornumber = curl_errno($ch)) {
+        $errormsgstr = curl_error($ch);
         curl_close($ch);
-        $retval = $error_msg_str;
-        //return $retval;
+        $retval = $errormsgstr;
+        // return $retval;
 
-        // #9403
-        $msg_output = get_string('survey_curl_timeout_msg', 'block_onlinesurvey');
+        $msgoutput = get_string('survey_curl_timeout_msg', 'block_onlinesurvey');
 
         $context = context_system::instance();
         if (has_capability('block/onlinesurvey:view_debugdetails', $context)) {
-            if(!empty($msg_output)){
-                $msg_output .= "<br><br>"."curl_errno $error_number: $error_msg_str";
+            if(!empty($msgoutput)){
+                $msgoutput .= "<br><br>"."curl_errno $errornumber: $errormsgstr";
             }
         }
 
-        if (in_array($error_number, array(CURLE_OPERATION_TIMEDOUT, CURLE_OPERATION_TIMEOUTED))) {
-            throw new Exception("$msg_output");
+        if (in_array($errornumber, array(CURLE_OPERATION_TIMEDOUT, CURLE_OPERATION_TIMEOUTED))) {
+            throw new Exception("$msgoutput");
         }
-        // END #9403
     }
 
     curl_close($ch);
 
     if (empty($xmlstr) or !$xmlstr or !trim($xmlstr)) {
         return $retval;
-    }
-    else{
+    } else {
         $retval = $xmlstr;
     }
 
