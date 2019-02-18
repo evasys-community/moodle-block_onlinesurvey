@@ -398,7 +398,16 @@ function block_onlinesurvey_get_lti_content($config = null, $context = null, $co
     // #8977 + #8984
     if($config->presentation == BLOCK_ONLINESURVEY_PRESENTATION_BRIEF || $config->survey_hide_empty || (!isset($SESSION->block_onlinesurvey_curl_checked) && !empty($config->survey_show_popupinfo))){
         
-        $content2 = block_onlinesurvey_lti_post_launch_html_curl($parameter, $endpoint, $config);
+        // #9403
+        try {
+            $content2 = block_onlinesurvey_lti_post_launch_html_curl($parameter, $endpoint, $config);
+        } catch (Exception $e) {
+            $lti_content_str = $e->getMessage();
+            echo $lti_content_str;
+            return '';
+        }
+        // END #9403
+        
         
         // Search in $content2 for e.g.: <div class="cell participate centered">
         // If match found and survey_show_popupinfo is set, add code to generate popup
@@ -672,8 +681,10 @@ function block_onlinesurvey_get_ims_roles($user, $config) {
     $lti_mapping = $config->lti_instructormapping;
     if(!empty($lti_mapping)){
         try {
-            $isinstructor = $DB->record_exists_select('role_assignments', "userid = :userid and roleid in (:lti_mapping)",
-                    array('userid' => $user->id, 'lti_mapping' => $lti_mapping));
+            $lti_mapping = explode(',', $lti_mapping);
+            list($sql, $params) = $DB->get_in_or_equal($lti_mapping, SQL_PARAMS_NAMED, 'lti_mapping');
+            $params['userid'] = $user->id;
+            $isinstructor = $DB->record_exists_select('role_assignments', "userid = :userid and roleid $sql", $params);
         } catch (Exception $e) {
             error_log("error check user roles for 'instructor': ".$e->getMessage());
         }
@@ -682,8 +693,10 @@ function block_onlinesurvey_get_ims_roles($user, $config) {
     $lti_mapping = $config->lti_learnermapping;
     if(!empty($lti_mapping)){
         try {
-            $islearner = $DB->record_exists_select('role_assignments', "userid = :userid and roleid in (:lti_mapping)",
-                    array('userid' => $user->id, 'lti_mapping' => $lti_mapping));
+            $lti_mapping = explode(',', $lti_mapping);
+            list($sql, $params) = $DB->get_in_or_equal($lti_mapping, SQL_PARAMS_NAMED, 'lti_mapping');
+            $params['userid'] = $user->id;
+            $islearner = $DB->record_exists_select('role_assignments', "userid = :userid and roleid $sql", $params);
         } catch (Exception $e) {
             error_log("error check user roles for 'learner': ".$e->getMessage());
         }
@@ -758,7 +771,22 @@ function block_onlinesurvey_lti_post_launch_html_curl($parameter, $endpoint, $co
         $error_msg_str = curl_error($ch);
         curl_close($ch);
         $retval = $error_msg_str;
-        return $retval;
+        //return $retval;
+        
+        // #9403
+        $msg_output = get_string('survey_curl_timeout_msg', 'block_onlinesurvey');
+        
+        $context = context_system::instance();
+        if (has_capability('block/onlinesurvey:view_debugdetails', $context)) {
+            if(!empty($msg_output)){
+                $msg_output .= "<br><br>"."curl_errno $error_number: $error_msg_str";
+            }
+        }
+        
+        if (in_array($error_number, array(CURLE_OPERATION_TIMEDOUT, CURLE_OPERATION_TIMEOUTED))) {
+            throw new Exception("$msg_output");
+        }
+        // END #9403
     }
     
     curl_close($ch);

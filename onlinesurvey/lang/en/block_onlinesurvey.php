@@ -167,4 +167,7 @@ $string['warning_message'] = '<b>Warning:</b><br />{$a}<br />';
 $string['wsdl_namespace'] = 'WSDL namespace parse error<br />';
 
 $string['debugmode_missing_capability'] = 'The block is in debug mode. You do not have permission to view content.';
+
+// #9403
+$string['survey_curl_timeout_msg'] = 'The surveys could not be queried.';
 // END: Block content

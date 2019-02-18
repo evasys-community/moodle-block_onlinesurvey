@@ -26,7 +26,7 @@ Deutschland
 E-Mail: info@soon-systems.de
 */
 
-$plugin->version = 2018092600;
+$plugin->version = 2018111600;
 $plugin->component = 'block_onlinesurvey';
 $plugin->release = 'v3.1-r1';
 $plugin->requires = '2016052307';

@@ -169,4 +169,7 @@ $string['warning_message'] = '<b>Warnung:</b><br />{$a}<br />';
 $string['wsdl_namespace'] = 'WSDL Namespace Fehler beim Parsen<br />';
 
 $string['debugmode_missing_capability'] = 'Der Block befindet sich im Debug-Modus. Ihnen fehlen die Rechte, um Inhalte gelistet zu bekommen.';
+
+// #9403
+$string['survey_curl_timeout_msg'] = 'Die Umfragen konnten leider nicht abgefragt werden.';
 // END: Block content
