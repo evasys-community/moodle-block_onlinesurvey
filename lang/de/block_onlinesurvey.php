@@ -92,10 +92,6 @@ $string['survey_lti_password_description'] = '';
 $string['lti_customparameters'] = 'Custom Parameter';
 $string['lti_customparameters_description'] = 'Custom Parameter sind Einstellungen, die vom Tool-Provider verwendet werden. Ein Custom-Parameter kann z.B. verwendet werden, um eine bestimmte Information des Providers anzuzeigen. Jeder Parameter sollte in einer eigenen Zeile eingegeben werden, wobei das Format „Name=Wert“ verwendet wird, z.B. "learner_show_completed_surveys=1". Für weitere Informationen konsultieren Sie bitte das EvaSys LTI-Handbuch.';
 
-// Lti_regard_coursecontext is not yet supported by EvaSys LTI provider -> Kept for future.
-$string['regard_coursecontext'] = 'Kurskontext berücksichtigen';
-$string['regard_coursecontext_description'] = 'Kurskontext berücksichtigen: falls ausgewählt, werden nur Umfragen zum aktuellen Kurs gelistet (sofern) vorhanden';
-
 $string['lti_instructormapping'] = 'Rollenzuweisung "Instructor"';
 $string['lti_instructormapping_description'] = 'Hier legen sie fest, welche Moodle-Rollen der LTI-Rolle "Instructor" (= Dozent/in) zugeordnet werden sollen.';
 

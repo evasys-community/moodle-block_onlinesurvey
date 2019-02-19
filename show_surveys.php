@@ -54,18 +54,6 @@ if (isset($config)) {
             $context = context::instance_by_id($contextid);
         }
 
-        // Lti_regard_coursecontext is not yet supported by EvaSys LTI provider.
-        if (isset($config->lti_regard_coursecontext) && !empty($config->lti_regard_coursecontext)) {
-            $courseid = optional_param('cid', 1, PARAM_INT);
-            if (!empty($courseid)) {
-                $course = get_course($courseid);
-            }
-        }
-
-        if (!empty($course)) {
-            $course = get_course(1);
-        }
-
         $modalzoom = optional_param('modalZoom', 0, PARAM_INT);
 
         if ($config->presentation == BLOCK_ONLINESURVEY_PRESENTATION_BRIEF && !$modalzoom) {

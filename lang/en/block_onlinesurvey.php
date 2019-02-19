@@ -93,10 +93,6 @@ $string['lti_customparameters'] = 'Custom parameters';
 $string['lti_customparameters_description'] = 'Custom parameters are settings used by the tool provider. For example, a custom parameter may be used to display
 a specific resource from the provider. Each parameter should be entered on a separate line using a format of "name=value"; for example, "learner_show_completed_surveys=1". For further information please refer to the EvaSys LTI Manual.';
 
-// Lti_regard_coursecontext is not yet supported by EvaSys LTI provider -> Kept for future.
-$string['regard_coursecontext'] = 'Consider course context';
-$string['regard_coursecontext_description'] = 'Consider course context: If selected, only surveys of the current course are shown.';
-
 $string['lti_instructormapping'] = 'Role mapping "Instructor"';
 $string['lti_instructormapping_description'] = 'Here you can define which Moodle roles shall be mapped on the LTI role "instructor".';
 
