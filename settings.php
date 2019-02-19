@@ -214,16 +214,6 @@ if ($ADMIN->fulltree) {
                     80
             )
     );
-    /* Hide "consumer key" for LTI in configurationen -> currently not evaluated in EvaSys
-    $settings->add(
-            new admin_setting_configtext(
-                            'block_onlinesurvey/lti_resourcekey',
-                            get_string('survey_lti_resourcekey', 'block_onlinesurvey'),
-                            get_string('survey_lti_resourcekey_description', 'block_onlinesurvey'),
-                            ''
-            )
-    );
-    */
 
     $settings->add(
             new admin_setting_configpasswordunmask(

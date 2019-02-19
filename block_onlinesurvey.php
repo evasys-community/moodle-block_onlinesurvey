@@ -133,11 +133,6 @@ class block_onlinesurvey extends block_base {
                         if (empty($config->lti_url)) {
                             $errorinfo .= get_string('lti_url_missing', 'block_onlinesurvey').'<br>';
                         }
-                        /* Consumer key currently not used.
-                        if (empty($config->lti_resourcekey)) {
-                            $errorinfo .= get_string('lti_resourcekey_missing', 'block_onlinesurvey').'<br>';
-                        }
-                        */
                         if (empty($config->lti_password)) {
                             $errorinfo .= get_string('lti_password_missing', 'block_onlinesurvey').'<br>';
                         }

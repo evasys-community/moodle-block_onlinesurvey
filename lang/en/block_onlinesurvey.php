@@ -86,10 +86,6 @@ $string['lti_general_information'] = 'The following information is required only
 $string['survey_lti_url'] = 'URL of the LTI Provider';
 $string['survey_lti_url_description'] = '';
 
-// Survey_lti_resourcekey currently not used -> Kept for future.
-$string['survey_lti_resourcekey'] = 'Consumer key';
-$string['survey_lti_resourcekey_description'] = '';
-
 $string['survey_lti_password'] = 'LTI password';
 $string['survey_lti_password_description'] = '';
 
@@ -143,7 +139,6 @@ $string['survey_pwd_missing'] = 'SOAP password missing';
 
 $string['lti_settings_error'] = 'LTI settings error';
 $string['lti_url_missing'] = 'URL for LTI provider missing';
-$string['lti_resourcekey_missing'] = 'Consumer key missing';
 $string['lti_password_missing'] = 'LTI Consumer key missing';
 $string['lti_learnermapping_missing'] = 'Learner role mapping missing';
 $string['userid_not_found'] = 'User ID not found';

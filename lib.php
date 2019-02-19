@@ -477,13 +477,7 @@ function block_onlinesurvey_get_launch_data($config = null, $context = null, $co
         // No proxy support.
     } else {
         $toolproxy = null;
-        if (!empty($config->lti_resourcekey)) {
-            $key = $config->lti_resourcekey;
-        } else if (is_array($config) && !empty($config['lti_resourcekey'])) {
-            $key = $config['lti_resourcekey'];
-        } else {
-            $key = '';
-        }
+        $key = '';
         if (!empty($config->lti_password)) {
             $secret = $config->lti_password;
         } else if (is_array($config) && !empty($config['lti_password'])) {
