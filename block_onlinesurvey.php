@@ -247,15 +247,7 @@ class block_onlinesurvey extends block_base {
     }
 
     public function applicable_formats() {
-        $context = context_system::instance();
-        if (has_capability('moodle/site:config', $context)) {
-            return array('all' => true);
-        } else {
-            return array(
-                'all' => false,
-                'admin' => true
-            );
-        }
+        return array('my-index' => true, 'my' => true, 'site-index' => true, 'course-view' => true);
     }
 
     /**
