@@ -164,11 +164,11 @@ function block_onlinesurvey_get_soap_content($config = null, $moodleusername = '
                     }
                 } else {
                     $soapcontentstr = '<div class="block_onlinesurvey_info">'.
-                            get_string('no_surveys', 'block_onlinesurvey').'</div>';
+                            get_string('surveys_exist_not', 'block_onlinesurvey').'</div>';
                 }
             }
         } else if (empty($SESSION->block_onlinesurvey_surveykeys)) {
-            $soapcontentstr = '<div class="block_onlinesurvey_info">'.get_string('no_surveys', 'block_onlinesurvey').'</div>';
+            $soapcontentstr = '<div class="block_onlinesurvey_info">'.get_string('surveys_exist_not', 'block_onlinesurvey').'</div>';
         }
 
         if (isset($result->error) && !empty($result->error)) {
@@ -177,11 +177,11 @@ function block_onlinesurvey_get_soap_content($config = null, $moodleusername = '
 
         // #8975: TODO: Check, was hier angezeigt werden soll
         if ($debugmode && isset($result->warning) && !empty($result->warning)) {
-            $soapcontentstr = get_string('warning_message', 'block_onlinesurvey', $result->warning) ."<br>" . $soapcontentstr;
+            $soapcontentstr = get_string('error_warning_message', 'block_onlinesurvey', $result->warning) ."<br>" . $soapcontentstr;
         }
     } else {
         if ($debugmode) {
-            $soapcontentstr = get_string('wsdl_namespace', 'block_onlinesurvey');
+            $soapcontentstr = get_string('error_wsdl_namespace', 'block_onlinesurvey');
         }
     }
 
@@ -205,7 +205,7 @@ function block_onlinesurvey_createsummary($surveycount) {
         $contentstr .= "</span>";
         $contentstr .= "</div>";
 
-        $contentstr .= '<div class="block_onlinesurvey_text">' . get_string('no_surveys', 'block_onlinesurvey') . '</div>';
+        $contentstr .= '<div class="block_onlinesurvey_text">' . get_string('surveys_exist_not', 'block_onlinesurvey') . '</div>';
 
         $contentstr .= "</div>";
     } else {
@@ -444,7 +444,7 @@ function block_onlinesurvey_get_lti_content($config = null, $context = null, $co
                 //echo "$lti_content_str2 <br><br>";
             }
         } else {
-            $lticontentstr = get_string('debugmode_missing_capability', 'block_onlinesurvey');
+            $lticontentstr = get_string('error_debugmode_missing_capability', 'block_onlinesurvey');
         }
     }
 
@@ -733,7 +733,7 @@ function block_onlinesurvey_lti_post_launch_html_curl($parameter, $endpoint, $co
         $retval = $errormsgstr;
         // return $retval;
 
-        $msgoutput = get_string('survey_curl_timeout_msg', 'block_onlinesurvey');
+        $msgoutput = get_string('error_survey_curl_timeout_msg', 'block_onlinesurvey');
 
         $context = context_system::instance();
         if (has_capability('block/onlinesurvey:view_debugdetails', $context)) {

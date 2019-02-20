@@ -88,20 +88,20 @@ class block_onlinesurvey extends block_base {
                     if (empty($config->survey_server) || empty($config->survey_login) || empty($config->survey_user) ||
                             empty($config->survey_pwd)) {
                         $this->isconfigured = false;
-                        $this->error = get_string('soap_settings_error', 'block_onlinesurvey');
+                        $this->error = get_string('error_soap_settings_error', 'block_onlinesurvey');
 
                         $errorinfo = '';
                         if (empty($config->survey_server)) {
-                            $errorinfo .= get_string('survey_server_missing', 'block_onlinesurvey').'<br>';
+                            $errorinfo .= get_string('error_survey_server_missing', 'block_onlinesurvey').'<br>';
                         }
                         if (empty($config->survey_login)) {
-                            $errorinfo .= get_string('survey_login_missing', 'block_onlinesurvey').'<br>';
+                            $errorinfo .= get_string('error_survey_login_missing', 'block_onlinesurvey').'<br>';
                         }
                         if (empty($config->survey_user)) {
-                            $errorinfo .= get_string('survey_user_missing', 'block_onlinesurvey').'<br>';
+                            $errorinfo .= get_string('error_survey_user_missing', 'block_onlinesurvey').'<br>';
                         }
                         if (empty($config->survey_pwd)) {
-                            $errorinfo .= get_string('survey_pwd_missing', 'block_onlinesurvey').'<br>';
+                            $errorinfo .= get_string('error_survey_pwd_missing', 'block_onlinesurvey').'<br>';
                         }
 
                         $context = context_system::instance();
@@ -127,17 +127,17 @@ class block_onlinesurvey extends block_base {
                     // Quick check of some LTI settings.
                     if (empty($config->lti_url) || empty($config->lti_password) || empty($config->lti_learnermapping)) {
                         $this->isconfigured = false;
-                        $this->error = get_string('lti_settings_error', 'block_onlinesurvey');
+                        $this->error = get_string('error_lti_settings_error', 'block_onlinesurvey');
 
                         $errorinfo = '';
                         if (empty($config->lti_url)) {
-                            $errorinfo .= get_string('lti_url_missing', 'block_onlinesurvey').'<br>';
+                            $errorinfo .= get_string('error_lti_url_missing', 'block_onlinesurvey').'<br>';
                         }
                         if (empty($config->lti_password)) {
-                            $errorinfo .= get_string('lti_password_missing', 'block_onlinesurvey').'<br>';
+                            $errorinfo .= get_string('error_lti_password_missing', 'block_onlinesurvey').'<br>';
                         }
                         if (empty($config->lti_learnermapping)) {
-                            $errorinfo .= get_string('lti_learnermapping_missing', 'block_onlinesurvey').'<br>';
+                            $errorinfo .= get_string('error_lti_learnermapping_missing', 'block_onlinesurvey').'<br>';
                         }
 
                         $context = context_system::instance();
@@ -153,10 +153,10 @@ class block_onlinesurvey extends block_base {
                 }
             } else {
                 $this->isconfigured = false;
-                $this->error = get_string('userid_not_found', 'block_onlinesurvey');
+                $this->error = get_string('error_userid_not_found', 'block_onlinesurvey');
             }
         } else {
-            $this->error = get_string('config_not_accessible', 'block_onlinesurvey');
+            $this->error = get_string('error_config_not_accessible', 'block_onlinesurvey');
             $this->isconfigured = false;
         }
     }

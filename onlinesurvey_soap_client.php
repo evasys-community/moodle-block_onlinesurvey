@@ -45,7 +45,7 @@ class onlinesurvey_soap_client extends SoapClient {
         if ($errornumber = curl_errno($ch)) {
             $errormsg = curl_error($ch);
 
-            $msgoutput = get_string('survey_curl_timeout_msg', 'block_onlinesurvey');
+            $msgoutput = get_string('error_survey_curl_timeout_msg', 'block_onlinesurvey');
 
             $context = context_system::instance();
             if (has_capability('block/onlinesurvey:view_debugdetails', $context)) {
@@ -113,7 +113,7 @@ class onlinesurvey_soap_client extends SoapClient {
         if ($errornumber = curl_errno($ch)) {
             $errormsg = curl_error($ch);
 
-            $msgoutput = get_string('survey_curl_timeout_msg', 'block_onlinesurvey');
+            $msgoutput = get_string('error_survey_curl_timeout_msg', 'block_onlinesurvey');
 
             $context = context_system::instance();
             if (has_capability('block/onlinesurvey:view_debugdetails', $context)) {

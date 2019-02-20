@@ -22,100 +22,141 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+/*************************/
+/* General.
+/*************************/
+
 $string['pluginname'] = 'Evaluations (EvaSys)';
-
-// Settings page - General.
-$string['blocktitle'] = 'Title';
-$string['blocktitle_description'] = '';
-
-$string['communication_interface'] = 'Communication channel';
-$string['communication_interface_description'] = 'Moodle and EvaSys can communicate via LTI or via SOAP. Depending on the communication channel selected here, please do your further settings in the corresponding section below.';
-$string['soap'] = 'SOAP';
 $string['lti'] = 'LTI';
+$string['soap'] = 'SOAP';
 
-$string['presentation'] = 'Display mode';
-$string['presentation_description'] = 'In compact mode, the EvaSys Block displays the number of open surveys by means of a graphic. In detailed mode, a list of available surveys is displayed. In both modes, an enlarged list view can be opened upon mouse click.';
-$string['presentation_brief'] = 'compact';
-$string['presentation_detailed'] = 'detailed';
 
-$string['survey_hide_empty'] = 'Hide empty block';
-$string['survey_hide_empty_description'] = 'If activated, the EvaSys block is hidden when the user has no open surveys.';
+/*************************/
+/* Appearance settings.
+/*************************/
 
-$string['useridentifier'] = 'User Identifier';
-$string['useridentifier_description'] = 'You can either transmit the user login name or email address as unique identifier.';
+$string['setting_heading_appearance'] = 'Appearance';
+$string['setting_heading_appearance_desc'] = 'The settings in this section define how the EvaSys block will be displayed.';
 
-$string['customfieldnumberinevasys'] = 'Custom field in EvaSys';
-$string['customfieldnumberinevasys_description'] = 'When using the login name as identifier you can specifiy, which of the first three custom fields in EvaSys should be used for authentication.';
-$string['customfieldnumber'] = 'Custom field No.';
+$string['setting_blocktitle'] = 'Title';
+$string['setting_blocktitle_desc'] = 'The text entered here is used as the block title. You can define more than one language (e.g. English and German) by using the Moodle multilanguage filter syntax (see https://docs.moodle.org/en/Multi-language_content_filter for details).';
 
-$string['survey_show_popupinfo'] = 'Pop-up-Info active';
-$string['survey_show_popupinfo_description'] = 'If activated, a pop-up message is displayed upon login of a user, giving notice of open surveys.';
+$string['setting_presentation'] = 'Display mode';
+$string['setting_presentation_desc'] = 'In compact mode, the EvaSys Block displays the number of open surveys by means of a graphic. In detailed mode, a list of available surveys is displayed. In both modes, an enlarged list view can be opened when clicking on the graphic or magnifier icon.';
+$string['setting_presentation_brief'] = 'Compact';
+$string['setting_presentation_detailed'] = 'Detailed';
 
-$string['survey_timeout'] = 'Connection timeout in seconds';
-$string['survey_timeout_description'] = '';
+$string['setting_survey_hide_empty'] = 'Hide empty block';
+$string['setting_survey_hide_empty_desc'] = 'If activated, the EvaSys block is hidden when the user has no surveys. If it is not activated, in the compact view a graphic with the text “No open evaluations available” is displayed and in the detailed view an empty list is presented.<br /><em>Please note: If the LTI template you are using is configured in a way that participants are allowed to see and/or access results for surveys they have taken part in, you may not want to hide the block. Otherwise, the participants would no longer be able to access the results.</em>';
 
-$string['survey_debug'] = 'DEBUG';
-$string['survey_debug_description'] = '';
+$string['setting_survey_show_popupinfo'] = 'Pop-up info';
+$string['setting_survey_show_popupinfo_desc'] = 'If activated, a pop-up with an information about open online surveys (if existing) is displayed every time a student logs in to Moodle.';
 
-$string['additionalcss'] = 'Additional CSS for iframe';
-$string['additionalcss_description'] = 'Content here will be added as CSS to the bottom of HEAD in iframe.';
 
-// Settings page - SOAP.
-$string['generalheadingsoap'] = 'SOAP';
-$string['soap_general_information'] = 'The following information is required only if you selected "SOAP" for communication.';
+/*************************/
+/* Communication settings.
+/*************************/
 
-$string['survey_server'] = 'EvaSys server (SOAP)';
-$string['survey_server_description'] = '';
+$string['setting_heading_communication'] = 'Communication';
+$string['setting_heading_communication_desc'] = 'The settings in this section define how the EvaSys block will communicate with EvaSys.';
 
-$string['survey_login'] = 'EvaSys path for online surveys (SOAP)';
-$string['survey_login_description'] = '';
+$string['setting_communication_interface'] = 'Communication protocol';
+$string['setting_communication_interface_desc'] = 'Here you can define whether Moodle should communicate with EvaSys via SOAP or LTI. <br /><em>Depending on the communication protocol selected here, please do your further settings in the corresponding protocol section below.</em>';
 
-$string['survey_user'] = 'EvaSys SOAP user';
-$string['survey_user_description'] = '';
+$string['setting_useridentifier'] = 'User identifier';
+$string['setting_useridentifier_desc'] = 'Select whether a user\'s email address or username should be used as unique user identifier.';
 
-$string['survey_pwd'] = 'EvaSys SOAP password';
-$string['survey_pwd_description'] = '';
+$string['setting_customfieldnumberinevasys'] = 'Custom field in EvaSys';
+$string['setting_customfieldnumberinevasys_desc'] = 'If the username is selected as user identifier, one of the first three custom fields in EvaSys can be used for authentication.<br /><em>Please note: This setting is only relevant for learners. If you decide to use the username for instructors, the username must be stored in EvaSys in the field "External ID" of the user settings.</em>';
+$string['setting_customfieldnumber'] = 'Custom field No.';
 
-$string['soap_request_eachtime'] = 'SOAP request at pageview';
-$string['soap_request_eachtime_description'] = 'If activated, the content of the EvaSys Block will be updated each time the user opens the starting page. If not activated, the block is only updated upon login / at the beginning of the session.';
+$string['setting_survey_timeout'] = 'Connection timeout';
+$string['setting_survey_timeout_desc'] = 'Maximum response time (in seconds) of the EvaSys server. If the EvaSys server didn\'t answer within this time, the request is aborted and the surveys are not shown to the user.';
 
-// Settings page - LTI.
-$string['generalheadinglti'] = 'LTI';
-$string['lti_general_information'] = 'The following information is required only if you selected "LTI" for communication.';
 
-$string['survey_lti_url'] = 'URL of the LTI Provider';
-$string['survey_lti_url_description'] = '';
+/*************************/
+/* SOAP settings.
+/*************************/
 
-$string['survey_lti_password'] = 'LTI password';
-$string['survey_lti_password_description'] = '';
+$string['setting_heading_soap'] = 'SOAP settings';
+$string['setting_heading_soap_desc'] = 'The settings in this section define how the EvaSys block will communicate with EvaSys.<br /><em>These settings are only required if you selected "SOAP" in the "Communication protocol" setting.</em>';
 
-$string['lti_customparameters'] = 'Custom parameters';
-$string['lti_customparameters_description'] = 'Custom parameters are settings used by the tool provider. For example, a custom parameter may be used to display
-a specific resource from the provider. Each parameter should be entered on a separate line using a format of "name=value"; for example, "learner_show_completed_surveys=1". For further information please refer to the EvaSys LTI Manual.';
+$string['setting_survey_server'] = 'EvaSys SOAP WSDL URL';
+$string['setting_survey_server_desc'] = 'URL of the web service description file on the EvaSys server (https://[SERVERNAME]/evasys/services/soapserver-v51.wsdl).<br /><em>Please note: If EvaSys is operated with several servers (dual server option), the backend server on which users and administrators work, must be specified here. This prevents a too high load on the online survey server.</em>';
 
-$string['lti_instructormapping'] = 'Role mapping "Instructor"';
-$string['lti_instructormapping_description'] = 'Here you can define which Moodle roles shall be mapped on the LTI role "instructor".';
+$string['setting_survey_login'] = 'EvaSys SOAP path for online surveys';
+$string['setting_survey_login_desc'] = 'URL of the EvaSys online survey login (https://[SERVERNAME]/evasys/).';
 
-$string['lti_learnermapping'] = 'Role mapping "Learner"';
-$string['lti_learnermapping_description'] = 'Here you can define which Moodle roles shall be mapped on the LTI role "learner".';
+$string['setting_survey_user'] = 'EvaSys SOAP username';
+$string['setting_survey_user_desc'] = 'User name of the EvaSys SOAP user.';
 
-$string['lti_regex_learner'] = 'Learner regular expression';
-$string['lti_regex_learner_description'] = 'Regular expression to search for open online surveys for "learners" in the LTI result.';
+$string['setting_survey_pwd'] = 'EvaSys SOAP password';
+$string['setting_survey_pwd_desc'] = 'Password of the EvaSys SOAP user.';
 
-$string['lti_regex_instructor'] = 'Instructor regular expression';
-$string['lti_regex_instructor_description'] = 'Regular expression to search for open online surveys for "instructor" in the LTI result.';
+$string['setting_soap_request_eachtime'] = 'Request SOAP data on every rendering';
+$string['setting_soap_request_eachtime_desc'] = 'If activated, the data which is rendered in the EvaSys block will be requested from EvaSys each time the block is rendered. If not activated, the data is only requested once per session (i.e. only once a user logged into Moodle).';
 
-// Capabilities.
+
+/*************************/
+/* LTI settings.
+/*************************/
+
+$string['setting_heading_lti'] = 'LTI settings';
+$string['setting_heading_lti_desc'] = 'The settings in this section define how the EvaSys block will communicate with EvaSys.<br /><em>These settings are only required if you selected "LTI" in the "Communication protocol" setting.</em>';
+
+$string['setting_survey_lti_url'] = 'EvaSys LTI provider URL';
+$string['setting_survey_lti_url_desc'] = 'URL of the LTI provider PHP file on the EvaSys server (https://[SERVERNAME]/customer/lti/lti_provider.php).';
+
+$string['setting_survey_lti_password'] = 'EvaSys LTI password';
+$string['setting_survey_lti_password_desc'] = 'Password of the EvaSys LTI interface.';
+
+$string['setting_lti_customparameters'] = 'EvaSys LTI Custom parameter';
+$string['setting_lti_customparameters_desc'] = 'Here the custom parameters are stored, which can be used to define settings for displaying the surveys, e.g. whether the student view should also display completed surveys (learner_show_completed_surveys=1) or whether the reports of the surveys can also be called up in the instructor view (instructor_show_report=1). Each parameter has to be added on a separate line. For detailed information on the available parameters, please consult the EvaSys LTI manual.';
+
+$string['setting_lti_instructormapping'] = 'LTI Role mapping "Instructor"';
+$string['setting_lti_instructormapping_desc'] = 'Defines which Moodle roles should correspond to the LTI role "Instructor" who will see the EvaSys block content as instructors.';
+
+$string['setting_lti_learnermapping'] = 'LTI Role mapping "Learner"';
+$string['setting_lti_learnermapping_desc'] = 'Defines which Moodle roles should correspond to the LTI role "Learner" who will see the EvaSys block content as students.';
+
+
+/*************************/
+/* Expert settings.
+/*************************/
+
+$string['setting_heading_expert'] = 'Expert settings';
+$string['setting_heading_expert_desc'] = 'The settings in this section normally don\'t need any modification and are provided for special usage scenarios.';
+
+$string['setting_survey_debug'] = 'Debug mode';
+$string['setting_survey_debug_desc'] = 'If activated, debugging and error messages are shown within the EvaSys block.';
+
+$string['setting_additionalcss'] = 'Additional CSS for iframe';
+$string['setting_additionalcss_desc'] = 'Here, you can add CSS code which will be added to the page which is loaded in the EvaSys block. You can use this setting to re-style the EvaSys block content according to your needs.';
+
+$string['setting_lti_regex_learner'] = 'LTI - Learner regular expression';
+$string['setting_lti_regex_learner_desc'] = 'Regular expression which searches the content of the LTI-Response for open online surveys. This only needs to be adjusted if customized templates have been created or modified in a way that the functions differ from the standard templates.';
+
+$string['setting_lti_regex_instructor'] = 'LTI - Instructor regular expression';
+$string['setting_lti_regex_instructor_desc'] = 'Regular expression which searches the content of the LTI-Response for open online surveys. This only needs to be adjusted if customized templates have been created or modified in a way that the functions differ from the standard templates.';
+
+
+/*************************/
+/* Capabilities.
+/*************************/
+
 $string['onlinesurvey:addinstance'] = 'Add instance of the Evaluations (EvaSys) block';
 $string['onlinesurvey:myaddinstance'] = 'Add instance of the Evaluations (EvaSys) block to my page';
 $string['onlinesurvey:view'] = 'View Evaluations (EvaSys) block';
 $string['onlinesurvey:view_debugdetails'] = 'View debug details';
 
-// Block content.
-$string['tech_error'] = 'A technical problem occured while connecting to EvaSys.<p>';
-$string['conn_works'] = 'Connection to EvaSys server tested successfully.<p>';
-$string['no_surveys'] = 'No open surveys available';
+
+/*************************/
+/* Block content.
+/*************************/
+
 $string['surveys_exist'] = 'Open surveys available';
+$string['surveys_exist_not'] = 'No open surveys available';
+
 $string['popupinfo_dialog_title'] = 'Open evaluations';
 $string['popupinfo'] = 'Dear student,<br />
 <br />
@@ -125,24 +166,24 @@ The survey links are displayed in the block "Evaluations". <br />
 Thank you for your support!<br />
 Your evaluation team';
 
-$string['survey_list_header'] = '';
 
-$string['soap_settings_error'] = 'SOAP settings error';
-$string['survey_server_missing'] = 'URL for EvaSys server missing';
-$string['survey_login_missing'] = 'Path for online surveys missing';
-$string['survey_user_missing'] = 'SOAP user missing';
-$string['survey_pwd_missing'] = 'SOAP password missing';
+/*************************/
+/* Block error messages.
+/*************************/
 
-$string['lti_settings_error'] = 'LTI settings error';
-$string['lti_url_missing'] = 'URL for LTI provider missing';
-$string['lti_password_missing'] = 'LTI Consumer key missing';
-$string['lti_learnermapping_missing'] = 'Learner role mapping missing';
-$string['userid_not_found'] = 'User ID not found';
-$string['config_not_accessible'] = 'Configuration not accessible';
+$string['error_config_not_accessible'] = 'Configuration not accessible';
+$string['error_debugmode_missing_capability'] = 'The block is in debug mode. You do not have permission to view content.';
+$string['error_lti_learnermapping_missing'] = 'Learner role mapping missing';
+$string['error_lti_password_missing'] = 'LTI Consumer key missing';
+$string['error_lti_settings_error'] = 'LTI settings error';
+$string['error_lti_url_missing'] = 'URL for LTI provider missing';
 $string['error_occured'] = '<b>An error has occured:</b><br />{$a}<br />';
-$string['warning_message'] = '<b>Warning:</b><br />{$a}<br />';
-$string['wsdl_namespace'] = 'WSDL namespace parse error<br />';
-
-$string['debugmode_missing_capability'] = 'The block is in debug mode. You do not have permission to view content.';
-
-$string['survey_curl_timeout_msg'] = 'The surveys could not be queried.';
+$string['error_soap_settings_error'] = 'SOAP settings error';
+$string['error_survey_curl_timeout_msg'] = 'The surveys could not be queried.';
+$string['error_survey_login_missing'] = 'Path for online surveys missing';
+$string['error_survey_pwd_missing'] = 'SOAP password missing';
+$string['error_survey_server_missing'] = 'URL for EvaSys server missing';
+$string['error_survey_user_missing'] = 'SOAP user missing';
+$string['error_userid_not_found'] = 'User ID not found';
+$string['error_warning_message'] = '<b>Warning:</b><br />{$a}<br />';
+$string['error_wsdl_namespace'] = 'WSDL namespace parse error<br />';

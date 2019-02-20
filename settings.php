@@ -28,208 +28,253 @@ require_once($CFG->dirroot . '/blocks/onlinesurvey/lib.php');
 
 if ($ADMIN->fulltree) {
 
-    /* Block title */
+    /*************************/
+    /* Appearance settings.
+    /*************************/
+
+    // Heading.
+    $settings->add(
+        new admin_setting_heading('block_onlinesurvey/setting_heading_appearance',
+            get_string('setting_heading_appearance', 'block_onlinesurvey', null, true),
+            get_string('setting_heading_appearance_desc', 'block_onlinesurvey', null, true)
+        )
+    );
+
+
+    // Block title.
     $settings->add(
             new admin_setting_configtext(
                     'block_onlinesurvey/blocktitle',
-                    get_string('blocktitle', 'block_onlinesurvey'),
-                    get_string('blocktitle_description', 'block_onlinesurvey'),
-                    get_string('pluginname', 'block_onlinesurvey')
+                    get_string('setting_blocktitle', 'block_onlinesurvey', null, true),
+                    get_string('setting_blocktitle_desc', 'block_onlinesurvey', null, true),
+                    get_string('pluginname', 'block_onlinesurvey', null, true)
             )
     );
 
+
+    // Display mode.
+    $presentationoptions = array();
+    $presentationoptions["brief"] = get_string('setting_presentation_brief', 'block_onlinesurvey', null, true);
+    $presentationoptions["detailed"] = get_string('setting_presentation_detailed', 'block_onlinesurvey', null, true);
+    $settings->add(
+        new admin_setting_configselect('block_onlinesurvey/presentation',
+            get_string('setting_presentation', 'block_onlinesurvey', null, true),
+            get_string('setting_presentation_desc', 'block_onlinesurvey', null, true),
+            "brief",
+            $presentationoptions));
+    unset($presentationoptions);
+
+
+    // Hide empty block.
+    $settings->add(
+        new admin_setting_configcheckbox(
+            'block_onlinesurvey/survey_hide_empty',
+            get_string('setting_survey_hide_empty', 'block_onlinesurvey', null, true),
+            get_string('setting_survey_hide_empty_desc', 'block_onlinesurvey', null, true),
+            0
+        )
+    );
+
+
+    // Pop-up-Info active.
+    $settings->add(
+        new admin_setting_configcheckbox(
+            'block_onlinesurvey/survey_show_popupinfo',
+            get_string('setting_survey_show_popupinfo', 'block_onlinesurvey', null, true),
+            get_string('setting_survey_show_popupinfo_desc', 'block_onlinesurvey', null, true),
+            0
+        )
+    );
+
+
+    /*************************/
+    /* Communication settings.
+    /*************************/
+
+    // Heading.
+    $settings->add(
+        new admin_setting_heading('block_onlinesurvey/setting_heading_communication',
+            get_string('setting_heading_communication', 'block_onlinesurvey', null, true),
+            get_string('setting_heading_communication_desc', 'block_onlinesurvey', null, true)
+        )
+    );
+
+
+    // Communication channel.
     $communicationoptions = array();
-    $communicationoptions["SOAP"] = get_string('soap', 'block_onlinesurvey');
-    $communicationoptions["LTI"] = get_string('lti', 'block_onlinesurvey');
+    $communicationoptions["SOAP"] = get_string('soap', 'block_onlinesurvey', null, true);
+    $communicationoptions["LTI"] = get_string('lti', 'block_onlinesurvey', null, true);
     $settings->add(
             new admin_setting_configselect('block_onlinesurvey/connectiontype',
-                    get_string('communication_interface', 'block_onlinesurvey'),
-                    get_string('communication_interface_description', 'block_onlinesurvey'),
-                    "LTI", $communicationoptions
+                    get_string('setting_communication_interface', 'block_onlinesurvey', null, true),
+                    get_string('setting_communication_interface_desc', 'block_onlinesurvey', null, true),
+                    "LTI",
+                    $communicationoptions
             )
     );
     unset($communicationoptions);
 
+
+    // User Identifier.
     $userdataoptions = array();
-    $userdataoptions["email"] = get_string('email');
-    $userdataoptions["username"] = get_string('username');
+    $userdataoptions["email"] = get_string('email', 'core', null, true);
+    $userdataoptions["username"] = get_string('username', 'core', null, true);
     $settings->add(
             new admin_setting_configselect('block_onlinesurvey/useridentifier',
-                    get_string('useridentifier', 'block_onlinesurvey'),
-                    get_string('useridentifier_description', 'block_onlinesurvey'),
-                    "email", $userdataoptions
+                    get_string('setting_useridentifier', 'block_onlinesurvey', null, true),
+                    get_string('setting_useridentifier_desc', 'block_onlinesurvey', null, true),
+                    "email",
+                    $userdataoptions
             )
     );
     unset($userdataoptions);
 
+
+    // Custom field in EvaSys.
     $customfieldidoptions = array();
-    $customfieldnr = get_string('customfieldnumber', 'block_onlinesurvey');
+    $customfieldnr = get_string('setting_customfieldnumber', 'block_onlinesurvey', null, true);
     $customfieldidoptions[1] = $customfieldnr." 1";
     $customfieldidoptions[2] = $customfieldnr." 2";
     $customfieldidoptions[3] = $customfieldnr." 3";
     $settings->add(
             new admin_setting_configselect('block_onlinesurvey/customfieldnumber',
-                    get_string('customfieldnumberinevasys', 'block_onlinesurvey'),
-                    get_string('customfieldnumberinevasys_description', 'block_onlinesurvey'),
-                    "1", $customfieldidoptions
+                    get_string('setting_customfieldnumberinevasys', 'block_onlinesurvey', null, true),
+                    get_string('setting_customfieldnumberinevasys_desc', 'block_onlinesurvey', null, true),
+                    "1",
+                    $customfieldidoptions
             )
     );
     unset($customfieldidoptions);
 
 
-    $presentationoptions = array();
-    $presentationoptions["brief"] = get_string('presentation_brief', 'block_onlinesurvey');
-    $presentationoptions["detailed"] = get_string('presentation_detailed', 'block_onlinesurvey');
-    $settings->add(new admin_setting_configselect('block_onlinesurvey/presentation',
-            get_string('presentation', 'block_onlinesurvey'),
-            get_string('presentation_description', 'block_onlinesurvey'),
-            "brief", $presentationoptions));
-    unset($presentationoptions);
-
-    $settings->add(
-            new admin_setting_configcheckbox(
-                    'block_onlinesurvey/survey_hide_empty',
-                    get_string('survey_hide_empty', 'block_onlinesurvey'),
-                    get_string('survey_hide_empty_description', 'block_onlinesurvey'),
-                    0
-            )
-    );
-
-    $settings->add(
-            new admin_setting_configcheckbox(
-                    'block_onlinesurvey/survey_show_popupinfo',
-                    get_string('survey_show_popupinfo', 'block_onlinesurvey'),
-                    get_string('survey_show_popupinfo_description', 'block_onlinesurvey'),
-                    0
-            )
-    );
-
+    // Connection timeout in seconds.
     $settings->add(
             new admin_setting_configtext(
                     'block_onlinesurvey/survey_timeout',
-                    get_string('survey_timeout', 'block_onlinesurvey'),
-                    get_string('survey_timeout_description', 'block_onlinesurvey'),
+                    get_string('setting_survey_timeout', 'block_onlinesurvey', null, true),
+                    get_string('setting_survey_timeout_desc', 'block_onlinesurvey', null, true),
                     0,
                     PARAM_INT
             )
     );
 
+
+    /*************************/
+    /* SOAP settings.
+    /*************************/
+
+    // Heading.
     $settings->add(
-            new admin_setting_configcheckbox(
-                    'block_onlinesurvey/survey_debug',
-                    get_string('survey_debug', 'block_onlinesurvey'),
-                    get_string('survey_debug_description', 'block_onlinesurvey'),
-                    0
+            new admin_setting_heading('block_onlinesurvey/setting_heading_soap',
+                    get_string('setting_heading_soap', 'block_onlinesurvey', null, true),
+                    get_string('setting_heading_soap_desc', 'block_onlinesurvey', null, true)
             )
     );
 
-    // Addition CSS for iframe content.
-    $settings->add(
-            new admin_setting_configtextarea(
-                    'block_onlinesurvey/additionalcss',
-                    get_string('additionalcss', 'block_onlinesurvey'),
-                    get_string('additionalcss_description', 'block_onlinesurvey'),
-                    '',
-                    PARAM_RAW,
-                    50,
-                    6
-            )
-    );
 
-    // Add SOAP heading.
-    $settings->add(
-            new admin_setting_heading('block_onlinesurvey/generalheadingsoap',
-                    get_string('generalheadingsoap', 'block_onlinesurvey'),
-                    get_string('soap_general_information', 'block_onlinesurvey')
-            )
-    );
-
-    /* SOAP settings */
+    // EvaSys server (SOAP).
     $settings->add(
             new admin_setting_configtext(
                     'block_onlinesurvey/survey_server',
-                    get_string('survey_server', 'block_onlinesurvey'),
-                    get_string('survey_server_description', 'block_onlinesurvey'),
+                    get_string('setting_survey_server', 'block_onlinesurvey', null, true),
+                    get_string('setting_survey_server_desc', 'block_onlinesurvey', null, true),
                     '',
                     PARAM_RAW,
                     80
             )
     );
 
+
+    // EvaSys path for online surveys (SOAP).
     $settings->add(
             new admin_setting_configtext(
                     'block_onlinesurvey/survey_login',
-                    get_string('survey_login', 'block_onlinesurvey'),
-                    get_string('survey_login_description', 'block_onlinesurvey'),
+                    get_string('setting_survey_login', 'block_onlinesurvey', null, true),
+                    get_string('setting_survey_login_desc', 'block_onlinesurvey', null, true),
                     '',
                     PARAM_RAW,
                     80
             )
     );
 
+
+    // EvaSys SOAP user.
     $settings->add(
             new admin_setting_configtext(
                     'block_onlinesurvey/survey_user',
-                    get_string('survey_user', 'block_onlinesurvey'),
-                    get_string('survey_user_description', 'block_onlinesurvey'),
+                    get_string('setting_survey_user', 'block_onlinesurvey', null, true),
+                    get_string('setting_survey_user_desc', 'block_onlinesurvey', null, true),
                     '',
                     PARAM_RAW
             )
     );
 
+
+    // EvaSys SOAP password.
     $settings->add(
             new admin_setting_configpasswordunmask(
                     'block_onlinesurvey/survey_pwd',
-                    get_string('survey_pwd', 'block_onlinesurvey'),
-                    get_string('survey_pwd_description', 'block_onlinesurvey'),
+                    get_string('setting_survey_pwd', 'block_onlinesurvey', null, true),
+                    get_string('setting_survey_pwd_desc', 'block_onlinesurvey', null, true),
                     ''
             )
     );
 
+
+    // SOAP request at pageview.
     $settings->add(
             new admin_setting_configcheckbox(
                     'block_onlinesurvey/soap_request_eachtime',
-                    get_string('soap_request_eachtime', 'block_onlinesurvey'),
-                    get_string('soap_request_eachtime_description', 'block_onlinesurvey'),
+                    get_string('setting_soap_request_eachtime', 'block_onlinesurvey', null, true),
+                    get_string('setting_soap_request_eachtime_desc', 'block_onlinesurvey', null, true),
                     0
             )
     );
 
-    // Add LTI heading.
+
+    /*************************/
+    /* LTI settings.
+    /*************************/
+
+    // Heading.
     $settings->add(
-            new admin_setting_heading('block_onlinesurvey/generalheadinglti',
-                    get_string('generalheadinglti', 'block_onlinesurvey'),
-                    get_string('lti_general_information', 'block_onlinesurvey')
+            new admin_setting_heading('block_onlinesurvey/setting_heading_lti',
+                    get_string('setting_heading_lti', 'block_onlinesurvey', null, true),
+                    get_string('setting_heading_lti_desc', 'block_onlinesurvey', null, true)
             )
     );
 
-    /* LTI settings */
+
+    // URL of the LTI Provider.
     $settings->add(
             new admin_setting_configtext(
                     'block_onlinesurvey/lti_url',
-                    get_string('survey_lti_url', 'block_onlinesurvey'),
-                    get_string('survey_lti_url_description', 'block_onlinesurvey'),
+                    get_string('setting_survey_lti_url', 'block_onlinesurvey', null, true),
+                    get_string('setting_survey_lti_url_desc', 'block_onlinesurvey', null, true),
                     '',
                     PARAM_RAW,
                     80
             )
     );
 
+
+    // LTI password.
     $settings->add(
             new admin_setting_configpasswordunmask(
                     'block_onlinesurvey/lti_password',
-                    get_string('survey_lti_password', 'block_onlinesurvey'),
-                    get_string('survey_lti_password_description', 'block_onlinesurvey'),
+                    get_string('setting_survey_lti_password', 'block_onlinesurvey', null, true),
+                    get_string('setting_survey_lti_password_desc', 'block_onlinesurvey', null, true),
                     ''
             )
     );
 
-    // LTI custom parameters.
+
+    // Custom parameters.
     $settings->add(
             new admin_setting_configtextarea(
                     'block_onlinesurvey/lti_customparameters',
-                    get_string('lti_customparameters', 'block_onlinesurvey'),
-                    get_string('lti_customparameters_description', 'block_onlinesurvey'),
+                    get_string('setting_lti_customparameters', 'block_onlinesurvey', null, true),
+                    get_string('setting_lti_customparameters_desc', 'block_onlinesurvey', null, true),
                     '',
                     PARAM_RAW,
                     50,
@@ -237,9 +282,9 @@ if ($ADMIN->fulltree) {
             )
     );
 
-    // LTI role mapping Instructor.
+
+    // Role mapping "Instructor".
     $choices = array();
-    // Get some basic data we are going to need.
     $roles = get_all_roles();
     $systemcontext = context_system::instance();
     $rolenames = role_fix_names($roles, $systemcontext, ROLENAME_ORIGINAL);
@@ -253,18 +298,20 @@ if ($ADMIN->fulltree) {
     $settings->add(
             new admin_setting_configmultiselect(
                     'block_onlinesurvey/lti_instructormapping',
-                    get_string('lti_instructormapping', 'block_onlinesurvey'),
-                    get_string('lti_instructormapping_description', 'block_onlinesurvey'),
+                    get_string('setting_lti_instructormapping', 'block_onlinesurvey', null, true),
+                    get_string('setting_lti_instructormapping_desc', 'block_onlinesurvey', null, true),
                     array(3, 4),
                     $choices
             )
     );
-    // LTI role mapping Learner.
+
+
+    // Role mapping "Learner".
     $settings->add(
             new admin_setting_configmultiselect(
                     'block_onlinesurvey/lti_learnermapping',
-                    get_string('lti_learnermapping', 'block_onlinesurvey'),
-                    get_string('lti_learnermapping_description', 'block_onlinesurvey'),
+                    get_string('setting_lti_learnermapping', 'block_onlinesurvey', null, true),
+                    get_string('setting_lti_learnermapping_desc', 'block_onlinesurvey', null, true),
                     array(5),
                     $choices
             )
@@ -273,26 +320,67 @@ if ($ADMIN->fulltree) {
     unset($rolenames);
     unset($choices);
 
+
+    /*************************/
+    /* Expert settings.
+    /*************************/
+
+    // Heading.
     $settings->add(
-            new admin_setting_configtext(
-                    'block_onlinesurvey/lti_regex_learner',
-                    get_string('lti_regex_learner', 'block_onlinesurvey'),
-                    get_string('lti_regex_learner_description', 'block_onlinesurvey'),
-                    BLOCK_ONLINESURVEY_LTI_REGEX_LEARNER_DEFAULT,
-                    PARAM_RAW,
-                    80
-            )
+        new admin_setting_heading('block_onlinesurvey/setting_heading_expert',
+            get_string('setting_heading_expert', 'block_onlinesurvey', null, true),
+            get_string('setting_heading_expert_desc', 'block_onlinesurvey', null, true)
+        )
     );
 
+
+    // Debug.
     $settings->add(
-            new admin_setting_configtext(
-                    'block_onlinesurvey/lti_regex_instructor',
-                    get_string('lti_regex_instructor', 'block_onlinesurvey'),
-                    get_string('lti_regex_instructor_description', 'block_onlinesurvey'),
-                    BLOCK_ONLINESURVEY_LTI_REGEX_INSTRUCTOR_DEFAULT,
-                    PARAM_RAW,
-                    80
-            )
+        new admin_setting_configcheckbox(
+            'block_onlinesurvey/survey_debug',
+            get_string('setting_survey_debug', 'block_onlinesurvey', null, true),
+            get_string('setting_survey_debug_desc', 'block_onlinesurvey', null, true),
+            0
+        )
     );
-    /* END LTI settings */
+
+
+    // Additional CSS for iframe.
+    $settings->add(
+        new admin_setting_configtextarea(
+            'block_onlinesurvey/additionalcss',
+            get_string('setting_additionalcss', 'block_onlinesurvey', null, true),
+            get_string('setting_additionalcss_desc', 'block_onlinesurvey', null, true),
+            '',
+            PARAM_RAW,
+            50,
+            6
+        )
+    );
+
+
+    // Learner regular expression.
+    $settings->add(
+        new admin_setting_configtext(
+            'block_onlinesurvey/lti_regex_learner',
+            get_string('setting_lti_regex_learner', 'block_onlinesurvey', null, true),
+            get_string('setting_lti_regex_learner_desc', 'block_onlinesurvey', null, true),
+            BLOCK_ONLINESURVEY_LTI_REGEX_LEARNER_DEFAULT,
+            PARAM_RAW,
+            80
+        )
+    );
+
+
+    // Instructor regular expression.
+    $settings->add(
+        new admin_setting_configtext(
+            'block_onlinesurvey/lti_regex_instructor',
+            get_string('setting_lti_regex_instructor', 'block_onlinesurvey', null, true),
+            get_string('setting_lti_regex_instructor_desc', 'block_onlinesurvey', null, true),
+            BLOCK_ONLINESURVEY_LTI_REGEX_INSTRUCTOR_DEFAULT,
+            PARAM_RAW,
+            80
+        )
+    );
 }

@@ -66,10 +66,10 @@ if (isset($config)) {
             // Nothing to prepare.
         }
     } else {
-        $error = get_string('userid_not_found', 'block_onlinesurvey').'<br>';
+        $error = get_string('error_userid_not_found', 'block_onlinesurvey').'<br>';
     }
 } else {
-    $error = get_string('config_not_accessible', 'block_onlinesurvey');
+    $error = get_string('error_config_not_accessible', 'block_onlinesurvey');
 }
 
 $title = get_string('pluginname', 'block_onlinesurvey');
