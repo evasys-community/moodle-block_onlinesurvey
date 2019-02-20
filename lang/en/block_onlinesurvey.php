@@ -187,3 +187,12 @@ $string['error_survey_user_missing'] = 'SOAP user missing';
 $string['error_userid_not_found'] = 'User ID not found';
 $string['error_warning_message'] = '<b>Warning:</b><br />{$a}<br />';
 $string['error_wsdl_namespace'] = 'WSDL namespace parse error<br />';
+
+
+/*************************/
+/* Privacy.
+/*************************/
+
+$string['privacy:metadata:block_onlinesurvey'] = 'The EvaSys block plugin does not store any personal data, but does transmit user data from Moodle to the connected EvaSys instance.';
+$string['privacy:metadata:block_onlinesurvey:email'] = 'The user\'s email sent to EvaSys to check for existing surveys.';
+$string['privacy:metadata:block_onlinesurvey:username'] = 'The user\'s username value sent to EvaSys to check for existing surveys.';
