@@ -22,7 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die;
+defined('MOODLE_INTERNAL') || die();
 
 define('BLOCK_ONLINESURVEY_COMM_SOAP', "SOAP");
 define('BLOCK_ONLINESURVEY_COMM_LTI', "LTI");
@@ -168,7 +168,8 @@ function block_onlinesurvey_get_soap_content($config = null, $moodleusername = '
                 }
             }
         } else if (empty($SESSION->block_onlinesurvey_surveykeys)) {
-            $soapcontentstr = '<div class="block_onlinesurvey_info">'.get_string('surveys_exist_not', 'block_onlinesurvey').'</div>';
+            $soapcontentstr = '<div class="block_onlinesurvey_info">'.get_string('surveys_exist_not', 'block_onlinesurvey').
+                    '</div>';
         }
 
         if (isset($result->error) && !empty($result->error)) {
@@ -194,8 +195,6 @@ function block_onlinesurvey_get_soap_content($config = null, $moodleusername = '
  * @return string
  */
 function block_onlinesurvey_createsummary($surveycount) {
-    global $USER;
-
     if ($surveycount == 0) {
         $contentstr = "<div id=\"block_onlinesurvey_area\" class=\"block_onlinesurvey_area\">";
 
@@ -228,12 +227,11 @@ function block_onlinesurvey_createsummary($surveycount) {
 
 function block_onlinesurvey_viewscript() {
     return '<script language="JavaScript">'."\n".
-            //'   var hiddenelements = parent.document.getElementsByClassName("block_onlinesurvey card");'."\n".
-    '   var hiddenelements = parent.document.getElementsByClassName("block_onlinesurvey");'."\n".
-    '   for (var i = 0; i < hiddenelements.length; i++) {'."\n".
-    '       hiddenelements[i].style.display = "block";'."\n".
-    '   }'."\n".
-    '</script>';
+            '   var hiddenelements = parent.document.getElementsByClassName("block_onlinesurvey");'."\n".
+            '   for (var i = 0; i < hiddenelements.length; i++) {'."\n".
+            '       hiddenelements[i].style.display = "block";'."\n".
+            '   }'."\n".
+            '</script>';
 }
 
 /**
@@ -737,7 +735,7 @@ function block_onlinesurvey_lti_post_launch_html_curl($parameter, $endpoint, $co
 
         $context = context_system::instance();
         if (has_capability('block/onlinesurvey:view_debugdetails', $context)) {
-            if(!empty($msgoutput)){
+            if (!empty($msgoutput)) {
                 $msgoutput .= "<br><br>"."curl_errno $errornumber: $errormsgstr";
             }
         }

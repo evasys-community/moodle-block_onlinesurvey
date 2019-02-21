@@ -72,7 +72,7 @@ class provider implements
         if ($config->useridentifier == 'username') {
             $useridentifier = 'username';
 
-            // If the plugin is configured to use the email as useridentifier for EvaSys (which is the default)
+            // If the plugin is configured to use the email as useridentifier for EvaSys (which is the default).
         } else {
             $useridentifier = 'email';
         }

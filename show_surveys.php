@@ -62,8 +62,6 @@ if (isset($config)) {
 
         if ($connectiontype == 'SOAP') {
             $css[] = $CFG->wwwroot.'/blocks/onlinesurvey/style/block_onlinesurvey_iframe_soap.css';
-        } else if ($connectiontype == 'LTI') {
-            // Nothing to prepare.
         }
     } else {
         $error = get_string('error_userid_not_found', 'block_onlinesurvey').'<br>';
