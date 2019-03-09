@@ -6,10 +6,20 @@ moodle-block_onlinesurvey
 Moodle block plugin which allows you to quickly and easily integrate survey information data from EvaSys into Moodle. With this block, you can place links to EvaSys online surveys directly on the Moodle frontpage and dashboard as well as on course overview pages.
 
 
-Requirements
-------------
+Moodle requirements
+-------------------
 
-This plugin requires Moodle 3.1+ as well as EvaSys version 7.1 (2151).
+This plugin requires Moodle 3.1+
+
+
+EvaSys requirements
+-------------------
+
+Please note that this plugin requires a commercial subscription of EvaSys and a running instance of at least EvaSys version 7.1 (2151).
+
+For details about EvaSys, please see
+https://en.evasys.de/ (english) or
+https://www.evasys.de/ (german).
 
 
 Plugin description
