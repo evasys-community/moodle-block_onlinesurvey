@@ -24,6 +24,9 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+global $CFG;
+include_once $CFG->libdir . '/filelib.php';
+
 class onlinesurvey_soap_client extends SoapClient {
     public $timeout;
     public $debugmode;
@@ -34,35 +37,30 @@ class onlinesurvey_soap_client extends SoapClient {
         $this->debugmode = $debug;
         $this->timeout = $timeout;
 
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $wsdl);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_FRESH_CONNECT, true);
-        curl_setopt($ch, CURLOPT_TIMEOUT, $this->timeout);
+        $curl = new curl;
+        $curloptions = array(
+                'RETURNTRANSFER' => 1,
+                'FRESH_CONNECT' => true,
+                'TIMEOUT' => $this->timeout,
+        );
+        $ret = $curl->get($wsdl, '', $curloptions);
 
-        $wsdlxml = curl_exec($ch);
-
-        if ($errornumber = curl_errno($ch)) {
-            $errormsg = curl_error($ch);
-
+        if ($errornumber = $curl->get_errno()) {
             $msgoutput = get_string('error_survey_curl_timeout_msg', 'block_onlinesurvey');
 
             $context = context_system::instance();
             if (has_capability('block/onlinesurvey:view_debugdetails', $context)) {
                 if (!empty($msgoutput)) {
-                    $msgoutput .= "<br><br>"."curl_errno $errornumber: $errormsg";
+                    $msgoutput .= "<br><br>"."curl_errno $errornumber: $ret"; // $ret now contains the error string.
                 }
             }
 
             if (in_array($errornumber, array(CURLE_OPERATION_TIMEDOUT, CURLE_OPERATION_TIMEOUTED))) {
-                curl_close($ch);
                 throw new Exception("$msgoutput");
             }
-        } else {
-            curl_close($ch);
         }
 
-        if (!$wsdlxml) {
+        if (!$ret) {
             throw new Exception('ERROR: Could not fetch WSDL');
         }
 
@@ -71,7 +69,7 @@ class onlinesurvey_soap_client extends SoapClient {
             $urlserveraddress = $url['host'];
         }
 
-        preg_match('/<soap:address location="https*:\/\/([0-9a-z\.\-_]+)/i', $wsdlxml, $match);
+        preg_match('/<soap:address location="https*:\/\/([0-9a-z\.\-_]+)/i', $ret, $match);
         $wsdlserveraddress = null;
         if (count($match) == 2) {
             $wsdlserveraddress = $match[1];
@@ -84,7 +82,7 @@ class onlinesurvey_soap_client extends SoapClient {
                     Endpoint address: $wsdlserveraddress.";
         }
 
-        $base64 = base64_encode($wsdlxml);
+        $base64 = base64_encode($ret);
         $uri = "data:application/wsdl+xml;base64,$base64";
         parent::__construct($uri, $options);
     }
@@ -96,34 +94,26 @@ class onlinesurvey_soap_client extends SoapClient {
             'Content-Length: ' . strlen($request)
         );
 
-        $ch = curl_init();
+        $curl = new curl;
+        $curloptions = array(
+            'RETURNTRANSFER' => 1,
+            'FRESH_CONNECT' => true,
+            'TIMEOUT' => $this->timeout,
+            'HTTPHEADER' => $headers,
+        );
+        $ret = $curl->post($location, $request, $curloptions);
 
-        // Set the url, number of POST vars, POST data.
-        curl_setopt($ch, CURLOPT_URL, $location);
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $request);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_FRESH_CONNECT, true);
-        curl_setopt($ch, CURLOPT_TIMEOUT, $this->timeout);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-
-        // Execute post.
-        $ret = curl_exec($ch);
-
-        if ($errornumber = curl_errno($ch)) {
-            $errormsg = curl_error($ch);
-
+        if ($errornumber = $curl->get_errno()) {
             $msgoutput = get_string('error_survey_curl_timeout_msg', 'block_onlinesurvey');
 
             $context = context_system::instance();
             if (has_capability('block/onlinesurvey:view_debugdetails', $context)) {
                 if (!empty($msgoutput)) {
-                    $msgoutput .= "<br><br>"."curl_errno $errornumber: $errormsg";
+                    $msgoutput .= "<br><br>"."curl_errno $errornumber: $ret"; // $ret now contains the error string.
                 }
             }
 
             if (in_array($errornumber, array(CURLE_OPERATION_TIMEDOUT, CURLE_OPERATION_TIMEOUTED))) {
-                curl_close($ch);
                 throw new Exception("$msgoutput");
             }
         }
@@ -141,7 +131,6 @@ class onlinesurvey_soap_client extends SoapClient {
                         </SOAP-ENV:Body>
                     </SOAP-ENV:Envelope>';
         }
-        curl_close($ch);
         return $ret;
     }
 }
