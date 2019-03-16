@@ -32,6 +32,9 @@ define('BLOCK_ONLINESURVEY_LTI_REGEX_LEARNER_DEFAULT', '/<(p){1}(.){0,}[\s]{0,}(
 define('BLOCK_ONLINESURVEY_LTI_REGEX_INSTRUCTOR_DEFAULT',
         '/<(div){1}[\s]{1,}(class=){1}["|\']{1}[a-z]{0,}[\s]{0,}(response-box){1}[\s]{0,}[a-z]{0,}[\s]{0,}["|\']{1}>/');
 
+define('BLOCK_ONLINESURVEY_PRESENTATION_BRIEF', "brief");
+define('BLOCK_ONLINESURVEY_PRESENTATION_DETAILED', "detailed");
+
 /**
  * Request surveys for the current user according to email or username and displays the result.
  * @param string $config block settings of "block_onlinesurvey"

@@ -24,9 +24,6 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-define('BLOCK_ONLINESURVEY_PRESENTATION_BRIEF', "brief");
-define('BLOCK_ONLINESURVEY_PRESENTATION_DETAILED', "detailed");
-
 /**
  * Onlinesurvey block.
  *
@@ -209,10 +206,6 @@ class block_onlinesurvey extends block_base {
             $PAGE->requires->js_call_amd('block_onlinesurvey/modal-zoom', 'init',
                     array($popupinfotitle, $popupinfocontent, $USER->currentlogin));
             $PAGE->requires->css('/blocks/onlinesurvey/style/block_onlinesurvey_modal-zoom.css');
-
-            if (get_config('block_onlinesurvey', 'presentation') == BLOCK_ONLINESURVEY_PRESENTATION_DETAILED) {
-                $PAGE->requires->css('/blocks/onlinesurvey/style/block_onlinesurvey_glasses_outside.css');
-            }
 
             if (get_config('block_onlinesurvey', 'survey_hide_empty')) {
                 $PAGE->requires->css('/blocks/onlinesurvey/style/block_onlinesurvey_hide.css');
