@@ -1,4 +1,4 @@
-define(['core/templates', 'core/str'], function(templates, str) {
+define(['core/templates', 'core/str'], function(templates) {
 
     var modalTitle = '';
     var modalZoomSelector = '#block_onlinesurvey_surveys_content';
@@ -14,7 +14,7 @@ define(['core/templates', 'core/str'], function(templates, str) {
             myElement.src = '';
             myElement.src = oldsrc;
         }
-    }
+    };
 
     var handleClickSmallModal = function(e) {
         e.preventDefault();
@@ -42,7 +42,7 @@ define(['core/templates', 'core/str'], function(templates, str) {
             });
         }
 
-        templatePromise.done(function(source, javascript) {
+        templatePromise.done(function(source) {
 
             var div = document.createElement('div');
             div.innerHTML = source;
@@ -52,9 +52,7 @@ define(['core/templates', 'core/str'], function(templates, str) {
             document.body.insertBefore(modalContainer, document.body.firstChild);
             document.body.className += ' block_onlinesurvey_custom-modal-open';
 
-            var closeCallback = function(e) {
-
-                var target = e.target
+            var closeCallback = function() {
 
                 document.body.className = document.body.className.replace(' block_onlinesurvey_custom-modal-open', '');
 
@@ -67,7 +65,7 @@ define(['core/templates', 'core/str'], function(templates, str) {
                         modalContainer.parentNode.removeChild(modalContainer);
                     }
                 }, 250);
-            }
+            };
 
             modalContainer.querySelector('.block_onlinesurvey_custom-modal_close-button')
                 .addEventListener('click', function(e) {
@@ -82,7 +80,7 @@ define(['core/templates', 'core/str'], function(templates, str) {
                     false : closeCallback(e);
             });
         });
-    }
+    };
 
     return {
         init: function(popuptitle, popupcontent, currentlogin) {
@@ -109,7 +107,7 @@ define(['core/templates', 'core/str'], function(templates, str) {
             // Get saved data from sessionStorage.
             var popupinfo = sessionStorage.getItem('onlinesurvey_popupinfo');
 
-            if (popupinfo == false || popupinfo == null || popupinfo != userlogintime) {
+            if (popupinfo == false || popupinfo === null || popupinfo != userlogintime) {
 
                 // Save data to sessionStorage.
                 sessionStorage.setItem('onlinesurvey_popupinfo', userlogintime);
@@ -119,7 +117,7 @@ define(['core/templates', 'core/str'], function(templates, str) {
                     content: popupinfocontent
                 });
 
-                templatePromise.done(function(source, javascript) {
+                templatePromise.done(function(source) {
 
                     var div = document.createElement('div');
                     div.innerHTML = source;
@@ -129,9 +127,7 @@ define(['core/templates', 'core/str'], function(templates, str) {
                     document.body.insertBefore(modalContainer, document.body.firstChild);
                     document.body.className += ' block_onlinesurvey_custom-modal-open popupinfo';
 
-                    var closeCallback = function(e) {
-
-                        var target = e.target
+                    var closeCallback = function() {
 
                         document.body.className = document.body.className.replace(' block_onlinesurvey_custom-modal-open', '');
 
@@ -142,7 +138,7 @@ define(['core/templates', 'core/str'], function(templates, str) {
                                 modalContainer.parentNode.removeChild(modalContainer);
                             }
                         }, 250);
-                    }
+                    };
 
                     modalContainer.querySelector('.block_onlinesurvey_custom-modal_close-button')
                     .addEventListener('click', function(e) {
@@ -159,5 +155,5 @@ define(['core/templates', 'core/str'], function(templates, str) {
                 });
             }
         }
-    }
+    };
 });

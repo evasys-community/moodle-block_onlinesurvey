@@ -28,14 +28,42 @@ global $CFG;
 
 require_once($CFG->libdir.'/filelib.php');
 
+/**
+ * Onlinesurvey SOAP client which extends the standard SoapClient class.
+ *
+ * @package    block_onlinesurvey
+ * @copyright  2018 Soon Systems GmbH on behalf of Electric Paper Evaluationssysteme GmbH
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class onlinesurvey_soap_client extends SoapClient {
+    /**
+     * @var int
+     */
     public $timeout;
+
+    /**
+     * @var bool
+     */
     public $debugmode;
+
+    /**
+     * @var bool
+     */
     public $haswarning = false;
+
+    /**
+     * @var string
+     */
     public $warnmessage = "";
 
+    /**
+     * SoapClient constructor
+     * @param string $wsdl URI of the WSDL file.
+     * @param array $options An array of options.
+     * @param int $timeout The timeout for the SOAP call.
+     * @param bool $debug A boolean which indicates if debuging is enabled.
+     */
     public function __construct($wsdl, $options, $timeout = 15, $debug = false) {
-        $this->debugmode = $debug;
         $this->timeout = $timeout;
 
         $curl = new curl;
@@ -88,6 +116,15 @@ class onlinesurvey_soap_client extends SoapClient {
         parent::__construct($uri, $options);
     }
 
+    /**
+     * Performs a SOAP request
+     * @param string $request The XML SOAP request.
+     * @param string $location The URL to request.
+     * @param string $action The SOAP action.
+     * @param int $version The SOAP version.
+     * @param int $one_way [optional] If one_way is set to 1, this method returns nothing. Use this where a response is not expected.
+     * @return string The XML SOAP response.
+     */
     public function __doRequest($request, $location, $action, $version, $one_way = null) {
         $headers = array(
             'Content-Type: text/xml;charset=UTF-8',

@@ -1,13 +1,13 @@
 body {
-    font-family: Arial, Helvetica;
     color: #444;
-    margin: 0px;
-    padding: 0px;
+    font-family: Arial, Helvetica;
+    margin: 0;
+    padding: 0;
 }
 
 .main {
-    width: 100%;
     clear: both;
+    width: 100%;
 }
 
 .text-secondary {
@@ -28,10 +28,10 @@ h3 small {
 }
 
 .message {
-    background-color: #F8F8F8;
-    margin: 3px;
-    line-height: 50px;
+    background-color: #f8f8f8;
     height: 50px;
+    line-height: 50px;
+    margin: 3px;
     padding-left: 5px;
 }
 
@@ -46,8 +46,8 @@ h3 small {
 }
 
 .block_onlinesurvey_survey_list.table {
-    width: 100%;
     display: table;
+    width: 100%;
 }
 
 .block_onlinesurvey_survey_list .row {
@@ -66,11 +66,11 @@ h3 small {
 
 .block_onlinesurvey_survey_list .row,
 .block_onlinesurvey_survey_list .row:nth-child(odd) {
-    background-color: #E4E5E0;
+    background-color: #e4e5e0;
 }
 
 .block_onlinesurvey_survey_list .row:nth-child(even) {
-    background-color: #F8F8F8;
+    background-color: #f8f8f8;
 }
 
 .block_onlinesurvey_survey_list .cell {
@@ -82,13 +82,13 @@ h3 small {
 }
 
 .block_onlinesurvey_survey_list .cell.instructor {
-    width: 165px;
     padding: 0 5px;
+    width: 165px;
 }
 
 .block_onlinesurvey_survey_list .cell.information {
-    width: 140px;
     padding: 0 5px;
+    width: 140px;
 }
 
 .block_onlinesurvey_survey_list .cell.participate {
@@ -101,13 +101,13 @@ h3 small {
 }
 
 .block_onlinesurvey_survey_list .cell .negativ {
-    color: #A31F34;
+    color: #a31f34;
 }
 
 .block_onlinesurvey_survey_list .hint .row {
-    font-size: .7em;
+    background-color: #fff;
     color: #000;
-    background-color: #FFF;
+    font-size: .7em;
 }
 
 .block_onlinesurvey_survey_list .hint .hint-icon {
@@ -120,9 +120,9 @@ h3 small {
 
 .block_onlinesurvey_survey_list .profile-image,
 .block_onlinesurvey_survey_list .secondary-profile-image {
-    width: 48px;
-    height: 48px;
     border-radius: 48px;
+    height: 48px;
+    width: 48px;
 }
 
 .block_onlinesurvey_survey_list .instructor-table {
@@ -130,12 +130,12 @@ h3 small {
 }
 
 .block_onlinesurvey_survey_list .image-link {
-    display: block;
-    width: 32px;
-    height: 32px;
-    background-size: 32px 32px;
-    background-repeat: no-repeat;
     background-position: center;
+    background-repeat: no-repeat;
+    background-size: 32px 32px;
+    display: block;
+    height: 32px;
+    width: 32px;
 }
 
 .block_onlinesurvey_survey_list .arrow-red {
@@ -151,15 +151,15 @@ h3 small {
 }
 
 .block_onlinesurvey_survey_list .cell .positiv {
-    color: #267CA7;
+    color: #267ca7;
 }
 
 .block_onlinesurvey_survey_list .participated .lti-logo {
-    width: 32px;
     height: 32px;
+    width: 32px;
 }
 
-@media ( min-width :601px) and (max-width:900px) {
+@media (min-width: 601px) and (max-width: 900px) {
     .block_onlinesurvey_survey_list.table {
         font-size: 0.85em;
     }
@@ -171,13 +171,13 @@ h3 small {
     }
     .block_onlinesurvey_survey_list .profile-image,
     .block_onlinesurvey_survey_list .secondary-profile-image {
-        width: 32px;
-        height: 32px;
         border-radius: 32px;
+        height: 32px;
+        width: 32px;
     }
 }
 
-@media ( min-width :410px) and (max-width:600px) {
+@media (min-width: 410px) and (max-width: 600px) {
     .block_onlinesurvey_survey_list .cell.instructor {
         display: none;
     }
@@ -200,15 +200,15 @@ h3 small {
     .block_onlinesurvey_survey_list .arrow-positiv,
     .block_onlinesurvey_survey_list .image-link,
     .block_onlinesurvey_survey_list .participated .lti-logo {
-        width: 28px;
         height: 28px;
+        width: 28px;
     }
     .block_onlinesurvey_survey_list .image-link {
         background-size: 28px 28px;
     }
 }
 
-@media ( max-width :409px) {
+@media (max-width: 409px) {
     .block_onlinesurvey_survey_list .cell.information,
     .block_onlinesurvey_survey_list .cell.instructor,
     .block_onlinesurvey_survey_list .hint.table {
@@ -234,8 +234,8 @@ h3 small {
     .block_onlinesurvey_survey_list .arrow-positiv,
     .block_onlinesurvey_survey_list .image-link,
     .block_onlinesurvey_survey_list .participated .lti-logo {
-        width: 24px;
         height: 24px;
+        width: 24px;
     }
     .block_onlinesurvey_survey_list .image-link {
         background-size: 24px 24px;
@@ -246,5 +246,5 @@ div.block_onlinesurvey_info {
     padding: 20px;
 }
 .block_onlinesurvey_survey_list.table .row {
-    min-height: 0px;
+    min-height: 0;
 }

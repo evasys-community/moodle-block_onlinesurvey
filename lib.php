@@ -40,6 +40,8 @@ define('BLOCK_ONLINESURVEY_PRESENTATION_DETAILED', "detailed");
  * @param string $config block settings of "block_onlinesurvey"
  * @param string $moodleusername username for SOAP request
  * @param string $moodleemail email for SOAP request
+ * @param int $modalzoom indicates if the modal list popup is open or not
+ * @return string
  */
 function block_onlinesurvey_get_soap_content($config = null, $moodleusername = '', $moodleemail = '', $modalzoom = 0) {
     global $SESSION;
@@ -193,8 +195,9 @@ function block_onlinesurvey_get_soap_content($config = null, $moodleusername = '
 }
 
 /**
- * @param $surveycount number of surveys
+ * Returns a string with HTML code for the detailed view.
  *
+ * @param int $surveycount number of surveys
  * @return string
  */
 function block_onlinesurvey_createsummary($surveycount) {
@@ -228,6 +231,11 @@ function block_onlinesurvey_createsummary($surveycount) {
     return $contentstr;
 }
 
+/**
+ * Returns a string with a <script> tag which shows the previously hidden block.
+ *
+ * @return string
+ */
 function block_onlinesurvey_viewscript() {
     return '<script language="JavaScript">'."\n".
             '   var hiddenelements = parent.document.getElementsByClassName("block_onlinesurvey");'."\n".
@@ -358,6 +366,8 @@ function block_onlinesurvey_print_exceptions($e) {
  * @param string $config block settings of "block_onlinesurvey"
  * @param string $context context for LTI request - not yet supported by LTI provider
  * @param string $course course for LTI request - not yet supported by LTI provider
+ * @param int $modalzoom indicates if the modal list popup is open or not
+ * @return string
  */
 function block_onlinesurvey_get_lti_content($config = null, $context = null, $course = null, $modalzoom = 0) {
     global $CFG, $SESSION;
@@ -626,7 +636,6 @@ function block_onlinesurvey_build_request_lti($config, $course) {
     return $requestparams;
 }
 
-
 /**
  * Gets the LTI role string for the specified user according to lti rolemappings
  *
@@ -684,10 +693,12 @@ function block_onlinesurvey_get_ims_roles($user, $config) {
     return join(',', $roles);
 }
 
-
 /**
+ * Fetches the LTI content on the server for analyzing the survey list server-side.
+ *
  * @param array $parameter parameter for LTI request
  * @param string $endpoint endpoint for LTI request
+ * @param object $config the plugin configuration
  * @return string result of the curl LTI request
  */
 function block_onlinesurvey_lti_post_launch_html_curl($parameter, $endpoint, $config) {

@@ -219,6 +219,11 @@ class block_onlinesurvey extends block_base {
         return $this->content;
     }
 
+    /**
+     * Returns true which means that the block has a settings.php file.
+     *
+     * @return bool
+     */
     public function has_config() {
         return true;
     }
@@ -231,14 +236,29 @@ class block_onlinesurvey extends block_base {
         return true;
     }
 
+    /**
+     * Returns false which means that only one instance is allowed.
+     *
+     * @return bool
+     */
     public function instance_allow_multiple() {
         return false;
     }
 
+    /**
+     * Returns false which means that the header should be shown.
+     *
+     * @return bool
+     */
     public function hide_header() {
         return false;
     }
 
+    /**
+     * Returns the locations where the block can be displayed.
+     *
+     * @return array
+     */
     public function applicable_formats() {
         return array('my-index' => true, 'my' => true, 'site-index' => true, 'course-view' => true);
     }
