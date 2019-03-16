@@ -25,9 +25,9 @@
 define('BLOCK_ONLINESURVEY_PRESENTATION_BRIEF', "brief");
 define('BLOCK_ONLINESURVEY_PRESENTATION_DETAILED', "detailed");
 
-require_once('../../config.php');
-
-require_once('lib.php');
+require_once(dirname(__FILE__).'/../../config.php');
+require_login();
+require_once(dirname(__FILE__).'/lib.php');
 
 // Block settings.
 $config = get_config("block_onlinesurvey");
