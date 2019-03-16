@@ -25,7 +25,8 @@
 defined('MOODLE_INTERNAL') || die();
 
 global $CFG;
-include_once $CFG->libdir . '/filelib.php';
+
+require_once($CFG->libdir.'/filelib.php');
 
 class onlinesurvey_soap_client extends SoapClient {
     public $timeout;
@@ -51,7 +52,7 @@ class onlinesurvey_soap_client extends SoapClient {
             $context = context_system::instance();
             if (has_capability('block/onlinesurvey:view_debugdetails', $context)) {
                 if (!empty($msgoutput)) {
-                    $msgoutput .= "<br><br>"."curl_errno $errornumber: $ret"; // $ret now contains the error string.
+                    $msgoutput .= "<br><br>"."curl_errno $errornumber: $ret"; // Variable $ret now contains the error string.
                 }
             }
 
@@ -109,7 +110,7 @@ class onlinesurvey_soap_client extends SoapClient {
             $context = context_system::instance();
             if (has_capability('block/onlinesurvey:view_debugdetails', $context)) {
                 if (!empty($msgoutput)) {
-                    $msgoutput .= "<br><br>"."curl_errno $errornumber: $ret"; // $ret now contains the error string.
+                    $msgoutput .= "<br><br>"."curl_errno $errornumber: $ret"; // Variable $ret now contains the error string.
                 }
             }
 

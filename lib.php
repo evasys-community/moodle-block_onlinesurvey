@@ -692,10 +692,6 @@ function block_onlinesurvey_get_ims_roles($user, $config) {
  */
 function block_onlinesurvey_lti_post_launch_html_curl($parameter, $endpoint, $config) {
 
-    $retval = '';
-
-    $url = $endpoint;
-
     // Set POST variables.
     $fields = array();
 
@@ -716,30 +712,22 @@ function block_onlinesurvey_lti_post_launch_html_curl($parameter, $endpoint, $co
     }
     rtrim($fieldsstring, '&');
 
-    $ch = curl_init($url);
-    // Set the url, number of POST vars, POST data.
-    curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_POST, count($fields));
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $fieldsstring);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-
+    $curl = new curl;
     $timeout = isset($config->survey_timeout) ? $config->survey_timeout : BLOCK_ONLINESURVEY_DEFAULT_TIMEOUT;
-    curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
+    $curloptions = array(
+        'RETURNTRANSFER' => 1,
+        'FRESH_CONNECT' => true,
+        'TIMEOUT' => $timeout,
+    );
+    $ret = $curl->post($endpoint, $fieldsstring, $curloptions);
 
-    $xmlstr = curl_exec($ch);
-
-    if ($errornumber = curl_errno($ch)) {
-        $errormsgstr = curl_error($ch);
-        curl_close($ch);
-        $retval = $errormsgstr;
-        // return $retval;
-
+    if ($errornumber = $curl->get_errno()) {
         $msgoutput = get_string('error_survey_curl_timeout_msg', 'block_onlinesurvey');
 
         $context = context_system::instance();
         if (has_capability('block/onlinesurvey:view_debugdetails', $context)) {
             if (!empty($msgoutput)) {
-                $msgoutput .= "<br><br>"."curl_errno $errornumber: $errormsgstr";
+                $msgoutput .= "<br><br>"."curl_errno $errornumber: $ret"; // Variable $ret now contains the error string.
             }
         }
 
@@ -748,13 +736,5 @@ function block_onlinesurvey_lti_post_launch_html_curl($parameter, $endpoint, $co
         }
     }
 
-    curl_close($ch);
-
-    if (empty($xmlstr) or !$xmlstr or !trim($xmlstr)) {
-        return $retval;
-    } else {
-        $retval = $xmlstr;
-    }
-
-    return $retval;
+    return $ret;
 }
