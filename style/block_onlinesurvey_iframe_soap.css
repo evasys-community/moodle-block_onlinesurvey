@@ -1,33 +1,33 @@
-#block_onlinesurvey_contentframe body {
+body {
     font-family: Arial, Helvetica;
     color: #444;
     margin: 0px;
     padding: 0px;
 }
 
-#block_onlinesurvey_contentframe .main {
+.main {
     width: 100%;
     clear: both;
 }
 
-#block_onlinesurvey_contentframe .text-secondary {
+.text-secondary {
     font-size: .7em;
 }
 
-#block_onlinesurvey_contentframe .text-primary {
+.text-primary {
     font-size: 1em;
 }
 
-#block_onlinesurvey_contentframe .text-bold {
+.text-bold {
     font-weight: 600;
 }
 
-#block_onlinesurvey_contentframe h3 small {
+h3 small {
     color: #3b453f;
     font-size: .7em;
 }
 
-#block_onlinesurvey_contentframe .message {
+.message {
     background-color: #F8F8F8;
     margin: 3px;
     line-height: 50px;
