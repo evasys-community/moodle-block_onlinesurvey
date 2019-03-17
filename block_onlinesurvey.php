@@ -228,14 +228,6 @@ class block_onlinesurvey extends block_base {
         return true;
     }
 
-    public function config_save($data) {
-        foreach ($data as $name => $value) {
-            set_config($name, $value);
-        }
-
-        return true;
-    }
-
     /**
      * Returns false which means that only one instance is allowed.
      *
