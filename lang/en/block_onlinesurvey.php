@@ -41,7 +41,7 @@ $string['setting_heading_appearance'] = 'Appearance';
 $string['setting_heading_appearance_desc'] = 'The settings in this section define how the EvaSys block will be displayed.';
 
 $string['setting_blocktitle'] = 'Title';
-$string['setting_blocktitle_desc'] = 'The text entered here is used as the block title. You can define more than one language (e.g. English and German) by using the Moodle multilanguage filter syntax (see https://docs.moodle.org/en/Multi-language_content_filter for details).';
+$string['setting_blocktitle_desc'] = 'The text entered here is used as the block title.';
 
 $string['setting_presentation'] = 'Display mode';
 $string['setting_presentation_desc'] = 'In compact mode, the EvaSys Block displays the number of open surveys by means of a graphic. In detailed mode, a list of available surveys is displayed. In both modes, an enlarged list view can be opened when clicking on the graphic or magnifier icon.';
@@ -51,8 +51,20 @@ $string['setting_presentation_detailed'] = 'Detailed';
 $string['setting_survey_hide_empty'] = 'Hide empty block';
 $string['setting_survey_hide_empty_desc'] = 'If activated, the EvaSys block is hidden when the user has no surveys. If it is not activated, in the compact view a graphic with the text “No open evaluations available” is displayed and in the detailed view an empty list is presented.<br /><em>Please note: If the LTI template you are using is configured in a way that participants are allowed to see and/or access results for surveys they have taken part in, you may not want to hide the block. Otherwise, the participants would no longer be able to access the results.</em>';
 
-$string['setting_survey_show_popupinfo'] = 'Pop-up info';
+$string['setting_survey_show_popupinfo'] = 'Pop-up info active';
 $string['setting_survey_show_popupinfo_desc'] = 'If activated, a pop-up with an information about open online surveys (if existing) is displayed every time a student logs in to Moodle.';
+
+$string['setting_survey_popupinfo_title'] = 'Pop-up title';
+$string['setting_survey_popupinfo_title_desc'] = 'If needed, the title of the pop-up can be modified with this setting.';
+$string['setting_survey_popupinfo_title_default'] = 'Open evaluations';
+
+$string['setting_survey_popupinfo_content'] = 'Pop-up content';
+$string['setting_survey_popupinfo_content_desc'] = 'If needed, the content which is presented in the pop-up can be modified with this setting.';
+$string['setting_survey_popupinfo_content_default'] = '<p>Dear student,</p>
+<p>there are currently one or more open online surveys available for the courses you have visited. Your participation helps us improve our offers.<br />
+The survey links are displayed in the block "Evaluations".</p>
+<p>Thank you for your support!<br />
+Your evaluation team</p>';
 
 
 /*************************/
@@ -159,15 +171,6 @@ $string['onlinesurvey:view_debugdetails'] = 'View debug details';
 $string['surveys_exist'] = 'Open surveys available';
 $string['surveys_exist_not'] = 'No open surveys available';
 
-$string['popupinfo_dialog_title'] = 'Open evaluations';
-$string['popupinfo'] = 'Dear student,<br />
-<br />
-there are currently one or more open online surveys available for the courses you have visited. Your participation helps us improve our offers.<br />
-The survey links are displayed in the block "Evaluations". <br />
-<br />
-Thank you for your support!<br />
-Your evaluation team';
-
 
 /*************************/
 /* Block error messages.
@@ -198,3 +201,10 @@ $string['error_wsdl_namespace'] = 'WSDL namespace parse error<br />';
 $string['privacy:metadata:block_onlinesurvey'] = 'The EvaSys block plugin does not store any personal data, but does transmit user data from Moodle to the connected EvaSys instance.';
 $string['privacy:metadata:block_onlinesurvey:email'] = 'The user\'s email sent to EvaSys to check for existing surveys.';
 $string['privacy:metadata:block_onlinesurvey:username'] = 'The user\'s username value sent to EvaSys to check for existing surveys.';
+
+
+/*************************/
+/* Misc.
+/*************************/
+
+$string['setting_blocktitle_multilangnote'] = 'You can define more than one language (e.g. English and German) by using the Moodle multilanguage filter syntax (see https://docs.moodle.org/en/Multi-language_content_filter for details).';

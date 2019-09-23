@@ -46,7 +46,8 @@ if ($ADMIN->fulltree) {
             new admin_setting_configtext(
                     'block_onlinesurvey/blocktitle',
                     get_string('setting_blocktitle', 'block_onlinesurvey', null, true),
-                    get_string('setting_blocktitle_desc', 'block_onlinesurvey', null, true),
+                    get_string('setting_blocktitle_desc', 'block_onlinesurvey', null, true). ' '.
+                            get_string('setting_blocktitle_multilangnote', 'block_onlinesurvey', null, true),
                     get_string('pluginname', 'block_onlinesurvey', null, true)
             )
     );
@@ -83,6 +84,30 @@ if ($ADMIN->fulltree) {
             get_string('setting_survey_show_popupinfo', 'block_onlinesurvey', null, true),
             get_string('setting_survey_show_popupinfo_desc', 'block_onlinesurvey', null, true),
             0
+        )
+    );
+
+
+    // Pop-up-Info title.
+    $settings->add(
+        new admin_setting_configtext(
+            'block_onlinesurvey/survey_popupinfo_title',
+            get_string('setting_survey_popupinfo_title', 'block_onlinesurvey', null, true),
+            get_string('setting_survey_popupinfo_title_desc', 'block_onlinesurvey', null, true). ' '.
+                    get_string('setting_blocktitle_multilangnote', 'block_onlinesurvey', null, true),
+            get_string('setting_survey_popupinfo_title_default', 'block_onlinesurvey', null, true)
+        )
+    );
+
+
+    // Pop-up-Info content.
+    $settings->add(
+        new admin_setting_confightmleditor(
+            'block_onlinesurvey/survey_popupinfo_content',
+            get_string('setting_survey_popupinfo_content', 'block_onlinesurvey', null, true),
+            get_string('setting_survey_popupinfo_content_desc', 'block_onlinesurvey', null, true). ' '.
+                    get_string('setting_blocktitle_multilangnote', 'block_onlinesurvey', null, true),
+            get_string('setting_survey_popupinfo_content_default', 'block_onlinesurvey', null, true)
         )
     );
 

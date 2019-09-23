@@ -166,6 +166,9 @@ class block_onlinesurvey extends block_base {
     public function get_content() {
         global $CFG, $PAGE, $USER;
 
+        // Block settings.
+        $config = get_config("block_onlinesurvey");
+
         $context = context_system::instance();
         if (! has_capability('block/onlinesurvey:view', $context)) {
             $this->content = null;
@@ -200,14 +203,22 @@ class block_onlinesurvey extends block_base {
                     "</iframe>';
             $this->content->text .= '</div>';
 
-            $popupinfotitle = get_string('popupinfo_dialog_title', 'block_onlinesurvey');
-            $popupinfocontent = get_string('popupinfo', 'block_onlinesurvey');
+            if ($config->survey_popupinfo_title != '') {
+                $popupinfotitle = format_string($config->survey_popupinfo_title);
+            } else {
+                $popupinfotitle = get_string('setting_survey_popupinfo_title_default', 'block_onlinesurvey');
+            }
+            if ($config->survey_popupinfo_content != '') {
+                $popupinfocontent = format_text($config->survey_popupinfo_content);
+            } else {
+                $popupinfocontent = get_string('setting_survey_popupinfo_content_default', 'block_onlinesurvey');
+            }
 
             $PAGE->requires->js_call_amd('block_onlinesurvey/modal-zoom', 'init',
                     array($popupinfotitle, $popupinfocontent, $USER->currentlogin));
             $PAGE->requires->css('/blocks/onlinesurvey/style/block_onlinesurvey_modal-zoom.css');
 
-            if (get_config('block_onlinesurvey', 'survey_hide_empty')) {
+            if ($config->survey_hide_empty) {
                 $PAGE->requires->css('/blocks/onlinesurvey/style/block_onlinesurvey_hide.css');
             }
         }

@@ -41,7 +41,7 @@ $string['setting_heading_appearance'] = 'Darstellung';
 $string['setting_heading_appearance_desc'] = 'Die Einstellungen in diesem Abschnitt legen die Darstellung des EvaSys Blocks fest.';
 
 $string['setting_blocktitle'] = 'Titel';
-$string['setting_blocktitle_desc'] = 'Der hier eingegebene Text wird als Block-Titel verwendet. Wenn erforderlich, können mehrere Sprachen (z.B. Englisch und Deutsch) mit der Moodle Multilanguage filter syntax eingegeben werden (siehe https://docs.moodle.org/en/Multi-language_content_filter).';
+$string['setting_blocktitle_desc'] = 'Der hier eingegebene Text wird als Block-Titel verwendet.';
 
 $string['setting_presentation'] = 'Darstellungsmodus';
 $string['setting_presentation_desc'] = 'Im kompakten Darstellungsmodus wird im EvaSys Block lediglich die Anzahl der offenen Umfragen über eine Grafik ausgewiesen. Im detaillierten Darstellungsmodus werden die Links auf die Onlineumfragen bereits im EvaSys Block dargestellt. In beiden Modi kann eine vergrößerte Listenansicht mit Klick auf die Grafik oder die Lupe geöffnet werden.';
@@ -51,8 +51,20 @@ $string['setting_presentation_detailed'] = 'Detailliert';
 $string['setting_survey_hide_empty'] = 'Leeren Block verbergen';
 $string['setting_survey_hide_empty_desc'] = 'Wenn aktiviert, wird der EvaSys-Block verborgen, wenn keine Umfragen für den Nutzer vorhanden sind. Wenn nicht aktiviert, wird in der Kompaktansicht eine Grafik mit einem Häkchen und dem Text „Keine offenen Evaluationen“ angezeigt, in der Detailansicht eine leere Liste.<br /><em>Bitte beachten Sie: Wenn Sie im LTI-Template eingestellt haben, dass Studierende auch bereits abgeschlossene Umfragen und/oder Umfrageergebnisse einsehen dürfen, dann sollten Sie den Block nicht verbergen. Andernfalls könnten die Studierenden nach Teilnahme an der letzten Umfrage die Daten nicht mehr einsehen.</em>';
 
-$string['setting_survey_show_popupinfo'] = 'Pop-up Meldung';
+$string['setting_survey_show_popupinfo'] = 'Pop-up Meldung aktiv';
 $string['setting_survey_show_popupinfo_desc'] = 'Wenn aktiviert, wird bei jedem Log-in eines Studierenden in Moodle ein Pop-up mit Informationen zu offenen Onlineumfragen (so vorhanden) angezeigt.';
+
+$string['setting_survey_popupinfo_title'] = 'Pop-up Titel';
+$string['setting_survey_popupinfo_title_desc'] = 'Falls erforderlich kann mit dieser Einstellung der Titel des Pop-up angepasst werden.';
+$string['setting_survey_popupinfo_title_default'] = 'Offene Evaluationen';
+
+$string['setting_survey_popupinfo_content'] = 'Pop-up Inhalt';
+$string['setting_survey_popupinfo_content_desc'] = 'Falls erforderlich kann mit dieser Einstellung der Inhalt des Pop-up angepasst werden.';
+$string['setting_survey_popupinfo_content_default'] = '<p>Liebe(r) Studierende,</p>
+<p>aktuell sind Sie für eine oder mehrere Onlineumfragen zur Evaluation der von Ihnen besuchten Lehrveranstaltungen freigeschaltet. Mit Ihrer Teilnahme helfen Sie uns sehr, unser Studienangebot zu verbessern.<br />
+Die Links zu den Befragungen werden Ihnen im Block "Evaluationen" angezeigt.</p>
+<p>Vielen Dank für Ihre Unterstützung!<br />
+Ihr Evaluationsteam</p>';
 
 
 /*************************/
@@ -159,16 +171,6 @@ $string['onlinesurvey:view_debugdetails'] = 'Debug-Details anzeigen';
 $string['surveys_exist'] = 'Offene Evaluationen';
 $string['surveys_exist_not'] = 'Keine offenen Evaluationen';
 
-$string['popupinfo_dialog_title'] = 'Offene Evaluationen';
-$string['popupinfo'] = 'Liebe(r) Studierende,<br />
-<br />
-aktuell sind Sie für eine oder mehrere Onlineumfragen zur Evaluation der von Ihnen besuchten Lehrveranstaltungen freigeschaltet. Mit Ihrer Teilnahme helfen Sie uns sehr, unser Studienangebot zu verbessern.<br />
-Die Links zu den Befragungen werden Ihnen im Block "Evaluationen" angezeigt.<br />
-<br />
-Vielen Dank für Ihre Unterstützung!<br />
-<br />
-Ihr Evaluationsteam';
-
 
 /*************************/
 /* Block error messages.
@@ -199,3 +201,10 @@ $string['error_wsdl_namespace'] = 'WSDL Namespace Fehler beim Parsen<br />';
 $string['privacy:metadata:block_onlinesurvey'] = 'Das EvaSys Block Plugin speichert selbst keine personenbezogenen Daten, überträgt aber personenbezogene Daten von Moodle an die angebundene EvaSys Instanz.';
 $string['privacy:metadata:block_onlinesurvey:email'] = 'Die E-Mail Adresse des Nutzers, welche an EvaSys übertragen wird um zu prüfen ob Umfragen vorliegen.';
 $string['privacy:metadata:block_onlinesurvey:username'] = 'Der Anmeldename des Nutzers, welcher an EvaSys übertragen wird um zu prüfen ob Umfragen vorliegen.';
+
+
+/*************************/
+/* Misc.
+/*************************/
+
+$string['setting_blocktitle_multilangnote'] = 'Wenn erforderlich, können mehrere Sprachen (z.B. Englisch und Deutsch) mit der Moodle Multilanguage filter syntax eingegeben werden (siehe https://docs.moodle.org/en/Multi-language_content_filter).';
