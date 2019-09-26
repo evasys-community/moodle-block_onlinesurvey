@@ -246,6 +246,34 @@ function block_onlinesurvey_viewscript() {
 }
 
 /**
+ * Returns a string with a <script> tag which adds a class to indicate that surveys exist.
+ *
+ * @return string
+ */
+function block_onlinesurvey_highlightscript() {
+    return '<script language="JavaScript">'."\n".
+            '   var parentelements = parent.document.getElementsByClassName("block_onlinesurvey");'."\n".
+            '   for (var i = 0; i < parentelements.length; i++) {'."\n".
+            '       parentelements[i].classList.add("block_onlinesurvey_surveysexist");'."\n".
+            '   }'."\n".
+            '</script>';
+}
+
+/**
+ * Returns a string with a <script> tag which removes a class to indicate that no surveys exist.
+ *
+ * @return string
+ */
+function block_onlinesurvey_donthighlightscript() {
+    return '<script language="JavaScript">'."\n".
+            '   var parentelements = parent.document.getElementsByClassName("block_onlinesurvey");'."\n".
+            '   for (var i = 0; i < parentelements.length; i++) {'."\n".
+            '       parentelements[i].classList.remove("block_onlinesurvey_surveysexist");'."\n".
+            '   }'."\n".
+            '</script>';
+}
+
+/**
  * Perform SOAP request for surveys of a user according to user email or username.
  *
  * @param object $soapconfigobj Object containing data for SOAP request.
@@ -387,7 +415,7 @@ function block_onlinesurvey_get_lti_content($config = null, $context = null, $co
     $surveycount = 0;
 
     // Check for learner content in LTI result.
-    if ($config->presentation == BLOCK_ONLINESURVEY_PRESENTATION_BRIEF || $config->survey_hide_empty ||
+    if ($config->presentation == BLOCK_ONLINESURVEY_PRESENTATION_BRIEF || $config->survey_hide_empty || $config->additionalclass ||
             (!isset($SESSION->block_onlinesurvey_curl_checked) && !empty($config->survey_show_popupinfo))) {
 
         try {
@@ -438,6 +466,13 @@ function block_onlinesurvey_get_lti_content($config = null, $context = null, $co
 
     if ($config->survey_hide_empty && $surveycount > 0 && !$modalzoom) {
         $lticontentstr .= block_onlinesurvey_viewscript();
+    }
+
+    if ($config->additionalclass && $surveycount > 0 && !$modalzoom) {
+        $lticontentstr .= block_onlinesurvey_highlightscript();
+    }
+    else if ($config->additionalclass && $surveycount == 0 && !$modalzoom) {
+        $lticontentstr .= block_onlinesurvey_donthighlightscript();
     }
 
     if ($config->presentation == BLOCK_ONLINESURVEY_PRESENTATION_BRIEF && !$modalzoom) {

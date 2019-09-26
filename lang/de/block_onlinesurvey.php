@@ -147,6 +147,9 @@ $string['setting_survey_debug_desc'] = 'Wenn aktiviert, werden Debug- und Fehler
 $string['setting_additionalcss'] = 'Zusätzliches CSS für iframe';
 $string['setting_additionalcss_desc'] = 'Hier können Sie CSS code eingeben, welcher der Seite welche im EvaSys Block geladen wird, hinzugefügt wird. Sie können diese Einstellung dazu nutzen, um den Inhalt des EvaSys Blocks an Ihre Bedürfnisse anzupassen.';
 
+$string['setting_additionalclass'] = 'Zusätzliche Klasse für den Block';
+$string['setting_additionalclass_desc'] = 'Wenn aktiviert, wird eine zusätzliche CSS Klasse in Ergänzung zur Klasse block_onlinesurvey zum Block hinzugefügt werden für den Fall dass Umfragen vorliegen. Wenn Umfragen vorliegen wird die Klasse block_onlinesurvey_surveysexist hinzugefügt. Wenn keine Umfragen vorliegen, wird diese Klasse nicht im Block gesetzt sein. Sie können diese Einstellung dazu nutzen, um den EvaSys Block an Ihre Bedürfnisse anzupassen.';
+
 $string['setting_lti_regex_learner'] = 'LTI - Regulärer Ausdruck "Learner"';
 $string['setting_lti_regex_learner_desc'] = 'Regulärer Ausdruck, der den Inhalt der LTI-Response nach offenen Onlineumfragen durchsucht. Er muss nur angepasst werden, wenn eigene Templates erstellt oder tiefergehend angepasst wurden, die in den Funktionen von den Standardtemplates abweichen.';
 

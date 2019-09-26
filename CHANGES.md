@@ -6,6 +6,7 @@ Changes
 
 ### Unreleased
 
+* 2019-09-26 - Feature: Add admin setting to add an additional class to the block if surveys exist.
 * 2019-09-23 - Feature: Add admin setting to configure the pop-up title and content including support of multilang text.
 * 2019-03-17 - Cleanup: Remove deprecated function config_save().
 * 2019-03-16 - Cleanup: Remove legacy CSS file, move constants to lib.php.

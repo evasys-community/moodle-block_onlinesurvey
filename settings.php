@@ -384,6 +384,17 @@ if ($ADMIN->fulltree) {
     );
 
 
+    // Additional class for iframe.
+    $settings->add(
+        new admin_setting_configcheckbox(
+            'block_onlinesurvey/additionalclass',
+            get_string('setting_additionalclass', 'block_onlinesurvey', null, true),
+            get_string('setting_additionalclass_desc', 'block_onlinesurvey', null, true),
+            0
+        )
+    );
+
+
     // Learner regular expression.
     $settings->add(
         new admin_setting_configtext(
