@@ -26,6 +26,8 @@ require_once(dirname(__FILE__).'/../../config.php');
 require_login();
 require_once(dirname(__FILE__).'/lib.php');
 
+global $USER, $PAGE;
+
 // Block settings.
 $config = get_config("block_onlinesurvey");
 $error = '';
@@ -39,7 +41,6 @@ if (isset($config)) {
     $debugmode = $config->survey_debug;
 
     // Session information.
-    global $USER;
     if ($moodleuserid = $USER->id) {
         $moodleusername = $USER->username;
         $moodleemail = $USER->email;
@@ -78,18 +79,20 @@ if (isset($config) && !empty($config)) {
     }
 }
 
-echo '<html>'."\n".
-        '<head>'."\n".
-        '<title>'.$title.'</title>';
+echo '<html><head><title>'.$title.'</title>';
 foreach ($css as $file) {
-    echo '<link rel="stylesheet" href="' . $file . '">'."\n";
+    echo '<link rel="stylesheet" href="' . $file . '">';
 }
 if (!empty($config->additionalcss)) {
-    echo "\n"."<style>".$config->additionalcss."</style>";
+    echo '<style>'.$config->additionalcss.'</style>';
 }
+echo '</head>';
 
-echo '</head>'."\n".
-        '<body>';
+if (isset($PAGE->theme->name)) {
+    echo '<body class="theme_'.$PAGE->theme->name.'">';
+} else {
+    echo '<body>';
+}
 
 if (!empty($error)) {
     $context = context_system::instance();
