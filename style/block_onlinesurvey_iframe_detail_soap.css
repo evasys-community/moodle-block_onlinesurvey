@@ -1,0 +1,68 @@
+body {
+    /* We don't load the full Moodle theme, but we try to come as close to Moodle standard UI (which means Bootstrap) as possible. */
+    color: #373a3c;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+
+    /* Make the iFrame as big as possible. */
+    margin: 0;
+    padding: 0;
+}
+
+/* Maximize the space in the block view. */
+body.zoom_block .block_onlinesurvey_survey_list {
+    padding: 0;
+}
+/* Add some space in the modal view. */
+body.zoom_modal .block_onlinesurvey_survey_list {
+    padding: 15px;
+}
+
+.block_onlinesurvey_survey_list li {
+    border-bottom: 1px solid #dee2e6;
+    font-size: .9375rem;
+    list-style-type: none;
+    padding: 5px 0;
+    width: 100%;
+}
+.block_onlinesurvey_survey_list li:last-of-type {
+    border-bottom: none;
+}
+
+.block_onlinesurvey_survey_list li a {
+    color: #1177d1;
+    text-decoration: none;
+}
+.block_onlinesurvey_survey_list li a:hover {
+    text-decoration: underline;
+}
+
+/* Style the button to open the modal. */
+.block_onlinesurvey_allsurveys {
+    text-align: center;
+}
+.block_onlinesurvey_allsurveys button {
+    background-color: #ced4da;
+    border-color: #ced4da;
+    border: 1px solid transparent;
+    color: #212529;
+    cursor: pointer;
+    padding: .375rem .75rem;
+    font-size: .9375rem;
+    line-height: 1.5;
+    border-radius: 0;
+    transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+.block_onlinesurvey_allsurveys button:hover {
+    background-color: #b8c1ca;
+    border-color: #b1bbc4;
+}
+.block_onlinesurvey_allsurveys button:focus {
+    box-shadow: 0 0 0 0.2rem rgba(206, 212, 218, .5);
+    outline: 0;
+}
+
+/* Style the info text which is shown when there are no surveys. */
+.block_onlinesurvey_info {
+    font-size: .9375rem;
+    text-align: left;
+}

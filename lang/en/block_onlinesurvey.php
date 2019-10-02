@@ -173,6 +173,7 @@ $string['onlinesurvey:view_debugdetails'] = 'View debug details';
 
 $string['surveys_exist'] = 'Open surveys available';
 $string['surveys_exist_not'] = 'No open surveys available';
+$string['allsurveys'] = 'All surveys';
 
 
 /*************************/

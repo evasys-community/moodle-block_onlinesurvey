@@ -59,8 +59,10 @@ if (isset($config)) {
         }
 
         if ($connectiontype == 'SOAP') {
-            $css[] = $CFG->wwwroot.'/blocks/onlinesurvey/style/block_onlinesurvey_iframe_soap.css';
+            $css[] = $CFG->wwwroot.'/blocks/onlinesurvey/style/block_onlinesurvey_iframe_detail_soap.css';
         }
+
+        $css[] = $CFG->wwwroot.'/lib/fonts/font-awesome-4.7.0/css/font-awesome.min.css';
     } else {
         $error = get_string('error_userid_not_found', 'block_onlinesurvey').'<br>';
     }
@@ -88,11 +90,16 @@ if (!empty($config->additionalcss)) {
 }
 echo '</head>';
 
+$bodyclasses = array();
 if (isset($PAGE->theme->name)) {
-    echo '<body class="theme_'.$PAGE->theme->name.'">';
-} else {
-    echo '<body>';
+    $bodyclasses[] = 'theme_'.$PAGE->theme->name;
 }
+if ($modalzoom) {
+    $bodyclasses[] = 'zoom_modal';
+} else {
+    $bodyclasses[] = 'zoom_block';
+}
+echo '<body class="'.implode(' ', $bodyclasses).'">';
 
 if (!empty($error)) {
     $context = context_system::instance();

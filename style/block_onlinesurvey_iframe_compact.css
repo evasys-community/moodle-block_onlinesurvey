@@ -1,58 +1,78 @@
 body {
-    color: #444;
-    font-family: Arial, Helvetica;
+    /* We don't load the full Moodle theme, but we try to come as close to Moodle standard UI (which means Bootstrap) as possible. */
+    color: #373a3c;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+
+    /* Make the iFrame as big as possible. */
     margin: 0;
     padding: 0;
 }
 
-div.block_onlinesurvey_text {
-    padding-top: 20px;
-    position: absolute;
-    width: 100%;
-    text-align: center;
-}
-
+/* Make the compact area as big as possible. */
 .block_onlinesurvey_area {
     margin-left: auto;
     margin-right: auto;
     width: 100%;
 }
 
+/* Modify the cursor for opening the popup because the popup is opened with JavaScript. */
 .block_onlinesurvey_surveysexist {
     cursor: pointer;
 }
 
+/* The circle. */
 .block_onlinesurvey_circle {
-    background-color: transparent;
-    background-image: url("../images/EvaSys_2.png");
-    background-position: center center;
+    background-color: #267ca7;
     background-size: 110px 110px;
-    height: 110px;
+    border: 3px solid #267ca7;
+    border-radius: 100%;
+    color: white;
+    height: 90px;
     margin-left: auto;
     margin-right: auto;
     position: relative;
     text-align: center;
     vertical-align: middle;
-    width: 110px;
+    width: 90px;
 }
-
+/* Overwrite circle color if surveys exist. */
 .block_onlinesurvey_area.block_onlinesurvey_surveysexist .block_onlinesurvey_circle {
-    background-image: url("../images/EvaSys_1.png");
+    background-color: #267ca7;
+    border: 3px solid #267ca7;
+    color: white;
+}
+/* Overwrite circle color if no surveys exist. */
+.block_onlinesurvey_area:not(.block_onlinesurvey_surveysexist) .block_onlinesurvey_circle {
+    background-color: #706f6b;
+    border: 3px solid #706f6b;
+    color: white;
 }
 
+/* The number in the circle. */
 .block_onlinesurvey_number {
-    color: white;
-    font-size: 33px;
-    left: 30%;
+    font-size: 40px;
+    font-weight: bold;
+    left: 50%;
     margin: 0;
     position: absolute;
     top: 50%;
     transform: translate(-50%, -50%);
 }
 
-.block_onlinesurvey_glasses {
+/* The text below the circle. */
+.block_onlinesurvey_text {
+    font-size: .9375rem;
+    padding-top: 10px;
+    position: absolute;
+    text-align: center;
+    width: 100%;
+}
+
+/* The magnifier glass near the circle. */
+.block_onlinesurvey_compact_magnifier {
     bottom: 0;
-    display: none;
+    color: #373a3c;
+    display: block;
     font-size: 23px;
     position: absolute;
     right: -10px;

@@ -143,24 +143,29 @@ function block_onlinesurvey_get_soap_content($config = null, $moodleusername = '
 
                 // Surveys found.
                 if ($count && $surveysfound) {
-                    $soapcontentstr .= '<div class="block_onlinesurvey_survey_list table">';
+                    $soapcontentstr .= '<ul class="block_onlinesurvey_survey_list">';
 
                     $cnt = 0;
                     foreach ($SESSION->block_onlinesurvey_surveykeys->OnlineSurveyKeys as $surveykey) {
                         if ($surveykey->TransactionNumber !== 'null') {
                             $cnt++;
 
-                            $soapcontentstr .= '<div class="row">';
-                            $soapcontentstr .= '<div class="cell survey">';
-                            $soapcontentstr .= "<a id=\"surveylink_button_".$cnt."\" ".
+                            $soapcontentstr .= '<li class="survey">';
+                            $soapcontentstr .= "<a id=\"surveylink_".$cnt."\" ".
                                     "href=\"$surveyurl" . "{$surveykey->TransactionNumber}\" ".
                                     "target=\"_blank\">$surveykey->CourseName</a>";
-                            $soapcontentstr .= '</div>';
-                            $soapcontentstr .= '</div>';
+                            $soapcontentstr .= '</li>';
 
                         }
                     }
-                    $soapcontentstr .= '</div>';
+                    $soapcontentstr .= '</ul>';
+
+                    if (!$modalzoom) {
+                        $soapcontentstr .= "<div class=\"block_onlinesurvey_allsurveys\">".
+                            "<button onClick=\"parent.document.getElementById('block_onlinesurvey_surveys_content').".
+                            "click(parent.document);\">".
+                            get_string('allsurveys', 'block_onlinesurvey')."</button></div>";
+                    }
 
                     if (!empty($config->survey_show_popupinfo)) {
                         $soapcontentstr .= '<script language="JavaScript">'.
@@ -195,7 +200,7 @@ function block_onlinesurvey_get_soap_content($config = null, $moodleusername = '
 }
 
 /**
- * Returns a string with HTML code for the detailed view.
+ * Returns a string with HTML code for the compact view.
  *
  * @param int $surveycount number of surveys
  * @return string
@@ -206,7 +211,7 @@ function block_onlinesurvey_createsummary($surveycount) {
 
         $contentstr .= "<div class=\"block_onlinesurvey_circle\" >";
         $contentstr .= "<span class=\"block_onlinesurvey_number\">";
-        $contentstr .= "<i class=\"block_onlinesurvey_number_content\"></i>";
+        $contentstr .= "<i class=\"fa fa-check\"></i>";
         $contentstr .= "</span>";
         $contentstr .= "</div>";
 
@@ -221,6 +226,9 @@ function block_onlinesurvey_createsummary($surveycount) {
         $contentstr .= "<span class=\"block_onlinesurvey_number\">";
         $contentstr .= $surveycount;
         $contentstr .= "</span>";
+        $contentstr .= "<div class=\"block_onlinesurvey_compact_magnifier\">";
+        $contentstr .= "<i class=\"fa fa-search-plus\"></i>";
+        $contentstr .= "</div>";
         $contentstr .= "</div>";
 
         $contentstr .= '<div class="block_onlinesurvey_text">' . get_string('surveys_exist', 'block_onlinesurvey') . '</div>';

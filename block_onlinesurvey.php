@@ -190,13 +190,6 @@ class block_onlinesurvey extends block_base {
 
             $this->content->text .= '<div id="block_onlinesurvey_surveys_content">';
 
-            // Adjustment of the representation in "detail", so that the same magnifying glass is used here as in compact.
-            $this->content->text .= "<div id=\"onlinesurvey_glasses\"  class=\"block_onlinesurvey_glasses\" >";
-            $bgimgurl = $CFG->wwwroot."/blocks/onlinesurvey/images/magnify-plus-outline.png";
-            $this->content->text .= "<i class=\"block_onlinesurvey_glasses_content\" style=\"background-image:url($bgimgurl);\">".
-                    "</i>";
-            $this->content->text .= "</div>";
-
             // Testing reveals that the iframe requires the permissions "allow-same-origin allow-scripts",
             // hence the sandbox attribute can not be used.
             $this->content->text .= '<iframe id="block_onlinesurvey_contentframe" height="100%" width="100%" src="'.$url.'">".

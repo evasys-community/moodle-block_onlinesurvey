@@ -6,6 +6,7 @@ Changes
 
 ### Unreleased
 
+* 2019-10-01 - Improvement: Improve the look and feel of the block in compact mode (LTI + SOAP) and in detailed mode (SOAP).
 * 2019-09-27 - Feature: Add theme name as body class to iframe.
 * 2019-09-26 - Feature: Add admin setting to add an additional class to the block if surveys exist.
 * 2019-09-23 - Feature: Add admin setting to configure the pop-up title and content including support of multilang text.
