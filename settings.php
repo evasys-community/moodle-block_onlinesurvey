@@ -24,7 +24,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once($CFG->dirroot . '/blocks/onlinesurvey/lib.php');
+require_once($CFG->dirroot . '/blocks/onlinesurvey/locallib.php');
 
 if ($ADMIN->fulltree) {
 

@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Plugin "Evaluations (EvaSys)"
+ * Plugin "Evaluations (EvaSys)" - Local library
  *
  * @package    block_onlinesurvey
  * @copyright  2018 Soon Systems GmbH on behalf of Electric Paper Evaluationssysteme GmbH

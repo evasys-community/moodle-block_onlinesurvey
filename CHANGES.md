@@ -6,6 +6,7 @@ Changes
 
 ### Unreleased
 
+* 2019-10-05 - Cleanup: Move the contents of lib.php to locallib.php to slightly improve the performance of the plugin.
 * 2019-10-01 - Improvement: Improve the look and feel of the block in compact mode (LTI + SOAP) and in detailed mode (SOAP).
 * 2019-09-27 - Feature: Add theme name as body class to iframe.
 * 2019-09-26 - Feature: Add admin setting to add an additional class to the block if surveys exist.
