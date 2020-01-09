@@ -6,6 +6,7 @@ Changes
 
 ### Unreleased
 
+* 2020-01-09 - Release: Raise required Moodle core version to 3.5 as this is the oldest currently supported core version.
 * 2019-10-05 - Cleanup: Move the contents of lib.php to locallib.php to slightly improve the performance of the plugin.
 * 2019-10-01 - Improvement: Improve the look and feel of the block in compact mode (LTI + SOAP) and in detailed mode (SOAP).
 * 2019-09-27 - Feature: Add theme name as body class to iframe.
