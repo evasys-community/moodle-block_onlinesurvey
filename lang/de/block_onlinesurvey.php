@@ -96,7 +96,7 @@ $string['setting_heading_soap'] = 'SOAP Einstellungen';
 $string['setting_heading_soap_desc'] = 'Die Einstellungen in diesem Abschnitt legen die Kommunikation des EvaSys Blocks mit EvaSys fest.<br /><em>Diese Einstellungen sind nur erforderlich, wenn Sie "SOAP" in der Einstellung "Kommunikationsprotokoll" ausgewählt haben.</em>';
 
 $string['setting_survey_server'] = 'EvaSys SOAP WSDL URL';
-$string['setting_survey_server_desc'] = 'URL der WSDL Datei auf dem EvaSys-Server (https://[SERVERNAME]/evasys/services/soapserver-v51.wsdl).<br /><em>Achtung: Wird EvaSys mit mehreren Servern betrieben (Dual Server Option), muss hier der Backend-Server angegeben werden, auf dem Nutzer, wie Administratoren arbeiten. Das verhindert eine zu hohe Last auf dem Onlineumfragenserver.</em>';
+$string['setting_survey_server_desc'] = 'URL der WSDL Datei auf dem EvaSys-Server (https://[SERVERNAME]/evasys/services/soapserver-v61.wsdl).<br /><em>Achtung: Wird EvaSys mit mehreren Servern betrieben (Dual Server Option), muss hier der Backend-Server angegeben werden, auf dem Nutzer, wie Administratoren arbeiten. Das verhindert eine zu hohe Last auf dem Onlineumfragenserver.</em>';
 
 $string['setting_survey_login'] = 'EvaSys SOAP Pfad für Onlineumfragen';
 $string['setting_survey_login_desc'] = 'URL des EvaSys Online-Umfrage Logins (https://[SERVERNAME]/evasys/).';
@@ -212,3 +212,9 @@ $string['privacy:metadata:block_onlinesurvey:username'] = 'Der Anmeldename des N
 /*************************/
 
 $string['setting_blocktitle_multilangnote'] = 'Wenn erforderlich, können mehrere Sprachen (z.B. Englisch und Deutsch) mit der Moodle Multilanguage filter syntax eingegeben werden (siehe https://docs.moodle.org/en/Multi-language_content_filter).';
+
+/*************************/
+/* Update notices.
+/*************************/
+
+$string['upgrade_notice_2020010900'] = 'Die Version der empfohlenen Evasys SOAP API wurde von Version 51 auf Version 61 erhöht. Im Zuge des Plugin Updates wurden deshalb die Plugin Einstellungen automatisch angepasst.<br />Die Evasys SOAP WSDL URL lautete bisher: {$a->old}<br />Die Evasys SOAP WSDL URL lautet nun: {$a->new}<br />Bitte kontrollieren Sie die automatisch angepasste URL auf Korrektheit.';
