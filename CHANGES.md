@@ -6,6 +6,7 @@ Changes
 
 ### Unreleased
 
+* 2020-01-15 - Release: Raise Moodle Core versions which are tested by Travis for the upcoming release.
 * 2020-01-14 - Improvement: Add Behat tests for automated testing. However, these need a working EvaSys backend which has to be setup separately.
 * 2020-01-09 - Improvement: Raise the SOAP API Version from 51 to 61 to improve the SOAP survey result display for users who do not have and never had any surveys in EvaSys.
 * 2020-01-09 - Release: Raise required Moodle core version to 3.5 as this is the oldest currently supported core version.
