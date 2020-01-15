@@ -1,0 +1,89 @@
+@block @block_onlinesurvey @javascript @block_onlinesurvey_behavior
+Feature: Configuring the behavior of the onlinesurvey block
+  In order to adapt the presentation of our EvaSys online surveys in Moodle
+  As admin
+  I want to configure the behavior of the block_onlinesurvey plugin in multiple aspects
+
+# This behat test feature file is fully working.
+# But it needs a working EvaSys backend with surveys and users set up in a way as this test expects them as well.
+# Because of that, the feature file is currently only shipped as disabled skeleton.
+
+  Background:
+    Given the following config values are set as admin:
+      | config         | value                                                               | plugin             |
+      | connectiontype | LTI                                                                 | block_onlinesurvey |
+      | lti_url        | https://[SERVERNAME]/customer/lti/lti_provider.php                  | block_onlinesurvey |
+      | lti_password   | secret                                                              | block_onlinesurvey |
+      | presentation   | brief                                                               | block_onlinesurvey |
+    And the following config values are set as admin:
+      | config          | value |
+      | defaulthomepage | 1     |
+    And I log in as "admin"
+    And I am on site homepage
+    And I turn editing mode on
+    And I add the "Evaluations (EvaSys)" block
+    And I configure the "Evaluations (EvaSys)" block
+    And I set the following fields to these values:
+      | Page contexts | 2 |
+    And I press "Save changes"
+    And I turn editing mode off
+    And I follow "Dashboard" in the user menu
+    And I press "Customise this page"
+    And I configure the "Evaluations (EvaSys)" block
+    And I set the following fields to these values:
+      | Display on page types | Dashboard page |
+    And I press "Save changes"
+    And I log out
+
+  Scenario: Change the block title
+    Given the following "users" exist:
+      | username  | email                |
+      | tjohnson  | tjohnson@example.com |
+    When I log in as "tjohnson"
+    Then "Evaluations (EvaSys)" "block" should exist
+    And I log out
+    And the following config values are set as admin:
+      | config     | value              | plugin             |
+      | blocktitle | Our EvaSys surveys | block_onlinesurvey |
+    And I log in as "tjohnson"
+    Then "Our EvaSys surveys" "block" should exist
+
+  Scenario: Display the block only when surveys are available
+    Given the following config values are set as admin:
+      | config            | value | plugin             |
+      | survey_hide_empty | 1     | block_onlinesurvey |
+    And the following "users" exist:
+      | username  | email                |
+      | tjohnson  | tjohnson@example.com |
+      | student1  | student1@example.com |
+    When I log in as "tjohnson"
+    Then "Evaluations (EvaSys)" "block" should exist
+    And "Evaluations (EvaSys)" "block" should be visible
+    And I log out
+    And I log in as "student1"
+    Then "Evaluations (EvaSys)" "block" should exist
+    And "Evaluations (EvaSys)" "block" should not be visible
+
+  Scenario: Display the login popup when surveys are available
+    Given the following config values are set as admin:
+      | config                   | value                       | plugin             |
+      | survey_show_popupinfo    | 1                           | block_onlinesurvey |
+      | survey_popupinfo_title   | You have open surveys!      | block_onlinesurvey |
+      | survey_popupinfo_content | Thank you for your support! | block_onlinesurvey |
+    And the following "users" exist:
+      | username  | email                |
+      | tjohnson  | tjohnson@example.com |
+      | student1  | student1@example.com |
+    When I log in as "tjohnson"
+    Then "Evaluations (EvaSys)" "block" should exist
+    And I wait "2" seconds
+    And "div.block_onlinesurvey_custom-modal_container" "css_element" should exist
+    And I should see "You have open surveys!" in the ".block_onlinesurvey_custom-modal_title" "css_element"
+    And I should see "Thank you for your support!" in the ".block_onlinesurvey_custom-modal_content" "css_element"
+    And I click on ".block_onlinesurvey_custom-modal_close-button" "css_element"
+    And I wait "2" seconds
+    And "div.block_onlinesurvey_custom-modal_container" "css_element" should not exist
+    And I log out
+    And I log in as "student1"
+    And I wait "5" seconds
+    And "div.block_onlinesurvey_custom-modal_container" "css_element" should not exist
