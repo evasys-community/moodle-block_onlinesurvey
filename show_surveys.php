@@ -62,7 +62,7 @@ if (isset($config)) {
             $css[] = $CFG->wwwroot.'/blocks/onlinesurvey/style/block_onlinesurvey_iframe_detail_soap.css';
         }
 
-        $css[] = $CFG->wwwroot.'/lib/fonts/font-awesome-4.7.0/css/font-awesome.min.css';
+        $css[] = $CFG->wwwroot.'/blocks/onlinesurvey/lib/fonts/font-awesome-4.7.0/css/font-awesome.min.css';
     } else {
         $error = get_string('error_userid_not_found', 'block_onlinesurvey').'<br>';
     }
