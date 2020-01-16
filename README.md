@@ -82,8 +82,8 @@ https://github.com/EPPlugin/moodle-block_onlinesurvey/blob/master/DOCUMENTATION.
 
 Theme support
 -------------
-This plugin has been developed on and tested with Moodle Core's Boost and Clean themes.
-While this plugin should also work with other Bootstrap-based third party themes, we can't support any other theme than Boost and Clean.
+This plugin has been developed on and tested with Moodle Core's Boost and Clean (until Moodle 3.6) and Classic (from Moodle 3.7 on) themes.
+While this plugin should also work with other Bootstrap-based third party themes, we can't support any other theme than Boost, Clean and Classic.
 
 
 Plugin repositories
