@@ -128,13 +128,13 @@ This plugin has not been tested with Moodle's support for right-to-left (RTL) la
 If you want to use this plugin with a RTL language and it doesn't work as-is, you are free to send us a pull request on Github with modifications.
 
 
-Copyright
----------
+Copyrights
+----------
 
-Soon Systems GmbH
-www.soon-systems.de
-
-on behalf of
-
+Plugin maintainer / product owner
 Electric Paper Evaluationssysteme GmbH
 www.evasys.de
+
+Development and customizing
+Soon-Systems-GmbH
+www.soon-systems.de
