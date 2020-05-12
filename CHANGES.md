@@ -6,6 +6,7 @@ Changes
 
 ### Unreleased
 
+* 2020-05-12 - Feature: Add admin setting to show a spinner icon while the list of open surveys is being loaded from EvaSys.
 * 2020-01-17 - Improvement: Update Travis CI configuration from upstream.
 * 2020-01-16 - Release: Update README.md section about supported themes and added Classic which is part of Moodle core since Moodle 3.7.
 * 2020-01-16 - Bugfix: Due to MDL-65936, it is not possible anymore to include FontAwesome with pure CSS (i.e. without SCSS) from Moodle 3.8 on. Thus, we have to ship our own packaged version of FontAwesome for the show_surveys.php iFrame unfortunately.

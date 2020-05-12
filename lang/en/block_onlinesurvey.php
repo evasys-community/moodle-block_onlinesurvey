@@ -51,6 +51,9 @@ $string['setting_presentation_detailed'] = 'Detailed';
 $string['setting_survey_hide_empty'] = 'Hide empty block';
 $string['setting_survey_hide_empty_desc'] = 'If activated, the EvaSys block is hidden when the user has no surveys. If it is not activated, in the compact view a graphic with the text “No open evaluations available” is displayed and in the detailed view an empty list is presented.<br /><em>Please note: If the LTI template you are using is configured in a way that participants are allowed to see and/or access results for surveys they have taken part in, you may not want to hide the block. Otherwise, the participants would no longer be able to access the results.</em>';
 
+$string['setting_show_spinner'] = 'Show spinner';
+$string['setting_show_spinner_desc'] = 'If activated, a spinner icon will be shown in the block until the open surveys are loaded from EvaSys.';
+
 $string['setting_survey_show_popupinfo'] = 'Pop-up info active';
 $string['setting_survey_show_popupinfo_desc'] = 'If activated, a pop-up with an information about open online surveys (if existing) is displayed every time a student logs in to Moodle.';
 

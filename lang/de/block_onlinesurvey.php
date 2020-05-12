@@ -51,6 +51,9 @@ $string['setting_presentation_detailed'] = 'Detailliert';
 $string['setting_survey_hide_empty'] = 'Leeren Block verbergen';
 $string['setting_survey_hide_empty_desc'] = 'Wenn aktiviert, wird der EvaSys-Block verborgen, wenn keine Umfragen für den Nutzer vorhanden sind. Wenn nicht aktiviert, wird in der Kompaktansicht eine Grafik mit einem Häkchen und dem Text „Keine offenen Evaluationen“ angezeigt, in der Detailansicht eine leere Liste.<br /><em>Bitte beachten Sie: Wenn Sie im LTI-Template eingestellt haben, dass Studierende auch bereits abgeschlossene Umfragen und/oder Umfrageergebnisse einsehen dürfen, dann sollten Sie den Block nicht verbergen. Andernfalls könnten die Studierenden nach Teilnahme an der letzten Umfrage die Daten nicht mehr einsehen.</em>';
 
+$string['setting_show_spinner'] = 'Wartebild anzeigen';
+$string['setting_show_spinner_desc'] = 'Wenn aktiviert, wird ein Wartebild im EvavSys Block angezeigt bis die offenen Umfragen von EvaSys geladen sind.';
+
 $string['setting_survey_show_popupinfo'] = 'Pop-up Meldung aktiv';
 $string['setting_survey_show_popupinfo_desc'] = 'Wenn aktiviert, wird bei jedem Log-in eines Studierenden in Moodle ein Pop-up mit Informationen zu offenen Onlineumfragen (so vorhanden) angezeigt.';
 

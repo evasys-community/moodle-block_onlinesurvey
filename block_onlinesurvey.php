@@ -188,7 +188,12 @@ class block_onlinesurvey extends block_base {
             $urlparams = 'ctxid='.$context->id.'&cid='.$course->id;
             $url = $CFG->wwwroot.'/blocks/onlinesurvey/show_surveys.php?'.$urlparams;
 
-            $this->content->text .= '<div id="block_onlinesurvey_surveys_content">';
+            if ($config->show_spinner) {
+                $this->content->text .= '<div id="block_onlinesurvey_surveys_content" class="block_onlinesurvey_is-loading">';
+                $this->content->text .= '<div class="block_onlinesurvey_surveys_loading"><div class="block_onlinesurvey_lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div></div>';
+            } else {
+                $this->content->text .= '<div id="block_onlinesurvey_surveys_content">';
+            }
 
             // Testing reveals that the iframe requires the permissions "allow-same-origin allow-scripts",
             // hence the sandbox attribute can not be used.
@@ -210,6 +215,11 @@ class block_onlinesurvey extends block_base {
             $PAGE->requires->js_call_amd('block_onlinesurvey/modal-zoom', 'init',
                     array($popupinfotitle, $popupinfocontent, $USER->currentlogin));
             $PAGE->requires->css('/blocks/onlinesurvey/style/block_onlinesurvey_modal-zoom.css');
+
+            if ($config->show_spinner) {
+                $PAGE->requires->js_call_amd('block_onlinesurvey/spinner', 'init');
+                $PAGE->requires->css('/blocks/onlinesurvey/style/block_onlinesurvey_spinner.css');
+            }
 
             if ($config->survey_hide_empty) {
                 $PAGE->requires->css('/blocks/onlinesurvey/style/block_onlinesurvey_hide.css');

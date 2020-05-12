@@ -77,6 +77,17 @@ if ($ADMIN->fulltree) {
     );
 
 
+    // Show spinner.
+    $settings->add(
+        new admin_setting_configcheckbox(
+            'block_onlinesurvey/show_spinner',
+            get_string('setting_show_spinner', 'block_onlinesurvey', null, true),
+            get_string('setting_show_spinner_desc', 'block_onlinesurvey', null, true),
+            1
+        )
+    );
+
+
     // Pop-up-Info active.
     $settings->add(
         new admin_setting_configcheckbox(
