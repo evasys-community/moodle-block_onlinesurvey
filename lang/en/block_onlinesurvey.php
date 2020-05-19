@@ -44,7 +44,7 @@ $string['setting_blocktitle'] = 'Title';
 $string['setting_blocktitle_desc'] = 'The text entered here is used as the block title.';
 
 $string['setting_presentation'] = 'Display mode';
-$string['setting_presentation_desc'] = 'In compact mode, the EvaSys Block displays the number of open surveys by means of a graphic. In detailed mode, a list of available surveys is displayed. In both modes, an enlarged list view can be opened when clicking on the graphic or magnifier icon.';
+$string['setting_presentation_desc'] = 'In compact mode, the EvaSys Block displays the number of open surveys by means of a graphic. In this mode, an enlarged list view can be opened as soon as the user has at least one open survey by clicking on the graphic.<br />In detailed mode, the EvaSys Block displays the list of available surveys directly. In this mode, but only when using a SOAP connection, an enlarged list view can be opened as soon as the user has at least one open survey by clicking a button below the list.';
 $string['setting_presentation_brief'] = 'Compact';
 $string['setting_presentation_detailed'] = 'Detailed';
 

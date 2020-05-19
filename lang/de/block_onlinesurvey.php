@@ -44,7 +44,7 @@ $string['setting_blocktitle'] = 'Titel';
 $string['setting_blocktitle_desc'] = 'Der hier eingegebene Text wird als Block-Titel verwendet.';
 
 $string['setting_presentation'] = 'Darstellungsmodus';
-$string['setting_presentation_desc'] = 'Im kompakten Darstellungsmodus wird im EvaSys Block lediglich die Anzahl der offenen Umfragen über eine Grafik ausgewiesen. Im detaillierten Darstellungsmodus werden die Links auf die Onlineumfragen bereits im EvaSys Block dargestellt. In beiden Modi kann eine vergrößerte Listenansicht mit Klick auf die Grafik oder die Lupe geöffnet werden.';
+$string['setting_presentation_desc'] = 'Im kompakten Darstellungsmodus wird im EvaSys Block lediglich die Anzahl der offenen Umfragen über eine Grafik ausgewiesen. In diesem Modus kann eine vergrößerte Listenansicht mit Klick auf die Grafik geöffnet werden sobald der Nutzer mindestens eine offene Umfrage hat.<br />Im detaillierten Darstellungsmodus werden die Links auf die Onlineumfragen direkt im EvaSys Block bereitgestellt. In diesem Modus, aber nur bei einer Kommunikation via SOAP, kann eine vergrößerte Listenansicht mit Klick auf einen Knopf unter der Liste geöffnet werden sobald der Nutzer mindestens eine offene Umfrage hat.';
 $string['setting_presentation_brief'] = 'Kompakt';
 $string['setting_presentation_detailed'] = 'Detailliert';
 
