@@ -2,3 +2,42 @@
 .block_onlinesurvey #block_onlinesurvey_contentframe {
     border: 0;
 }
+
+/* Set the basic size of the iFrame in compact and detailed view. */
+.block_onlinesurvey #block_onlinesurvey_contentframe {
+    width: 100%;
+}
+.block_onlinesurvey #block_onlinesurvey_contentframe.block_onlinesurvey_compact {
+    height: 150px;
+}
+.block_onlinesurvey #block_onlinesurvey_contentframe.block_onlinesurvey_detailed.block_onlinesurvey_soap {
+    height: 60px;
+}
+.block_onlinesurvey #block_onlinesurvey_contentframe.block_onlinesurvey_detailed.block_onlinesurvey_lti {
+    height: 120px;
+}
+/* In the detailed view, increase the height as soon as there are surveys. */
+.block_onlinesurvey_surveysexist.block_onlinesurvey_surveycount_1 #block_onlinesurvey_contentframe.block_onlinesurvey_detailed.block_onlinesurvey_soap {
+    height: 80px;
+}
+.block_onlinesurvey_surveysexist.block_onlinesurvey_surveycount_1 #block_onlinesurvey_contentframe.block_onlinesurvey_detailed.block_onlinesurvey_lti {
+    height: 110px;
+}
+.block_onlinesurvey_surveysexist.block_onlinesurvey_surveycount_2 #block_onlinesurvey_contentframe.block_onlinesurvey_detailed.block_onlinesurvey_soap {
+    height: 100px;
+}
+.block_onlinesurvey_surveysexist.block_onlinesurvey_surveycount_2 #block_onlinesurvey_contentframe.block_onlinesurvey_detailed.block_onlinesurvey_lti {
+    height: 165px;
+}
+.block_onlinesurvey_surveysexist.block_onlinesurvey_surveycount_3 #block_onlinesurvey_contentframe.block_onlinesurvey_detailed.block_onlinesurvey_soap {
+    height: 130px;
+}
+.block_onlinesurvey_surveysexist.block_onlinesurvey_surveycount_3 #block_onlinesurvey_contentframe.block_onlinesurvey_detailed.block_onlinesurvey_lti {
+    height: 220px;
+}
+.block_onlinesurvey_surveysexist.block_onlinesurvey_surveycount_gt3 #block_onlinesurvey_contentframe.block_onlinesurvey_detailed.block_onlinesurvey_soap {
+    height: 160px;
+}
+.block_onlinesurvey_surveysexist.block_onlinesurvey_surveycount_gt3 #block_onlinesurvey_contentframe.block_onlinesurvey_detailed.block_onlinesurvey_lti {
+    height: 275px;
+}

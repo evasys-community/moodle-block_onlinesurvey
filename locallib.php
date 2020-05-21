@@ -60,6 +60,7 @@ function block_onlinesurvey_get_soap_content($config = null, $moodleusername = '
     $debugmode = $config->survey_debug;
 
     $hideempty = $config->survey_hide_empty;
+    $additionalclass = $config->additionalclass;
 
     $timeout = isset($config->survey_timeout) ? $config->survey_timeout : BLOCK_ONLINESURVEY_DEFAULT_TIMEOUT;
 
@@ -124,6 +125,13 @@ function block_onlinesurvey_get_soap_content($config = null, $moodleusername = '
 
             if ($hideempty && $count2 > 0) {
                 $soapcontentstr .= block_onlinesurvey_viewscript();
+            }
+
+            if ($additionalclass && $count2 > 0 && !$modalzoom) {
+                $soapcontentstr .= block_onlinesurvey_highlightscript($count2);
+            }
+            else if ($additionalclass && $count2 == 0 && !$modalzoom) {
+                $soapcontentstr .= block_onlinesurvey_donthighlightscript();
             }
 
             if ($config->presentation == BLOCK_ONLINESURVEY_PRESENTATION_BRIEF && !$modalzoom) {
@@ -219,7 +227,15 @@ function block_onlinesurvey_createsummary($surveycount) {
 
         $contentstr .= "</div>";
     } else {
-        $contentstr = "<div id=\"block_onlinesurvey_area\" class=\"block_onlinesurvey_area block_onlinesurvey_surveysexist\" ".
+        if ($surveycount > 0 && $surveycount <= 3) {
+            $surveycountclass = 'block_onlinesurvey_surveycount_'.$surveycount;
+        }
+        if ($surveycount > 3) {
+            $surveycountclass = 'block_onlinesurvey_surveycount_gt3';
+        }
+
+        $contentstr = "<div id=\"block_onlinesurvey_area\" ".
+                "class=\"block_onlinesurvey_area block_onlinesurvey_surveysexist ".$surveycountclass."\" ".
                 "onClick=\"parent.document.getElementById('block_onlinesurvey_surveys_content').click(parent.document);\">";
 
         $contentstr .= "<div class=\"block_onlinesurvey_circle\" >";
@@ -256,13 +272,22 @@ function block_onlinesurvey_viewscript() {
 /**
  * Returns a string with a <script> tag which adds a class to indicate that surveys exist.
  *
+ * @param int $surveycount The number of open surveys.
  * @return string
  */
-function block_onlinesurvey_highlightscript() {
+function block_onlinesurvey_highlightscript($surveycount) {
+    if ($surveycount > 0 && $surveycount <= 3) {
+        $surveycountclass = 'block_onlinesurvey_surveycount_'.$surveycount;
+    }
+    if ($surveycount > 3) {
+        $surveycountclass = 'block_onlinesurvey_surveycount_gt3';
+    }
+
     return '<script language="JavaScript">'."\n".
             '   var parentelements = parent.document.getElementsByClassName("block_onlinesurvey");'."\n".
             '   for (var i = 0; i < parentelements.length; i++) {'."\n".
             '       parentelements[i].classList.add("block_onlinesurvey_surveysexist");'."\n".
+            '       parentelements[i].classList.add("'.$surveycountclass.'");'."\n".
             '   }'."\n".
             '</script>';
 }
@@ -477,7 +502,7 @@ function block_onlinesurvey_get_lti_content($config = null, $context = null, $co
     }
 
     if ($config->additionalclass && $surveycount > 0 && !$modalzoom) {
-        $lticontentstr .= block_onlinesurvey_highlightscript();
+        $lticontentstr .= block_onlinesurvey_highlightscript($surveycount);
     }
     else if ($config->additionalclass && $surveycount == 0 && !$modalzoom) {
         $lticontentstr .= block_onlinesurvey_donthighlightscript();

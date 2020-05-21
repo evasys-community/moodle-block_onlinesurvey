@@ -6,6 +6,7 @@ Changes
 
 ### Unreleased
 
+* 2020-05-21 - Improvement: Improve the height of the iFrame when there aren't any surveys and when there are surveys.
 * 2020-05-12 - Feature: Add admin setting to show a spinner icon while the list of open surveys is being loaded from EvaSys.
 * 2020-01-17 - Improvement: Update Travis CI configuration from upstream.
 * 2020-01-16 - Release: Update README.md section about supported themes and added Classic which is part of Moodle core since Moodle 3.7.

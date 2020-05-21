@@ -195,10 +195,22 @@ class block_onlinesurvey extends block_base {
                 $this->content->text .= '<div id="block_onlinesurvey_surveys_content">';
             }
 
+            if ($config->connectiontype == 'LTI') {
+                $connectionclass = 'block_onlinesurvey_lti';
+            } else if ($config->connectiontype == 'SOAP') {
+                $connectionclass = 'block_onlinesurvey_soap';
+            }
+
+            if ($config->presentation == 'brief') {
+                $presentationclass = 'block_onlinesurvey_compact';
+            } else if ($config->presentation == 'detailed') {
+                $presentationclass = 'block_onlinesurvey_detailed';
+            }
+
             // Testing reveals that the iframe requires the permissions "allow-same-origin allow-scripts",
             // hence the sandbox attribute can not be used.
-            $this->content->text .= '<iframe id="block_onlinesurvey_contentframe" height="100%" width="100%" src="'.$url.'">".
-                    "</iframe>';
+            $this->content->text .= '<iframe id="block_onlinesurvey_contentframe" '.
+                    'class="'.$connectionclass.' '.$presentationclass.'" src="'.$url.'"></iframe>';
             $this->content->text .= '</div>';
 
             if ($config->survey_popupinfo_title != '') {

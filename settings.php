@@ -401,7 +401,7 @@ if ($ADMIN->fulltree) {
             'block_onlinesurvey/additionalclass',
             get_string('setting_additionalclass', 'block_onlinesurvey', null, true),
             get_string('setting_additionalclass_desc', 'block_onlinesurvey', null, true),
-            0
+            1
         )
     );
 
