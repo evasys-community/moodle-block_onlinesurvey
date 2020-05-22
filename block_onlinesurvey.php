@@ -211,6 +211,24 @@ class block_onlinesurvey extends block_base {
             // hence the sandbox attribute can not be used.
             $this->content->text .= '<iframe id="block_onlinesurvey_contentframe" '.
                     'class="'.$connectionclass.' '.$presentationclass.'" src="'.$url.'"></iframe>';
+
+            // If we are showing detailed mode.
+            if ($config->presentation == 'detailed') {
+                // If enabled, add the 'All surveys' button as directly visible.
+                if ($config->offer_zoom == true) {
+                    $this->content->text .= '<div class="block_onlinesurvey_allsurveys"><button class="btn btn-secondary" ' .
+                            'onClick="event.stopPropagation(); document.getElementById(\'block_onlinesurvey_surveys_content\').click();">' .
+                            get_string('allsurveys', 'block_onlinesurvey') . '</button></div>';
+
+                    // Otherwise, add the 'Zoom survey list' button as hidden.
+                } else {
+                    $this->content->text .= '<div class="block_onlinesurvey_allsurveys"><button class="btn btn-secondary" ' .
+                            'onClick="event.stopPropagation(); document.getElementById(\'block_onlinesurvey_surveys_content\').click();">' .
+                            get_string('zoomsurveylist', 'block_onlinesurvey') . '</button></div>';
+                    $PAGE->requires->css('/blocks/onlinesurvey/style/block_onlinesurvey_offerzoom.css');
+                }
+            }
+
             $this->content->text .= '</div>';
 
             if ($config->survey_popupinfo_title != '') {

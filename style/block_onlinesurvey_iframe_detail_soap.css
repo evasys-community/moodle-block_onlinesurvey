@@ -11,6 +11,7 @@ body {
 /* Maximize the space in the block view. */
 body.zoom_block .block_onlinesurvey_survey_list {
     padding: 0;
+    margin: 0;
 }
 /* Add some space in the modal view. */
 body.zoom_modal .block_onlinesurvey_survey_list {
@@ -36,33 +37,12 @@ body.zoom_modal .block_onlinesurvey_survey_list {
     text-decoration: underline;
 }
 
-/* Style the button to open the modal. */
-.block_onlinesurvey_allsurveys {
-    text-align: center;
-}
-.block_onlinesurvey_allsurveys button {
-    background-color: #ced4da;
-    border-color: #ced4da;
-    border: 1px solid transparent;
-    color: #212529;
-    cursor: pointer;
-    padding: .375rem .75rem;
-    font-size: .9375rem;
-    line-height: 1.5;
-    border-radius: 0;
-    transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
-}
-.block_onlinesurvey_allsurveys button:hover {
-    background-color: #b8c1ca;
-    border-color: #b1bbc4;
-}
-.block_onlinesurvey_allsurveys button:focus {
-    box-shadow: 0 0 0 0.2rem rgba(206, 212, 218, .5);
-    outline: 0;
-}
-
-/* Style the info text which is shown when there are no surveys. */
-.block_onlinesurvey_info {
+/* Style the info text which is shown when there are no surveys in the block view. */
+body.zoom_block .block_onlinesurvey_info {
     font-size: .9375rem;
     text-align: left;
+}
+/* Add some space in the modal view. */
+body.zoom_modal .block_onlinesurvey_info {
+    padding: 15px;
 }

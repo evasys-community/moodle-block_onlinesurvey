@@ -51,6 +51,9 @@ $string['setting_presentation_detailed'] = 'Detailed';
 $string['setting_survey_hide_empty'] = 'Hide empty block';
 $string['setting_survey_hide_empty_desc'] = 'If activated, the EvaSys block is hidden when the user has no surveys. If it is not activated, in the compact view a graphic with the text “No open evaluations available” is displayed and in the detailed view an empty list is presented.<br /><em>Please note: If the LTI template you are using is configured in a way that participants are allowed to see and/or access results for surveys they have taken part in, you may not want to hide the block. Otherwise, the participants would no longer be able to access the results.</em>';
 
+$string['setting_offer_zoom'] = 'Always offer enlarged list view';
+$string['setting_offer_zoom_desc'] = 'If activated, the user will always be able to open the enlarged list view. If not activated, the use will only be able to open the enlarged list view if he has open surveys.<br /><em>Please note: If the LTI template you are using is configured in a way that participants are allowed to see and/or access results for surveys they have taken part in, you will want to enable this setting. Otherwise, the participants would no longer be able to access the results.</em>';
+
 $string['setting_show_spinner'] = 'Show spinner';
 $string['setting_show_spinner_desc'] = 'If activated, a spinner icon will be shown in the block until the open surveys are loaded from EvaSys.';
 
@@ -177,6 +180,7 @@ $string['onlinesurvey:view_debugdetails'] = 'View debug details';
 $string['surveys_exist'] = 'Open surveys available';
 $string['surveys_exist_not'] = 'No open surveys available';
 $string['allsurveys'] = 'All surveys';
+$string['zoomsurveylist'] = 'Zoom survey list';
 
 
 /*************************/

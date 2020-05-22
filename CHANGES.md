@@ -6,6 +6,7 @@ Changes
 
 ### Unreleased
 
+* 2020-05-22 - Feature: Add admin setting to offer the enlarged list view even if there aren't any open surveys.
 * 2020-05-21 - Improvement: Add note when expert settings are processed.
 * 2020-05-21 - Improvement: Improve the height of the iFrame when there aren't any surveys and when there are surveys.
 * 2020-05-12 - Feature: Add admin setting to show a spinner icon while the list of open surveys is being loaded from EvaSys.

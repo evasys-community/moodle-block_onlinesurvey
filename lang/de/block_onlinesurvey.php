@@ -51,6 +51,9 @@ $string['setting_presentation_detailed'] = 'Detailliert';
 $string['setting_survey_hide_empty'] = 'Leeren Block verbergen';
 $string['setting_survey_hide_empty_desc'] = 'Wenn aktiviert, wird der EvaSys-Block verborgen, wenn keine Umfragen für den Nutzer vorhanden sind. Wenn nicht aktiviert, wird in der Kompaktansicht eine Grafik mit einem Häkchen und dem Text „Keine offenen Evaluationen“ angezeigt, in der Detailansicht eine leere Liste.<br /><em>Bitte beachten Sie: Wenn Sie im LTI-Template eingestellt haben, dass Studierende auch bereits abgeschlossene Umfragen und/oder Umfrageergebnisse einsehen dürfen, dann sollten Sie den Block nicht verbergen. Andernfalls könnten die Studierenden nach Teilnahme an der letzten Umfrage die Daten nicht mehr einsehen.</em>';
 
+$string['setting_offer_zoom'] = 'Vergrößerte Listenansicht immer anbieten';
+$string['setting_offer_zoom_desc'] = 'Wenn aktiviert, wird der Nutzer die vergrößerte Listenansicht immer öffnen können. Wenn deaktiviert, wird der Nutzer die vergrößerte Listenansicht nur öffnen können falls er offene Umfrage hat.<br /><em>Bitte beachten Sie: Wenn Sie im LTI-Template eingestellt haben, dass Studierende auch bereits abgeschlossene Umfragen und/oder Umfrageergebnisse einsehen dürfen, dann sollten Sie diese Einstellung aktivieren. Andernfalls könnten die Studierenden nach Teilnahme an der letzten Umfrage die Daten nicht mehr einsehen.</em>';
+
 $string['setting_show_spinner'] = 'Wartebild anzeigen';
 $string['setting_show_spinner_desc'] = 'Wenn aktiviert, wird ein Wartebild im EvavSys Block angezeigt bis die offenen Umfragen von EvaSys geladen sind.';
 
@@ -177,6 +180,7 @@ $string['onlinesurvey:view_debugdetails'] = 'Debug-Details anzeigen';
 $string['surveys_exist'] = 'Offene Evaluationen';
 $string['surveys_exist_not'] = 'Keine offenen Evaluationen';
 $string['allsurveys'] = 'Alle Umfragen';
+$string['zoomsurveylist'] = 'Umfragenliste vergrößern';
 
 
 /*************************/

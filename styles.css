@@ -18,26 +18,32 @@
 }
 /* In the detailed view, increase the height as soon as there are surveys. */
 .block_onlinesurvey_surveysexist.block_onlinesurvey_surveycount_1 #block_onlinesurvey_contentframe.block_onlinesurvey_detailed.block_onlinesurvey_soap {
-    height: 80px;
+    height: 60px;
 }
 .block_onlinesurvey_surveysexist.block_onlinesurvey_surveycount_1 #block_onlinesurvey_contentframe.block_onlinesurvey_detailed.block_onlinesurvey_lti {
     height: 110px;
 }
 .block_onlinesurvey_surveysexist.block_onlinesurvey_surveycount_2 #block_onlinesurvey_contentframe.block_onlinesurvey_detailed.block_onlinesurvey_soap {
-    height: 100px;
+    height: 70px;
 }
 .block_onlinesurvey_surveysexist.block_onlinesurvey_surveycount_2 #block_onlinesurvey_contentframe.block_onlinesurvey_detailed.block_onlinesurvey_lti {
     height: 165px;
 }
 .block_onlinesurvey_surveysexist.block_onlinesurvey_surveycount_3 #block_onlinesurvey_contentframe.block_onlinesurvey_detailed.block_onlinesurvey_soap {
-    height: 130px;
+    height: 95px;
 }
 .block_onlinesurvey_surveysexist.block_onlinesurvey_surveycount_3 #block_onlinesurvey_contentframe.block_onlinesurvey_detailed.block_onlinesurvey_lti {
     height: 220px;
 }
 .block_onlinesurvey_surveysexist.block_onlinesurvey_surveycount_gt3 #block_onlinesurvey_contentframe.block_onlinesurvey_detailed.block_onlinesurvey_soap {
-    height: 160px;
+    height: 120px;
 }
 .block_onlinesurvey_surveysexist.block_onlinesurvey_surveycount_gt3 #block_onlinesurvey_contentframe.block_onlinesurvey_detailed.block_onlinesurvey_lti {
     height: 275px;
+}
+
+/* Style the 'All surveys' button to open the modal. */
+.block_onlinesurvey_allsurveys {
+    margin-top: 15px;
+    text-align: center;
 }

@@ -77,6 +77,17 @@ if ($ADMIN->fulltree) {
     );
 
 
+    // Offer zoom.
+    $settings->add(
+        new admin_setting_configcheckbox(
+            'block_onlinesurvey/offer_zoom',
+            get_string('setting_offer_zoom', 'block_onlinesurvey', null, true),
+            get_string('setting_offer_zoom_desc', 'block_onlinesurvey', null, true),
+            1
+        )
+    );
+
+
     // Show spinner.
     $settings->add(
         new admin_setting_configcheckbox(

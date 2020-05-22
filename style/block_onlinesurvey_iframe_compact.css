@@ -16,7 +16,8 @@ body {
 }
 
 /* Modify the cursor for opening the popup because the popup is opened with JavaScript. */
-.block_onlinesurvey_surveysexist {
+.block_onlinesurvey_surveysexist,
+.block_onlinesurvey_offerzoom {
     cursor: pointer;
 }
 

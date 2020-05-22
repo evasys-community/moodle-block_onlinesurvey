@@ -108,18 +108,6 @@ Feature: Using the onlinesurvey block with the EvaSys SOAP API
     Then I should not see "No open surveys available"
     And I should see "History and Theory of Architecture"
     And I should see "Design Projects"
-    And "All surveys" "button" should exist
-    And I click on "All surveys" "button"
-    And I wait "2" seconds
-    And I switch to the main frame
-    And "div.block_onlinesurvey_custom-modal_container" "css_element" should exist
-    And I switch to "block_onlinesurvey_custom-modal_contentframe" iframe
-    And I should see "History and Theory of Architecture"
-    And I should see "Design Projects"
-    And I switch to the main frame
-    And I click on ".block_onlinesurvey_custom-modal_close-button" "css_element"
-    And I wait "2" seconds
-    And "div.block_onlinesurvey_custom-modal_container" "css_element" should not exist
 
   Scenario: View block in detailed mode with a user who is a teacher in EvaSys
     Given the following config values are set as admin:

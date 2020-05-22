@@ -60,6 +60,7 @@ function block_onlinesurvey_get_soap_content($config = null, $moodleusername = '
     $debugmode = $config->survey_debug;
 
     $hideempty = $config->survey_hide_empty;
+    $offerzoom = $config->offer_zoom;
     $additionalclass = $config->additionalclass;
 
     $timeout = isset($config->survey_timeout) ? $config->survey_timeout : BLOCK_ONLINESURVEY_DEFAULT_TIMEOUT;
@@ -127,6 +128,10 @@ function block_onlinesurvey_get_soap_content($config = null, $moodleusername = '
                 $soapcontentstr .= block_onlinesurvey_viewscript();
             }
 
+            if (!$offerzoom && $count2 > 0 && !$modalzoom) {
+                $soapcontentstr .= block_onlinesurvey_surveybuttonscript();
+            }
+
             if ($additionalclass && $count2 > 0 && !$modalzoom) {
                 $soapcontentstr .= block_onlinesurvey_highlightscript($count2);
             }
@@ -168,13 +173,6 @@ function block_onlinesurvey_get_soap_content($config = null, $moodleusername = '
                     }
                     $soapcontentstr .= '</ul>';
 
-                    if (!$modalzoom) {
-                        $soapcontentstr .= "<div class=\"block_onlinesurvey_allsurveys\">".
-                            "<button onClick=\"parent.document.getElementById('block_onlinesurvey_surveys_content').".
-                            "click(parent.document);\">".
-                            get_string('allsurveys', 'block_onlinesurvey')."</button></div>";
-                    }
-
                     if (!empty($config->survey_show_popupinfo)) {
                         $soapcontentstr .= '<script language="JavaScript">'.
                                 'if (typeof window.parent.evasysGeneratePopupinfo == "function") { '.
@@ -214,13 +212,30 @@ function block_onlinesurvey_get_soap_content($config = null, $moodleusername = '
  * @return string
  */
 function block_onlinesurvey_createsummary($surveycount) {
-    if ($surveycount == 0) {
+    $offerzoom = get_config('block_onlinesurvey', 'offer_zoom');
+    if ($surveycount == 0 && $offerzoom == false) {
         $contentstr = "<div id=\"block_onlinesurvey_area\" class=\"block_onlinesurvey_area\">";
 
         $contentstr .= "<div class=\"block_onlinesurvey_circle\" >";
         $contentstr .= "<span class=\"block_onlinesurvey_number\">";
         $contentstr .= "<i class=\"fa fa-check\"></i>";
         $contentstr .= "</span>";
+        $contentstr .= "</div>";
+
+        $contentstr .= '<div class="block_onlinesurvey_text">' . get_string('surveys_exist_not', 'block_onlinesurvey') . '</div>';
+
+        $contentstr .= "</div>";
+    } else if ($surveycount == 0 && $offerzoom == true) {
+        $contentstr = "<div id=\"block_onlinesurvey_area\" class=\"block_onlinesurvey_area block_onlinesurvey_offerzoom\" ".
+            "onClick=\"parent.document.getElementById('block_onlinesurvey_surveys_content').click(parent.document);\">";
+
+        $contentstr .= "<div class=\"block_onlinesurvey_circle\" >";
+        $contentstr .= "<span class=\"block_onlinesurvey_number\">";
+        $contentstr .= "<i class=\"fa fa-check\"></i>";
+        $contentstr .= "</span>";
+        $contentstr .= "<div class=\"block_onlinesurvey_compact_magnifier\">";
+        $contentstr .= "<i class=\"fa fa-search-plus\"></i>";
+        $contentstr .= "</div>";
         $contentstr .= "</div>";
 
         $contentstr .= '<div class="block_onlinesurvey_text">' . get_string('surveys_exist_not', 'block_onlinesurvey') . '</div>';
@@ -263,6 +278,20 @@ function block_onlinesurvey_createsummary($surveycount) {
 function block_onlinesurvey_viewscript() {
     return '<script language="JavaScript">'."\n".
             '   var hiddenelements = parent.document.getElementsByClassName("block_onlinesurvey");'."\n".
+            '   for (var i = 0; i < hiddenelements.length; i++) {'."\n".
+            '       hiddenelements[i].style.display = "block";'."\n".
+            '   }'."\n".
+            '</script>';
+}
+
+/**
+ * Returns a string with a <script> tag which shows the previously hidden 'zoom survey list' button.
+ *
+ * @return string
+ */
+function block_onlinesurvey_surveybuttonscript() {
+    return '<script language="JavaScript">'."\n".
+            '   var hiddenelements = parent.document.getElementsByClassName("block_onlinesurvey_allsurveys");'."\n".
             '   for (var i = 0; i < hiddenelements.length; i++) {'."\n".
             '       hiddenelements[i].style.display = "block";'."\n".
             '   }'."\n".
@@ -499,6 +528,10 @@ function block_onlinesurvey_get_lti_content($config = null, $context = null, $co
 
     if ($config->survey_hide_empty && $surveycount > 0 && !$modalzoom) {
         $lticontentstr .= block_onlinesurvey_viewscript();
+    }
+
+    if (!$config->offer_zoom && $surveycount > 0 && !$modalzoom) {
+        $lticontentstr .= block_onlinesurvey_surveybuttonscript();
     }
 
     if ($config->additionalclass && $surveycount > 0 && !$modalzoom) {

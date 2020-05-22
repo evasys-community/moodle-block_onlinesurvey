@@ -87,3 +87,111 @@ Feature: Configuring the behavior of the onlinesurvey block
     And I log in as "student1"
     And I wait "5" seconds
     And "div.block_onlinesurvey_custom-modal_container" "css_element" should not exist
+
+  Scenario: Always offer enlarged list view in detailed mode to a user who does not have any surveys in EvaSys
+    Given the following config values are set as admin:
+      | config       | value    | plugin             |
+      | offer_zoom   | 1        | block_onlinesurvey |
+      | presentation | detailed | block_onlinesurvey |
+    And the following "users" exist:
+      | username  | email                |
+      | student1  | student1@example.com |
+    When I log in as "student1"
+    And I switch to "block_onlinesurvey_contentframe" iframe
+    Then I should see "No open surveys available"
+    And I switch to the main frame
+    And "All surveys" "button" should exist
+
+  Scenario: Always offer enlarged list view in detailed mode to a user who is a student in EvaSys
+    Given the following config values are set as admin:
+      | config       | value    | plugin             |
+      | offer_zoom   | 1        | block_onlinesurvey |
+      | presentation | detailed | block_onlinesurvey |
+    And the following "users" exist:
+      | username  | email                |
+      | tjohnson  | tjohnson@example.com |
+    When I log in as "tjohnson"
+    And I switch to "block_onlinesurvey_contentframe" iframe
+    Then I should not see "No open surveys available"
+    And I switch to the main frame
+    And "All surveys" "button" should exist
+
+  Scenario: Don't always offer enlarged list view in detailed mode to a user who does not have any surveys in EvaSys
+    Given the following config values are set as admin:
+      | config       | value    | plugin             |
+      | offer_zoom   | 0        | block_onlinesurvey |
+      | presentation | detailed | block_onlinesurvey |
+    And the following "users" exist:
+      | username  | email                |
+      | student1  | student1@example.com |
+    When I log in as "student1"
+    And I switch to "block_onlinesurvey_contentframe" iframe
+    Then I should see "No open surveys available"
+    And I switch to the main frame
+    And "Zoom survey list" "button" should not exist
+
+  Scenario: Don't always offer enlarged list view in detailed mode to a user who is a student in EvaSys
+    Given the following config values are set as admin:
+      | config       | value    | plugin             |
+      | offer_zoom   | 0        | block_onlinesurvey |
+      | presentation | detailed | block_onlinesurvey |
+    And the following "users" exist:
+      | username  | email                |
+      | tjohnson  | tjohnson@example.com |
+    When I log in as "tjohnson"
+    And I switch to "block_onlinesurvey_contentframe" iframe
+    Then I should not see "No open surveys available"
+    And I switch to the main frame
+    And "Zoom survey list" "button" should exist
+
+  Scenario: Always offer enlarged list view in compact mode to a user who does not have any surveys in EvaSys
+    Given the following config values are set as admin:
+      | config       | value | plugin             |
+      | offer_zoom   | 1     | block_onlinesurvey |
+      | presentation | brief | block_onlinesurvey |
+    And the following "users" exist:
+      | username  | email                |
+      | student1  | student1@example.com |
+    When I log in as "student1"
+    And I switch to "block_onlinesurvey_contentframe" iframe
+    And I should see "No open surveys available"
+    And ".block_onlinesurvey_compact_magnifier" "css_element" should exist
+
+  Scenario: Always offer enlarged list view in compact mode to a user who is a student in EvaSys
+    Given the following config values are set as admin:
+      | config       | value | plugin             |
+      | offer_zoom   | 1     | block_onlinesurvey |
+      | presentation | brief | block_onlinesurvey |
+    And the following "users" exist:
+      | username  | email                |
+      | tjohnson  | tjohnson@example.com |
+    When I log in as "tjohnson"
+    And I switch to "block_onlinesurvey_contentframe" iframe
+    And I should not see "No open surveys available"
+    And ".block_onlinesurvey_compact_magnifier" "css_element" should exist
+
+  Scenario: Don't always offer enlarged list view in compact mode to a user who does not have any surveys in EvaSys
+    Given the following config values are set as admin:
+      | config       | value | plugin             |
+      | offer_zoom   | 0     | block_onlinesurvey |
+      | presentation | brief | block_onlinesurvey |
+    And the following "users" exist:
+      | username  | email                |
+      | student1  | student1@example.com |
+    When I log in as "student1"
+    And I switch to "block_onlinesurvey_contentframe" iframe
+    And I should see "No open surveys available"
+    And ".block_onlinesurvey_compact_magnifier" "css_element" should not exist
+
+  Scenario: Don't always offer enlarged list view in compact mode to a user who is a student in EvaSys
+    Given the following config values are set as admin:
+      | config       | value | plugin             |
+      | offer_zoom   | 0     | block_onlinesurvey |
+      | presentation | brief | block_onlinesurvey |
+    And the following "users" exist:
+      | username  | email                |
+      | tjohnson  | tjohnson@example.com |
+    When I log in as "tjohnson"
+    And I switch to "block_onlinesurvey_contentframe" iframe
+    And I should not see "No open surveys available"
+    And ".block_onlinesurvey_compact_magnifier" "css_element" should exist
