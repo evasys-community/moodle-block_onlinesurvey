@@ -61,7 +61,6 @@ function block_onlinesurvey_get_soap_content($config = null, $moodleusername = '
 
     $hideempty = $config->survey_hide_empty;
     $offerzoom = $config->offer_zoom;
-    $additionalclass = $config->additionalclass;
 
     $timeout = isset($config->survey_timeout) ? $config->survey_timeout : BLOCK_ONLINESURVEY_DEFAULT_TIMEOUT;
 
@@ -132,10 +131,10 @@ function block_onlinesurvey_get_soap_content($config = null, $moodleusername = '
                 $soapcontentstr .= block_onlinesurvey_surveybuttonscript();
             }
 
-            if ($additionalclass && $count2 > 0 && !$modalzoom) {
+            if ($count2 > 0 && !$modalzoom) {
                 $soapcontentstr .= block_onlinesurvey_highlightscript($count2);
             }
-            else if ($additionalclass && $count2 == 0 && !$modalzoom) {
+            else if ($count2 == 0 && !$modalzoom) {
                 $soapcontentstr .= block_onlinesurvey_donthighlightscript();
             }
 
@@ -477,50 +476,46 @@ function block_onlinesurvey_get_lti_content($config = null, $context = null, $co
     $surveycount = 0;
 
     // Check for learner content in LTI result.
-    if ($config->presentation == BLOCK_ONLINESURVEY_PRESENTATION_BRIEF || $config->survey_hide_empty || $config->additionalclass ||
-            (!isset($SESSION->block_onlinesurvey_curl_checked) && !empty($config->survey_show_popupinfo))) {
+    try {
+        $content2 = block_onlinesurvey_lti_post_launch_html_curl($parameter, $endpoint, $config);
+    } catch (Exception $e) {
+        $lticontentstr = $e->getMessage();
+        echo $lticontentstr;
+        return '';
+    }
 
-        try {
-            $content2 = block_onlinesurvey_lti_post_launch_html_curl($parameter, $endpoint, $config);
-        } catch (Exception $e) {
-            $lticontentstr = $e->getMessage();
-            echo $lticontentstr;
-            return '';
+    // Search in $content2 for e.g.: <div class="cell participate centered">.
+    // If match found and survey_show_popupinfo is set, add code to generate popup.
+    if (!empty($content2)) {
+        if (isset($config->lti_regex_learner) && !empty($config->lti_regex_learner)) {
+            $re = $config->lti_regex_learner;
+
+            // No regex in config -> use default regex.
+        } else {
+            $re = BLOCK_ONLINESURVEY_LTI_REGEX_LEARNER_DEFAULT;
         }
 
-        // Search in $content2 for e.g.: <div class="cell participate centered">.
-        // If match found and survey_show_popupinfo is set, add code to generate popup.
-        if (!empty($content2)) {
-            if (isset($config->lti_regex_learner) && !empty($config->lti_regex_learner)) {
-                $re = $config->lti_regex_learner;
+        if (!empty($re)) {
+            $surveycount = preg_match_all($re, $content2, $matches, PREG_SET_ORDER, 0);
 
-                // No regex in config -> use default regex.
-            } else {
-                $re = BLOCK_ONLINESURVEY_LTI_REGEX_LEARNER_DEFAULT;
+            $SESSION->block_onlinesurvey_curl_checked = true;
+
+            if (!empty($matches) && !empty($config->survey_show_popupinfo)) {
+                // Check to display dialog is (also) done in JS function "evasysGeneratePopupinfo".
+                echo '<script language="JavaScript">if (typeof window.parent.evasysGeneratePopupinfo == "function") { '.
+                        'window.parent.evasysGeneratePopupinfo(); }</script>';
             }
+        }
 
-            if (!empty($re)) {
-                $surveycount = preg_match_all($re, $content2, $matches, PREG_SET_ORDER, 0);
+        if (isset($config->lti_regex_instructor) && !empty($config->lti_regex_instructor)) {
+            $reinstructor = $config->lti_regex_instructor;
 
-                $SESSION->block_onlinesurvey_curl_checked = true;
-
-                if (!empty($matches) && !empty($config->survey_show_popupinfo)) {
-                    // Check to display dialog is (also) done in JS function "evasysGeneratePopupinfo".
-                    echo '<script language="JavaScript">if (typeof window.parent.evasysGeneratePopupinfo == "function") { '.
-                            'window.parent.evasysGeneratePopupinfo(); }</script>';
-                }
-            }
-
-            if (isset($config->lti_regex_instructor) && !empty($config->lti_regex_instructor)) {
-                $reinstructor = $config->lti_regex_instructor;
-
-                // No regex in config -> use default regex.
-            } else {
-                $reinstructor = BLOCK_ONLINESURVEY_LTI_REGEX_INSTRUCTOR_DEFAULT;
-            }
-            if (empty($matches) && !empty($reinstructor)) {
-                $surveycount = preg_match_all($reinstructor, $content2, $matches, PREG_SET_ORDER, 0);
-            }
+            // No regex in config -> use default regex.
+        } else {
+            $reinstructor = BLOCK_ONLINESURVEY_LTI_REGEX_INSTRUCTOR_DEFAULT;
+        }
+        if (empty($matches) && !empty($reinstructor)) {
+            $surveycount = preg_match_all($reinstructor, $content2, $matches, PREG_SET_ORDER, 0);
         }
     }
 
@@ -534,10 +529,10 @@ function block_onlinesurvey_get_lti_content($config = null, $context = null, $co
         $lticontentstr .= block_onlinesurvey_surveybuttonscript();
     }
 
-    if ($config->additionalclass && $surveycount > 0 && !$modalzoom) {
+    if ($surveycount > 0 && !$modalzoom) {
         $lticontentstr .= block_onlinesurvey_highlightscript($surveycount);
     }
-    else if ($config->additionalclass && $surveycount == 0 && !$modalzoom) {
+    else if ($surveycount == 0 && !$modalzoom) {
         $lticontentstr .= block_onlinesurvey_donthighlightscript();
     }
 

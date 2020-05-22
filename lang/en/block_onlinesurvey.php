@@ -153,9 +153,6 @@ $string['setting_survey_debug_desc'] = 'If activated, debugging and error messag
 $string['setting_additionalcss'] = 'Additional CSS for iframe';
 $string['setting_additionalcss_desc'] = 'Here, you can add CSS code which will be added to the page which is loaded in the EvaSys block. You can use this setting to re-style the EvaSys block content according to your needs.<br /><em>Please note: This setting is used in compact mode for LTI and SOAP connections as well as in detailed mode for SOAP connections. It is not used in detailed mode for LTI connections - if you need to add custom styles in this mode, please change your LTI template in EvaSys.</em>';
 
-$string['setting_additionalclass'] = 'Additional class for block';
-$string['setting_additionalclass_desc'] = 'If activated, an additional CSS class will be added to the block element in addition to block_onlinesurvey if there are surveys. If there are surveys, the class block_onlinesurvey_surveysexist will be added. If there aren\'t any surveys, the class will not be present. The block uses this class to increase its height as soon as there are surveys. Additionally, you can use this class to re-style the EvaSys block according to your needs. This should only be disabled if you want to save an additional request from Moodle to EvaSys in LTI mode.';
-
 $string['setting_lti_regex_learner'] = 'LTI - Learner regular expression';
 $string['setting_lti_regex_learner_desc'] = 'Regular expression which searches the content of the LTI-Response for open online surveys. This only needs to be adjusted if customized templates have been created or modified in a way that the functions differ from the standard templates.<br /><em>Please note: This setting is only processed if you selected "LTI" in the "Communication protocol" setting.</em>';
 

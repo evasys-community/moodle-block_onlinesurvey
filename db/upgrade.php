@@ -53,5 +53,19 @@ function xmldb_block_onlinesurvey_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2020010903, 'block', 'onlinesurvey');
     }
 
+    // The setting 'additionalclass' was removed.
+    if ($oldversion < 2020052200) {
+        // Check if the setting is set in this Moodle instance.
+        $oldsetting = get_config('block_onlinesurvey', 'additionalclass');
+        if (!empty($oldsetting)) {
+
+            // Remove the setting in the DB.
+            unset_config('additionalclass', 'block_onlinesurvey');
+        }
+
+        // Remember upgrade savepoint.
+        upgrade_plugin_savepoint(true, 2020052200, 'block', 'onlinesurvey');
+    }
+
     return true;
 }
