@@ -17,7 +17,6 @@
 }
 
 .block_onlinesurvey_lds-spinner {
-    color: official;
     display: inline-block;
     position: relative;
     width: 64px;
@@ -86,6 +85,7 @@
     transform: rotate(330deg);
     animation-delay: 0s;
 }
+
 @keyframes block_onlinesurvey_lds-spinner {
     0% {
         opacity: 1;

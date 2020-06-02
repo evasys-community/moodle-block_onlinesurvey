@@ -1,3 +1,5 @@
+/* stylelint-disable max-line-length */
+
 body {
     /* We don't load the full Moodle theme, but we try to come as close to Moodle standard UI (which means Bootstrap) as possible. */
     color: #373a3c;
