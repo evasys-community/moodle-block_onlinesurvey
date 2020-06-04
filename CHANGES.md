@@ -6,6 +6,7 @@ Changes
 
 ### Unreleased
 
+* 2020-06-04 - Release: Add updated documentation PDF files.
 * 2020-05-22 - Cleanup: Remove admin setting to add an additional class to the block if surveys exist. This was done as disabling the setting does not really give any benefits anymore due to the fact that the same code was used by other features of this plugin as well.
 * 2020-05-22 - Feature: Add admin setting to offer the enlarged list view even if there aren't any open surveys.
 * 2020-05-21 - Improvement: Add note when expert settings are processed.
