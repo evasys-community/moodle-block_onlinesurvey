@@ -6,6 +6,7 @@ Changes
 
 ### Unreleased
 
+* 2020-07-26 - Improvement: Update Travis CI configuration to use moodle-plugin-ci from Moodle HQ.
 * 2020-07-26 - Release: Add final documentation PDF files.
 * 2020-06-04 - Release: Add updated documentation PDF files.
 * 2020-05-22 - Cleanup: Remove admin setting to add an additional class to the block if surveys exist. This was done as disabling the setting does not really give any benefits anymore due to the fact that the same code was used by other features of this plugin as well.
