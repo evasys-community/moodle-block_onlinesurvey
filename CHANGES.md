@@ -4,7 +4,7 @@ moodle-block_onlinesurvey
 Changes
 -------
 
-### Unreleased
+### v3.5-r1
 
 * 2020-07-26 - Improvement: Update Travis CI configuration to use moodle-plugin-ci from Moodle HQ.
 * 2020-07-26 - Release: Add final documentation PDF files.
