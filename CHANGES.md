@@ -6,6 +6,7 @@ Changes
 
 ### Unreleased
 
+* 2020-08-17 - Improvement: Include local library in settings.php only if it's really needed.
 * 2020-08-17 - Improvement: Add capability check to the block's iframe content.
 
 ### v3.8-r1
