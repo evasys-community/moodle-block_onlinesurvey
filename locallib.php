@@ -580,18 +580,13 @@ function block_onlinesurvey_get_launch_data($config = null, $context = null, $co
         $config->lti_tool_consumer_instance_guid = $urlparts['host'];
     }
 
-    if (isset($config->proxyid)) {
-        // No proxy support.
+    $key = '';
+    if (!empty($config->lti_password)) {
+        $secret = $config->lti_password;
+    } else if (is_array($config) && !empty($config['lti_password'])) {
+        $secret = $config['lti_password'];
     } else {
-        $toolproxy = null;
-        $key = '';
-        if (!empty($config->lti_password)) {
-            $secret = $config->lti_password;
-        } else if (is_array($config) && !empty($config['lti_password'])) {
-            $secret = $config['lti_password'];
-        } else {
-            $secret = '';
-        }
+        $secret = '';
     }
 
     $endpoint = !empty($config->lti_url) ? $config->lti_url : $config['lti_url'];
@@ -621,15 +616,13 @@ function block_onlinesurvey_get_launch_data($config = null, $context = null, $co
         $course = $PAGE->course;
     }
 
-    $islti2 = isset($config->proxyid);
-
     $allparams = block_onlinesurvey_build_request_lti($config, $course);
 
     if (!isset($config->id)) {
         $config->id = null;
     }
     $requestparams = $allparams;
-    $requestparams = array_merge($requestparams, lti_build_standard_request($config, $orgid, $islti2));
+    $requestparams = array_merge($requestparams, lti_build_standard_message($config, $orgid, false));
     $customstr = '';
     if (isset($config->lti_customparameters)) {
         $customstr = $config->lti_customparameters;
@@ -645,7 +638,7 @@ function block_onlinesurvey_get_launch_data($config = null, $context = null, $co
     $instructorcustomstr = null;
 
     $requestparams = array_merge($requestparams, lti_build_custom_parameters($toolproxy, $tool, $instance, $allparams, $customstr,
-            $instructorcustomstr, $islti2));
+            $instructorcustomstr, false));
 
     $target = 'iframe';
     if (!empty($target)) {
