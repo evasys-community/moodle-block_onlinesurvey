@@ -164,7 +164,7 @@ class block_onlinesurvey extends block_base {
      * @return void
      */
     public function get_content() {
-        global $CFG, $PAGE, $USER;
+        global $CFG, $USER;
 
         // Block settings.
         $config = get_config("block_onlinesurvey");
@@ -183,14 +183,16 @@ class block_onlinesurvey extends block_base {
         $this->content->text = '';
         if ($this->moodleuserid && $this->isconfigured) {
 
-            $context = $PAGE->context;
-            $course = $PAGE->course;
+            $context = $this->page->context;
+            $course = $this->page->course;
             $urlparams = 'ctxid='.$context->id.'&cid='.$course->id;
             $url = $CFG->wwwroot.'/blocks/onlinesurvey/show_surveys.php?'.$urlparams;
 
             if ($config->show_spinner) {
                 $this->content->text .= '<div id="block_onlinesurvey_surveys_content" class="block_onlinesurvey_is-loading">';
-                $this->content->text .= '<div class="block_onlinesurvey_surveys_loading"><div class="block_onlinesurvey_lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div></div>';
+                $this->content->text .= '<div class="block_onlinesurvey_surveys_loading">'.
+                        '<div class="block_onlinesurvey_lds-spinner"><div></div><div></div><div></div><div></div><div></div><div>'.
+                        '</div><div></div><div></div><div></div><div></div><div></div><div></div></div></div>';
             } else {
                 $this->content->text .= '<div id="block_onlinesurvey_surveys_content">';
             }
@@ -217,15 +219,17 @@ class block_onlinesurvey extends block_base {
                 // If enabled, add the 'All surveys' button as directly visible.
                 if ($config->offer_zoom == true) {
                     $this->content->text .= '<div class="block_onlinesurvey_allsurveys"><button class="btn btn-secondary" ' .
-                            'onClick="event.stopPropagation(); document.getElementById(\'block_onlinesurvey_surveys_content\').click();">' .
+                            'onClick="event.stopPropagation(); '.
+                            'document.getElementById(\'block_onlinesurvey_surveys_content\').click();">' .
                             get_string('allsurveys', 'block_onlinesurvey') . '</button></div>';
 
                     // Otherwise, add the 'Zoom survey list' button as hidden.
                 } else {
                     $this->content->text .= '<div class="block_onlinesurvey_allsurveys"><button class="btn btn-secondary" ' .
-                            'onClick="event.stopPropagation(); document.getElementById(\'block_onlinesurvey_surveys_content\').click();">' .
+                            'onClick="event.stopPropagation(); '.
+                            'document.getElementById(\'block_onlinesurvey_surveys_content\').click();">' .
                             get_string('zoomsurveylist', 'block_onlinesurvey') . '</button></div>';
-                    $PAGE->requires->css('/blocks/onlinesurvey/style/block_onlinesurvey_offerzoom.css');
+                    $this->page->requires->css('/blocks/onlinesurvey/style/block_onlinesurvey_offerzoom.css');
                 }
             }
 
@@ -242,17 +246,17 @@ class block_onlinesurvey extends block_base {
                 $popupinfocontent = get_string('setting_survey_popupinfo_content_default', 'block_onlinesurvey');
             }
 
-            $PAGE->requires->js_call_amd('block_onlinesurvey/modal-zoom', 'init',
+            $this->page->requires->js_call_amd('block_onlinesurvey/modal-zoom', 'init',
                     array($popupinfotitle, $popupinfocontent, $USER->currentlogin));
-            $PAGE->requires->css('/blocks/onlinesurvey/style/block_onlinesurvey_modal-zoom.css');
+            $this->page->requires->css('/blocks/onlinesurvey/style/block_onlinesurvey_modal-zoom.css');
 
             if ($config->show_spinner) {
-                $PAGE->requires->js_call_amd('block_onlinesurvey/spinner', 'init');
-                $PAGE->requires->css('/blocks/onlinesurvey/style/block_onlinesurvey_spinner.css');
+                $this->page->requires->js_call_amd('block_onlinesurvey/spinner', 'init');
+                $this->page->requires->css('/blocks/onlinesurvey/style/block_onlinesurvey_spinner.css');
             }
 
             if ($config->survey_hide_empty) {
-                $PAGE->requires->css('/blocks/onlinesurvey/style/block_onlinesurvey_hide.css');
+                $this->page->requires->css('/blocks/onlinesurvey/style/block_onlinesurvey_hide.css');
             }
         }
 

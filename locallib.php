@@ -133,8 +133,7 @@ function block_onlinesurvey_get_soap_content($config = null, $moodleusername = '
 
             if ($count2 > 0 && !$modalzoom) {
                 $soapcontentstr .= block_onlinesurvey_highlightscript($count2);
-            }
-            else if ($count2 == 0 && !$modalzoom) {
+            } else if ($count2 == 0 && !$modalzoom) {
                 $soapcontentstr .= block_onlinesurvey_donthighlightscript();
             }
 
@@ -191,7 +190,7 @@ function block_onlinesurvey_get_soap_content($config = null, $moodleusername = '
             $soapcontentstr = get_string('error_occured', 'block_onlinesurvey', $result->error);
         }
 
-        // #8975: TODO: Check, was hier angezeigt werden soll
+        // TODO: Check, was hier angezeigt werden soll.
         if ($debugmode && isset($result->warning) && !empty($result->warning)) {
             $soapcontentstr = get_string('error_warning_message', 'block_onlinesurvey', $result->warning) ."<br>" . $soapcontentstr;
         }
@@ -531,8 +530,7 @@ function block_onlinesurvey_get_lti_content($config = null, $context = null, $co
 
     if ($surveycount > 0 && !$modalzoom) {
         $lticontentstr .= block_onlinesurvey_highlightscript($surveycount);
-    }
-    else if ($surveycount == 0 && !$modalzoom) {
+    } else if ($surveycount == 0 && !$modalzoom) {
         $lticontentstr .= block_onlinesurvey_donthighlightscript();
     }
 
@@ -547,8 +545,8 @@ function block_onlinesurvey_get_lti_content($config = null, $context = null, $co
 
             if ($debuglaunch && has_capability('block/onlinesurvey:view_debugdetails', $context)) {
                 $debuglaunch = false;
-                //$lti_content_str2 = lti_post_launch_html($parameter, $endpoint, $debuglaunch);
-                //echo "$lti_content_str2 <br><br>";
+                // $lti_content_str2 = lti_post_launch_html($parameter, $endpoint, $debuglaunch);
+                // echo "$lti_content_str2 <br><br>";
             }
         } else {
             $lticontentstr = get_string('error_debugmode_missing_capability', 'block_onlinesurvey');
@@ -709,8 +707,8 @@ function block_onlinesurvey_build_request_lti($config, $course) {
         }
     }
     if (strpos($roles, 'Instructor') !== false) {
-        //$requestparams['custom_instructor_lms_identifier'] = 'ext_user_username';
-        //$requestparams['ext_user_username'] = $USER->username;
+        // $requestparams['custom_instructor_lms_identifier'] = 'ext_user_username';
+        // $requestparams['ext_user_username'] = $USER->username;
 
         if ($config->useridentifier == 'email') {
             $requestparams['custom_instructor_lms_identifier'] = 'lis_person_contact_email_primary';
@@ -718,7 +716,7 @@ function block_onlinesurvey_build_request_lti($config, $course) {
         } else if ($config->useridentifier == 'username') {
             $requestparams['custom_instructor_lms_identifier'] = 'ext_user_username';
             $requestparams['ext_user_username'] = $USER->username;
-            //$requestparams['custom_instructor_provider_identifier'] = "custom".$config->customfieldnumber;
+            // $requestparams['custom_instructor_provider_identifier'] = "custom".$config->customfieldnumber;
         }
     }
 
@@ -799,9 +797,7 @@ function block_onlinesurvey_lti_post_launch_html_curl($parameter, $endpoint, $co
     foreach ($parameter as $key => $value) {
         $key = htmlspecialchars($key);
         $value = htmlspecialchars($value);
-        if ( $key == "ext_submit" ) {
-            //
-        } else {
+        if ( $key != "ext_submit" ) {
             $fields[$key] = urlencode($value);
         }
     }
