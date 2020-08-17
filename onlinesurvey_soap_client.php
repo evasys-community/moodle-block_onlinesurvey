@@ -122,7 +122,7 @@ class onlinesurvey_soap_client extends SoapClient {
      * @param string $location The URL to request.
      * @param string $action The SOAP action.
      * @param int $version The SOAP version.
-     * @param int $one_way [optional] If one_way is set to 1, this method returns nothing. Use this where a response is not expected.
+     * @param int $one_way [optional] If one_way is set to 1 this method returns nothing. Use this where a response is not expected.
      * @return string The XML SOAP response.
      */
     public function __doRequest($request, $location, $action, $version, $one_way = null) {
