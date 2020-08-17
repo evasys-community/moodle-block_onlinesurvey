@@ -4,6 +4,10 @@ moodle-block_onlinesurvey
 Changes
 -------
 
+### Unreleased
+
+* 2020-08-17 - Improvement: Add capability check to the block's iframe content.
+
 ### v3.5-r1
 
 * 2020-07-26 - Improvement: Update Travis CI configuration to use moodle-plugin-ci from Moodle HQ.

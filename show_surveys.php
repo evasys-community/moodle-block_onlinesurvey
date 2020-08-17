@@ -23,8 +23,11 @@
  */
 
 require_once(dirname(__FILE__).'/../../config.php');
-require_login();
 require_once(dirname(__FILE__).'/locallib.php');
+
+require_login();
+$systemcontext = context_system::instance();
+require_capability('block/onlinesurvey:view', $systemcontext);
 
 global $USER, $PAGE;
 
