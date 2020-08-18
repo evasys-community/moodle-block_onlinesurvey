@@ -6,6 +6,7 @@ Changes
 
 ### Unreleased
 
+* 2020-08-18 - Release: Update version in documentation PDF files.
 * 2020-08-17 - Improvement: Make Moodle codechecker a little bit happier.
 * 2020-08-17 - Improvement: Replace deprecated LTI library function call with the recommended LTI function call.
 * 2020-08-17 - Improvement: Add upstream README.md file to the FontAwesome library which is shipped with this plugin.
