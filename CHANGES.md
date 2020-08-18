@@ -4,7 +4,7 @@ moodle-block_onlinesurvey
 Changes
 -------
 
-### Unreleased
+### v3.8-r2
 
 * 2020-08-18 - Release: Update version in documentation PDF files.
 * 2020-08-17 - Improvement: Make Moodle codechecker a little bit happier.
