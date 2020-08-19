@@ -6,6 +6,7 @@ Changes
 
 ### Unreleased
 
+* 2020-08-19 - Improvement: Make Moodle codechecker a little bit happier.
 * 2020-08-19 - Release: Remove DE language pack from the codebase as this language is now managed in AMOS.
 
 ### v3.5-r2
