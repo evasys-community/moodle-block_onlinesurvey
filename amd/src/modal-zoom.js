@@ -9,7 +9,7 @@ define(['core/templates', 'core/str'], function(templates) {
 
     var doRefresh = function() {
         var myElement = document.getElementById("block_onlinesurvey_contentframe");
-        if(myElement){
+        if (myElement) {
             var oldsrc = myElement.src;
             myElement.src = '';
             myElement.src = oldsrc;
@@ -61,7 +61,7 @@ define(['core/templates', 'core/str'], function(templates) {
                 modalContainer.className += ' fading';
 
                 setTimeout(function() {
-                    if(modalContainer.parentNode !== null) {
+                    if (modalContainer.parentNode !== null) {
                         modalContainer.parentNode.removeChild(modalContainer);
                     }
                 }, 250);
@@ -98,11 +98,11 @@ define(['core/templates', 'core/str'], function(templates) {
             // Namespace in window for EVASYS-functions etc.
             window.EVASYS = {
                 // Define "global" functions in namespace -> later "external" access from iframe possible.
-                generate_popupinfo: this.generate_popupinfo
+                generatepopupinfo: this.generatepopupinfo
             };
-            window.evasysGeneratePopupinfo = this.generate_popupinfo;
+            window.evasysGeneratePopupinfo = this.generatepopupinfo;
         },
-        generate_popupinfo: function() {
+        generatepopupinfo: function() {
 
             // Get saved data from sessionStorage.
             var popupinfo = sessionStorage.getItem('onlinesurvey_popupinfo');
@@ -134,7 +134,7 @@ define(['core/templates', 'core/str'], function(templates) {
                         modalContainer.className += ' fading';
 
                         setTimeout(function() {
-                            if(modalContainer.parentNode !== null) {
+                            if (modalContainer.parentNode !== null) {
                                 modalContainer.parentNode.removeChild(modalContainer);
                             }
                         }, 250);
