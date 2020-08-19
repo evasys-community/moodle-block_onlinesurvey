@@ -4,6 +4,10 @@ moodle-block_onlinesurvey
 Changes
 -------
 
+### Unreleased
+
+* 2020-08-19 - Release: Remove DE language pack from the codebase as this language is now managed in AMOS.
+
 ### v3.5-r2
 
 * 2020-08-18 - Release: Update version in documentation PDF files.
