@@ -66,7 +66,7 @@ Feature: Using the onlinesurvey block with the EvaSys SOAP API
     And I switch to the main frame
     And "div.block_onlinesurvey_custom-modal_container" "css_element" should exist
     And I switch to "block_onlinesurvey_custom-modal_contentframe" iframe
-    And I should see "History and Theory of Architecture"
+    And I should see "Environmental Design"
     And I should see "Design Projects"
     And I switch to the main frame
     And I click on ".block_onlinesurvey_custom-modal_close-button" "css_element"
@@ -106,7 +106,7 @@ Feature: Using the onlinesurvey block with the EvaSys SOAP API
     When I log in as "tjohnson"
     And I switch to "block_onlinesurvey_contentframe" iframe
     Then I should not see "No open surveys available"
-    And I should see "History and Theory of Architecture"
+    And I should see "Environmental Design"
     And I should see "Design Projects"
 
   Scenario: View block in detailed mode with a user who is a teacher in EvaSys

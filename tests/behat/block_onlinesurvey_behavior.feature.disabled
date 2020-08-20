@@ -98,7 +98,7 @@ Feature: Configuring the behavior of the onlinesurvey block
       | student1  | student1@example.com |
     When I log in as "student1"
     And I switch to "block_onlinesurvey_contentframe" iframe
-    Then I should see "No open surveys available"
+    Then I should see "No online surveys found"
     And I switch to the main frame
     And "All surveys" "button" should exist
 
@@ -112,7 +112,7 @@ Feature: Configuring the behavior of the onlinesurvey block
       | tjohnson  | tjohnson@example.com |
     When I log in as "tjohnson"
     And I switch to "block_onlinesurvey_contentframe" iframe
-    Then I should not see "No open surveys available"
+    Then I should not see "No online surveys found"
     And I switch to the main frame
     And "All surveys" "button" should exist
 
@@ -126,7 +126,7 @@ Feature: Configuring the behavior of the onlinesurvey block
       | student1  | student1@example.com |
     When I log in as "student1"
     And I switch to "block_onlinesurvey_contentframe" iframe
-    Then I should see "No open surveys available"
+    Then I should see "No online surveys found"
     And I switch to the main frame
     And "Zoom survey list" "button" should not exist
 
@@ -140,7 +140,7 @@ Feature: Configuring the behavior of the onlinesurvey block
       | tjohnson  | tjohnson@example.com |
     When I log in as "tjohnson"
     And I switch to "block_onlinesurvey_contentframe" iframe
-    Then I should not see "No open surveys available"
+    Then I should not see "No online surveys found"
     And I switch to the main frame
     And "Zoom survey list" "button" should exist
 
