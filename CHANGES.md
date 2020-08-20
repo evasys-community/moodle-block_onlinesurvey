@@ -4,7 +4,7 @@ moodle-block_onlinesurvey
 Changes
 -------
 
-### Unreleased
+### v3.8-r3
 
 * 2020-08-19 - Improvement: Adapt Behat tests to latest changes in the plugin and the EvaSys Demo system.
 * 2020-08-19 - Improvement: Make Moodle codechecker a little bit happier.
