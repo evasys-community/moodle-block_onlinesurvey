@@ -55,7 +55,7 @@ Feature: Using the onlinesurvey block with the EvaSys LTI API
       | tjohnson  | tjohnson@example.com |
     When I log in as "tjohnson"
     And I switch to "block_onlinesurvey_contentframe" iframe
-    Then I should see "3"
+    Then I should see "2"
     And I should not see "No open surveys available"
     And I should see "Open surveys available"
     And ".block_onlinesurvey_compact_magnifier" "css_element" should exist
@@ -65,9 +65,8 @@ Feature: Using the onlinesurvey block with the EvaSys LTI API
     And "div.block_onlinesurvey_custom-modal_container" "css_element" should exist
     And I switch to "block_onlinesurvey_custom-modal_contentframe" iframe
     And I should see "My Survey Dashboard"
-    And I should see "History and Theory of Architecture"
+    And I should see "Environmental Design"
     And I should see "Design Projects"
-    And I should see "Structure, Materials and Forming Techniques"
     And I switch to the main frame
     And I click on ".block_onlinesurvey_custom-modal_close-button" "css_element"
     And I wait "2" seconds
@@ -108,9 +107,8 @@ Feature: Using the onlinesurvey block with the EvaSys LTI API
     And I switch to "block_onlinesurvey_contentframe" iframe
     Then I should see "My Survey Dashboard"
     And I should not see "No online surveys found"
-    And I should see "History and Theory of Architecture"
+    And I should see "Environmental Design"
     And I should see "Design Projects"
-    And I should see "Structure, Materials and Forming Techniques"
 
   Scenario: View block in detailed mode with a user who is a teacher in EvaSys
     Given the following config values are set as admin:
