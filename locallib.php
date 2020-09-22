@@ -630,6 +630,7 @@ function block_onlinesurvey_get_launch_data($config = null, $context = null, $co
     // so we build "dummys".
     $toolproxy = new stdClass();
     $tool = new stdClass();
+    $tool->ltiversion = LTI_VERSION_1;
     $tool->parameter = '';
     $tool->enabledcapability = array();
     $instance = null;

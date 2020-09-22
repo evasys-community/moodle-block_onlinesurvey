@@ -4,6 +4,10 @@ moodle-block_onlinesurvey
 Changes
 -------
 
+### Unreleased
+
+* 2020-09-22 - Bugfix: Remove a PHP debug warning in LTI Compact view mode which was triggered due to an uninitialized parameter.
+
 ### v3.8-r3
 
 * 2020-08-19 - Improvement: Adapt Behat tests to latest changes in the plugin and the EvaSys Demo system.
