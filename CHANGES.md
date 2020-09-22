@@ -4,7 +4,7 @@ moodle-block_onlinesurvey
 Changes
 -------
 
-### Unreleased
+### v3.5-r4
 
 * 2020-09-22 - Bugfix: Remove a PHP debug warning in LTI Compact view mode which was triggered due to an uninitialized parameter.
 
