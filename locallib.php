@@ -620,7 +620,13 @@ function block_onlinesurvey_get_launch_data($config = null, $context = null, $co
         $config->id = null;
     }
     $requestparams = $allparams;
-    $requestparams = array_merge($requestparams, lti_build_standard_message($config, $orgid, false));
+    
+	if ($CFG->branch < 37) {
+		$requestparams = array_merge($requestparams, lti_build_standard_request($config, $orgid, false));
+	} else {
+		$requestparams = array_merge($requestparams, lti_build_standard_message($config, $orgid, false));
+	}
+
     $customstr = '';
     if (isset($config->lti_customparameters)) {
         $customstr = $config->lti_customparameters;
