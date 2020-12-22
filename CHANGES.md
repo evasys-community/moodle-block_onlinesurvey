@@ -4,7 +4,7 @@ moodle-block_onlinesurvey
 Changes
 -------
 
-### Unreleased
+### v3.5-r5
 
 * 2020-12-21 - Bugfix: Solve Issue #29 "3.5 version throws error Call to undefined function lti_build_standard_message()"
 
