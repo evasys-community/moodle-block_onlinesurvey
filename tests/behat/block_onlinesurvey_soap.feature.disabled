@@ -31,6 +31,14 @@ Feature: Using the onlinesurvey block with the EvaSys SOAP API
       | student1  | student1@example.com |
       | tjohnson  | tjohnson@example.com |
       | ethompson | ethompson@example.com |
+    And the following "courses" exist:
+      | fullname | shortname | category |
+      | Course 1 | C1        | 0        |
+    And the following "course enrolments" exist:
+      | user      | course | role           |
+      | student1  | C1     | student        |
+      | tjohnson  | C1     | student        |
+      | ethompson | C1     | editingteacher |
     And I log in as "admin"
     And I am on site homepage
     And I turn editing mode on
