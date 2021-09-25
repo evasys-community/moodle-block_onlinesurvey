@@ -29,6 +29,14 @@ Feature: Using the onlinesurvey block with the EvaSys LTI API
       | student1  | student1@example.com |
       | tjohnson  | tjohnson@example.com |
       | ethompson | ethompson@example.com |
+    And the following "courses" exist:
+      | fullname | shortname | category |
+      | Course 1 | C1        | 0        |
+    And the following "course enrolments" exist:
+      | user      | course | role           |
+      | student1  | C1     | student        |
+      | tjohnson  | C1     | student        |
+      | ethompson | C1     | editingteacher |
     And I log in as "admin"
     And I am on site homepage
     And I turn editing mode on
@@ -82,7 +90,22 @@ Feature: Using the onlinesurvey block with the EvaSys LTI API
       | presentation | brief    | block_onlinesurvey |
     When I log in as "ethompson"
     And I switch to "block_onlinesurvey_contentframe" iframe
-    Then I should see "No open surveys available"
+    Then I should see "4"
+    And I should not see "No open surveys available"
+    And I should see "Open surveys available"
+    And I click on "#block_onlinesurvey_area" "css_element"
+    And I wait "2" seconds
+    And I switch to the main frame
+    And "div.block_onlinesurvey_custom-modal_container" "css_element" should exist
+    And I switch to "block_onlinesurvey_custom-modal_contentframe" iframe
+    And I should see "My Survey Dashboard"
+    And I should see "Design Technology"
+    And I should see "Design Projects"
+    And I should see "Introduction to Programming for Architecture and Design"
+    And I switch to the main frame
+    And I click on ".block_onlinesurvey_custom-modal_close-button" "css_element"
+    And I wait "2" seconds
+    And "div.block_onlinesurvey_custom-modal_container" "css_element" should not exist
 
   Scenario: View block in detailed mode with a student who does not have any surveys in EvaSys
     Given the following config values are set as admin:
@@ -111,4 +134,7 @@ Feature: Using the onlinesurvey block with the EvaSys LTI API
     When I log in as "ethompson"
     And I switch to "block_onlinesurvey_contentframe" iframe
     Then I should see "My Survey Dashboard"
-    And I should see "No online surveys found"
+    And I should not see "No online surveys found"
+    And I should see "Design Technology"
+    And I should see "Design Projects"
+    And I should see "Introduction to Programming for Architecture and Design"
