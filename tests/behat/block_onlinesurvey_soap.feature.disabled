@@ -16,6 +16,7 @@ Feature: Using the onlinesurvey block with the EvaSys SOAP API
       | survey_login   | https://[SERVERNAME]/evasys/                                       | block_onlinesurvey |
       | survey_user    | soap                                                               | block_onlinesurvey |
       | survey_pwd     | soap                                                               | block_onlinesurvey |
+      | show_spinner   | 0                                                                  | block_onlinesurvey |
     And the following config values are set as admin:
       | config          | value |
       | defaulthomepage | 1     |
@@ -46,7 +47,6 @@ Feature: Using the onlinesurvey block with the EvaSys SOAP API
     When I log in as "student1"
     And I switch to "block_onlinesurvey_contentframe" iframe
     Then I should see "No open surveys available"
-    And ".block_onlinesurvey_compact_magnifier" "css_element" should not exist
 
   Scenario: View block in compact mode with a user who is a student in EvaSys
     Given the following config values are set as admin:
@@ -60,7 +60,6 @@ Feature: Using the onlinesurvey block with the EvaSys SOAP API
     Then I should see "2"
     And I should not see "No open surveys available"
     And I should see "Open surveys available"
-    And ".block_onlinesurvey_compact_magnifier" "css_element" should exist
     And I click on "#block_onlinesurvey_area" "css_element"
     And I wait "2" seconds
     And I switch to the main frame
@@ -83,7 +82,6 @@ Feature: Using the onlinesurvey block with the EvaSys SOAP API
     When I log in as "ethompson"
     And I switch to "block_onlinesurvey_contentframe" iframe
     Then I should see "No open surveys available"
-    And ".block_onlinesurvey_compact_magnifier" "css_element" should not exist
 
   Scenario: View block in detailed mode with a student who does not have any surveys in EvaSys
     Given the following config values are set as admin:
