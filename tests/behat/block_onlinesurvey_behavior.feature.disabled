@@ -15,6 +15,7 @@ Feature: Configuring the behavior of the onlinesurvey block
       | lti_url        | https://[SERVERNAME]/customer/lti/lti_provider.php                  | block_onlinesurvey |
       | lti_password   | secret                                                              | block_onlinesurvey |
       | presentation   | brief                                                               | block_onlinesurvey |
+      | show_spinner   | 0                                                                   | block_onlinesurvey |
     And the following config values are set as admin:
       | config          | value |
       | defaulthomepage | 1     |
@@ -128,7 +129,7 @@ Feature: Configuring the behavior of the onlinesurvey block
     And I switch to "block_onlinesurvey_contentframe" iframe
     Then I should see "No online surveys found"
     And I switch to the main frame
-    And "Zoom survey list" "button" should not exist
+    And "Zoom survey list" "button" should not be visible
 
   Scenario: Don't always offer enlarged list view in detailed mode to a user who is a student in EvaSys
     Given the following config values are set as admin:
@@ -142,7 +143,7 @@ Feature: Configuring the behavior of the onlinesurvey block
     And I switch to "block_onlinesurvey_contentframe" iframe
     Then I should not see "No online surveys found"
     And I switch to the main frame
-    And "Zoom survey list" "button" should exist
+    And "Zoom survey list" "button" should be visible
 
   Scenario: Always offer enlarged list view in compact mode to a user who does not have any surveys in EvaSys
     Given the following config values are set as admin:
