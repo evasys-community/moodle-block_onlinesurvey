@@ -10,15 +10,25 @@ Feature: Configuring the behavior of the onlinesurvey block
 
   Background:
     Given the following config values are set as admin:
+      | config                | value | plugin             |
+      | presentation          | brief | block_onlinesurvey |
+      | survey_hide_empty     | 0     | block_onlinesurvey |
+      | offer_zoom            | 1     | block_onlinesurvey |
+      | show_spinner          | 0     | block_onlinesurvey |
+      | survey_show_popupinfo | 0     | block_onlinesurvey |
+    And the following config values are set as admin:
       | config         | value                                                               | plugin             |
       | connectiontype | LTI                                                                 | block_onlinesurvey |
       | lti_url        | https://[SERVERNAME]/customer/lti/lti_provider.php                  | block_onlinesurvey |
       | lti_password   | secret                                                              | block_onlinesurvey |
-      | presentation   | brief                                                               | block_onlinesurvey |
-      | show_spinner   | 0                                                                   | block_onlinesurvey |
     And the following config values are set as admin:
       | config          | value |
       | defaulthomepage | 1     |
+    And the following "users" exist:
+      | username  | email                |
+      | student1  | student1@example.com |
+      | tjohnson  | tjohnson@example.com |
+      | ethompson | ethompson@example.com |
     And I log in as "admin"
     And I am on site homepage
     And I turn editing mode on
@@ -37,9 +47,6 @@ Feature: Configuring the behavior of the onlinesurvey block
     And I log out
 
   Scenario: Change the block title
-    Given the following "users" exist:
-      | username  | email                |
-      | tjohnson  | tjohnson@example.com |
     When I log in as "tjohnson"
     Then "Evaluations (EvaSys)" "block" should exist
     And I log out
@@ -53,10 +60,6 @@ Feature: Configuring the behavior of the onlinesurvey block
     Given the following config values are set as admin:
       | config            | value | plugin             |
       | survey_hide_empty | 1     | block_onlinesurvey |
-    And the following "users" exist:
-      | username  | email                |
-      | tjohnson  | tjohnson@example.com |
-      | student1  | student1@example.com |
     When I log in as "tjohnson"
     Then "Evaluations (EvaSys)" "block" should exist
     And "Evaluations (EvaSys)" "block" should be visible
@@ -71,10 +74,6 @@ Feature: Configuring the behavior of the onlinesurvey block
       | survey_show_popupinfo    | 1                           | block_onlinesurvey |
       | survey_popupinfo_title   | You have open surveys!      | block_onlinesurvey |
       | survey_popupinfo_content | Thank you for your support! | block_onlinesurvey |
-    And the following "users" exist:
-      | username  | email                |
-      | tjohnson  | tjohnson@example.com |
-      | student1  | student1@example.com |
     When I log in as "tjohnson"
     Then "Evaluations (EvaSys)" "block" should exist
     And I wait "2" seconds
@@ -94,9 +93,6 @@ Feature: Configuring the behavior of the onlinesurvey block
       | config       | value    | plugin             |
       | offer_zoom   | 1        | block_onlinesurvey |
       | presentation | detailed | block_onlinesurvey |
-    And the following "users" exist:
-      | username  | email                |
-      | student1  | student1@example.com |
     When I log in as "student1"
     And I switch to "block_onlinesurvey_contentframe" iframe
     Then I should see "No online surveys found"
@@ -108,9 +104,6 @@ Feature: Configuring the behavior of the onlinesurvey block
       | config       | value    | plugin             |
       | offer_zoom   | 1        | block_onlinesurvey |
       | presentation | detailed | block_onlinesurvey |
-    And the following "users" exist:
-      | username  | email                |
-      | tjohnson  | tjohnson@example.com |
     When I log in as "tjohnson"
     And I switch to "block_onlinesurvey_contentframe" iframe
     Then I should not see "No online surveys found"
@@ -122,9 +115,6 @@ Feature: Configuring the behavior of the onlinesurvey block
       | config       | value    | plugin             |
       | offer_zoom   | 0        | block_onlinesurvey |
       | presentation | detailed | block_onlinesurvey |
-    And the following "users" exist:
-      | username  | email                |
-      | student1  | student1@example.com |
     When I log in as "student1"
     And I switch to "block_onlinesurvey_contentframe" iframe
     Then I should see "No online surveys found"
@@ -136,9 +126,6 @@ Feature: Configuring the behavior of the onlinesurvey block
       | config       | value    | plugin             |
       | offer_zoom   | 0        | block_onlinesurvey |
       | presentation | detailed | block_onlinesurvey |
-    And the following "users" exist:
-      | username  | email                |
-      | tjohnson  | tjohnson@example.com |
     When I log in as "tjohnson"
     And I switch to "block_onlinesurvey_contentframe" iframe
     Then I should not see "No online surveys found"
@@ -150,9 +137,6 @@ Feature: Configuring the behavior of the onlinesurvey block
       | config       | value | plugin             |
       | offer_zoom   | 1     | block_onlinesurvey |
       | presentation | brief | block_onlinesurvey |
-    And the following "users" exist:
-      | username  | email                |
-      | student1  | student1@example.com |
     When I log in as "student1"
     And I switch to "block_onlinesurvey_contentframe" iframe
     And I should see "No open surveys available"
@@ -163,9 +147,6 @@ Feature: Configuring the behavior of the onlinesurvey block
       | config       | value | plugin             |
       | offer_zoom   | 1     | block_onlinesurvey |
       | presentation | brief | block_onlinesurvey |
-    And the following "users" exist:
-      | username  | email                |
-      | tjohnson  | tjohnson@example.com |
     When I log in as "tjohnson"
     And I switch to "block_onlinesurvey_contentframe" iframe
     And I should not see "No open surveys available"
@@ -176,9 +157,6 @@ Feature: Configuring the behavior of the onlinesurvey block
       | config       | value | plugin             |
       | offer_zoom   | 0     | block_onlinesurvey |
       | presentation | brief | block_onlinesurvey |
-    And the following "users" exist:
-      | username  | email                |
-      | student1  | student1@example.com |
     When I log in as "student1"
     And I switch to "block_onlinesurvey_contentframe" iframe
     And I should see "No open surveys available"
@@ -189,9 +167,6 @@ Feature: Configuring the behavior of the onlinesurvey block
       | config       | value | plugin             |
       | offer_zoom   | 0     | block_onlinesurvey |
       | presentation | brief | block_onlinesurvey |
-    And the following "users" exist:
-      | username  | email                |
-      | tjohnson  | tjohnson@example.com |
     When I log in as "tjohnson"
     And I switch to "block_onlinesurvey_contentframe" iframe
     And I should not see "No open surveys available"
