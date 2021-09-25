@@ -10,14 +10,25 @@ Feature: Using the onlinesurvey block with the EvaSys LTI API
 
   Background:
     Given the following config values are set as admin:
+      | config                | value | plugin             |
+      | presentation          | brief | block_onlinesurvey |
+      | survey_hide_empty     | 0     | block_onlinesurvey |
+      | offer_zoom            | 1     | block_onlinesurvey |
+      | show_spinner          | 0     | block_onlinesurvey |
+      | survey_show_popupinfo | 0     | block_onlinesurvey |
+    And the following config values are set as admin:
       | config         | value                                                               | plugin             |
       | connectiontype | LTI                                                                 | block_onlinesurvey |
       | lti_url        | https://[SERVERNAME]/customer/lti/lti_provider.php                  | block_onlinesurvey |
       | lti_password   | secret                                                              | block_onlinesurvey |
-      | show_spinner   | 0                                                                   | block_onlinesurvey |
     And the following config values are set as admin:
       | config          | value |
       | defaulthomepage | 1     |
+    And the following "users" exist:
+      | username  | email                |
+      | student1  | student1@example.com |
+      | tjohnson  | tjohnson@example.com |
+      | ethompson | ethompson@example.com |
     And I log in as "admin"
     And I am on site homepage
     And I turn editing mode on
@@ -39,9 +50,6 @@ Feature: Using the onlinesurvey block with the EvaSys LTI API
     Given the following config values are set as admin:
       | config       | value    | plugin             |
       | presentation | brief    | block_onlinesurvey |
-    And the following "users" exist:
-      | username  | email                |
-      | student1  | student1@example.com |
     When I log in as "student1"
     And I switch to "block_onlinesurvey_contentframe" iframe
     Then I should see "No open surveys available"
@@ -50,9 +58,6 @@ Feature: Using the onlinesurvey block with the EvaSys LTI API
     Given the following config values are set as admin:
       | config       | value    | plugin             |
       | presentation | brief    | block_onlinesurvey |
-    And the following "users" exist:
-      | username  | email                |
-      | tjohnson  | tjohnson@example.com |
     When I log in as "tjohnson"
     And I switch to "block_onlinesurvey_contentframe" iframe
     Then I should see "2"
@@ -75,9 +80,6 @@ Feature: Using the onlinesurvey block with the EvaSys LTI API
     Given the following config values are set as admin:
       | config       | value    | plugin             |
       | presentation | brief    | block_onlinesurvey |
-    And the following "users" exist:
-      | username  | email                 |
-      | ethompson | ethompson@example.com |
     When I log in as "ethompson"
     And I switch to "block_onlinesurvey_contentframe" iframe
     Then I should see "No open surveys available"
@@ -86,9 +88,6 @@ Feature: Using the onlinesurvey block with the EvaSys LTI API
     Given the following config values are set as admin:
       | config       | value    | plugin             |
       | presentation | detailed | block_onlinesurvey |
-    And the following "users" exist:
-      | username  | email                |
-      | student1  | student1@example.com |
     When I log in as "student1"
     And I switch to "block_onlinesurvey_contentframe" iframe
     Then I should see "My Survey Dashboard"
@@ -98,9 +97,6 @@ Feature: Using the onlinesurvey block with the EvaSys LTI API
     Given the following config values are set as admin:
       | config       | value    | plugin             |
       | presentation | detailed | block_onlinesurvey |
-    And the following "users" exist:
-      | username  | email                |
-      | tjohnson  | tjohnson@example.com |
     When I log in as "tjohnson"
     And I switch to "block_onlinesurvey_contentframe" iframe
     Then I should see "My Survey Dashboard"
@@ -112,9 +108,6 @@ Feature: Using the onlinesurvey block with the EvaSys LTI API
     Given the following config values are set as admin:
       | config       | value    | plugin             |
       | presentation | detailed | block_onlinesurvey |
-    And the following "users" exist:
-      | username  | email                 |
-      | ethompson | ethompson@example.com |
     When I log in as "ethompson"
     And I switch to "block_onlinesurvey_contentframe" iframe
     Then I should see "My Survey Dashboard"
