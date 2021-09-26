@@ -1,7 +1,7 @@
 moodle-block_onlinesurvey
 =========================
 
-[![Build Status](https://travis-ci.com/EPPlugin/moodle-block_onlinesurvey.svg?branch=master)](https://travis-ci.com/EPPlugin/moodle-block_onlinesurvey)
+[![Moodle Plugin CI](https://github.com/EPPlugin/moodle-block_onlinesurvey/workflows/Moodle%20Plugin%20CI/badge.svg?branch=MOODLE_38_STABLE)](https://github.com/EPPlugin/moodle-block_onlinesurvey/actions?query=workflow%3A%22Moodle+Plugin+CI%22+branch%3AMOODLE_38_STABLE)
 
 Moodle block plugin which allows you to quickly and easily integrate survey information data from EvaSys into Moodle. With this block, you can place links to EvaSys online surveys directly on the Moodle frontpage and dashboard as well as on course overview pages.
 
