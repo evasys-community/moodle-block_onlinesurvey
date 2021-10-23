@@ -15,10 +15,10 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Plugin "Evaluations (EvaSys)"
+ * Plugin "Evaluations (evasys)"
  *
  * @package    block_onlinesurvey
- * @copyright  2018 Alexander Bias on behalf of Electric Paper Evaluationssysteme GmbH
+ * @copyright  2018 Alexander Bias on behalf of evasys GmbH
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -37,7 +37,7 @@ defined('MOODLE_INTERNAL') || die();
  * Privacy Subsystem for block_onlinesurvey implementing metadata and plugin provider.
  *
  * @package    block_onlinesurvey
- * @copyright  2018 Alexander Bias on behalf of Electric Paper Evaluationssysteme GmbH
+ * @copyright  2018 Alexander Bias on behalf of evasys GmbH
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class provider implements
@@ -55,29 +55,29 @@ class provider implements
         // Get plugin config.
         $config = get_config('block_onlinesurvey');
 
-        // If the plugin is using SOAP as connection to EvaSys.
+        // If the plugin is using SOAP as connection to evasys.
         if ($config->connectiontype == 'SOAP') {
             $url = $config->survey_server;
 
-            // If the plugin is using LTI as connection to EvaSys.
+            // If the plugin is using LTI as connection to evasys.
         } else if ($config->connectiontype == 'LTI') {
             $url = $config->lti_url;
 
             // This should not happen, but can happen if the plugin is not correctly configured.
         } else {
-            $url = 'EvaSys';
+            $url = 'evasys';
         }
 
-        // If the plugin is configured to use the username as useridentifier for EvaSys.
+        // If the plugin is configured to use the username as useridentifier for evasys.
         if ($config->useridentifier == 'username') {
             $useridentifier = 'username';
 
-            // If the plugin is configured to use the email as useridentifier for EvaSys (which is the default).
+            // If the plugin is configured to use the email as useridentifier for evasys (which is the default).
         } else {
             $useridentifier = 'email';
         }
 
-        // Add link to EvaSys to collection.
+        // Add link to evasys to collection.
         $collection->add_external_location_link(
             $url,
             [

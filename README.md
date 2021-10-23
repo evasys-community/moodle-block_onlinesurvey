@@ -1,9 +1,9 @@
 moodle-block_onlinesurvey
 =========================
 
-[![Moodle Plugin CI](https://github.com/EPPlugin/moodle-block_onlinesurvey/workflows/Moodle%20Plugin%20CI/badge.svg?branch=MOODLE_35_STABLE)](https://github.com/EPPlugin/moodle-block_onlinesurvey/actions?query=workflow%3A%22Moodle+Plugin+CI%22+branch%3AMOODLE_35_STABLE)
+[![Moodle Plugin CI](https://github.com/evasys-community/moodle-block_onlinesurvey/workflows/Moodle%20Plugin%20CI/badge.svg?branch=MOODLE_35_STABLE)](https://github.com/evasys-community/moodle-block_onlinesurvey/actions?query=workflow%3A%22Moodle+Plugin+CI%22+branch%3AMOODLE_35_STABLE)
 
-Moodle block plugin which allows you to quickly and easily integrate survey information data from EvaSys into Moodle. With this block, you can place links to EvaSys online surveys directly on the Moodle frontpage and dashboard as well as on course overview pages.
+Moodle block plugin which allows you to quickly and easily integrate survey information data from evasys into Moodle. With this block, you can place links to evasys online surveys directly on the Moodle frontpage and dashboard as well as on course overview pages.
 
 
 Moodle requirements
@@ -12,12 +12,12 @@ Moodle requirements
 This plugin requires Moodle 3.5+
 
 
-EvaSys requirements
+evasys requirements
 -------------------
 
-Please note that this plugin requires a commercial subscription of EvaSys and a running instance of at least EvaSys version 7.1 (2151).
+Please note that this plugin requires a commercial subscription of evasys and a running instance of at least evasys version 7.1 (2151).
 
-For details about EvaSys, please see
+For details about evasys, please see
 https://en.evasys.de/ (english) or
 https://www.evasys.de/ (german).
 
@@ -25,11 +25,11 @@ https://www.evasys.de/ (german).
 Plugin description
 ------------------
 
-This plugin allows you to quickly and easily integrate survey information data from EvaSys into Moodle. With this block, you can place links to EvaSys online surveys directly on the Moodle frontpage and dashboard as well as on course overview pages.
+This plugin allows you to quickly and easily integrate survey information data from evasys into Moodle. With this block, you can place links to evasys online surveys directly on the Moodle frontpage and dashboard as well as on course overview pages.
 
 Two types of connection are available: Data can be exchanged either via an LTI interface or via SOAP web services. Depending on the type of connection, different functions are at your disposal. When using LTI, you can display survey information in the learner view as well as in the instructor view. When using SOAP, survey information can only be displayed in the learner view.
 
-By implementing a single sign-on solution, learners as well as instructors only have to register with Moodle. It is not necessary to enter EvaSys PSWDs to participate in surveys.
+By implementing a single sign-on solution, learners as well as instructors only have to register with Moodle. It is not necessary to enter evasys PSWDs to participate in surveys.
 
 
 Installation
@@ -45,26 +45,26 @@ Usage & Settings
 ----------------
 
 To configure the plugin and its behaviour, please visit:
-Site administration -> Plugins -> Blocks -> Evaluations (EvaSys).
+Site administration -> Plugins -> Blocks -> Evaluations (evasys).
 
 There, you find multiple sections:
 
 ### Appearance
 
-The settings in this section define how the EvaSys block will be displayed.
+The settings in this section define how the evasys block will be displayed.
 
 ### Communication
 
-The settings in this section define how the EvaSys block will communicate with EvaSys.
+The settings in this section define how the evasys block will communicate with evasys.
 
 ### SOAP settings
 
-The settings in this section define how the EvaSys block will communicate with EvaSys.
+The settings in this section define how the evasys block will communicate with evasys.
 These settings are only required if you selected "SOAP" in the "Communication protocol" setting.
 
 ### LTI settings
 
-The settings in this section define how the EvaSys block will communicate with EvaSys.
+The settings in this section define how the evasys block will communicate with evasys.
 These settings are only required if you selected "LTI" in the "Communication protocol" setting.
 
 ### Expert settings
@@ -76,8 +76,8 @@ Documentation
 -------------
 
 An in-depth documentation of the plugin's settings and its usage is provided as PDF on
-https://github.com/EPPlugin/moodle-block_onlinesurvey/blob/master/DOCUMENTATION.en.pdf (english) and
-https://github.com/EPPlugin/moodle-block_onlinesurvey/blob/master/DOCUMENTATION.de.pdf (german).
+https://github.com/evasys-community/moodle-block_onlinesurvey/blob/master/DOCUMENTATION.en.pdf (english) and
+https://github.com/evasys-community/moodle-block_onlinesurvey/blob/master/DOCUMENTATION.de.pdf (german).
 
 
 Theme support
@@ -93,24 +93,24 @@ This plugin is published and regularly updated in the Moodle plugins repository:
 http://moodle.org/plugins/view/block_onlinesurvey
 
 The latest development version can be found on Github:
-https://github.com/EPPlugin/moodle-block_onlinesurvey
+https://github.com/evasys-community/moodle-block_onlinesurvey
 
 
 Bug and problem reports / Support requests
 ------------------------------------------
 
 Please report bugs and problems on Github:
-https://github.com/EPPlugin/moodle-block_onlinesurvey/issues
+https://github.com/evasys-community/moodle-block_onlinesurvey/issues
 
 
 Feature proposals
 -----------------
 
 Please issue feature proposals on Github:
-https://github.com/EPPlugin/moodle-block_onlinesurvey/issues
+https://github.com/evasys-community/moodle-block_onlinesurvey/issues
 
 Please create pull requests on Github:
-https://github.com/EPPlugin/moodle-block_onlinesurvey/pulls
+https://github.com/evasys-community/moodle-block_onlinesurvey/pulls
 
 
 Translating this plugin
@@ -132,7 +132,7 @@ Copyrights
 ----------
 
 Plugin maintainer / product owner
-Electric Paper Evaluationssysteme GmbH
+evasys GmbH
 www.evasys.de
 
 Development and customizing

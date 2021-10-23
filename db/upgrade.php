@@ -15,10 +15,10 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Plugin "Evaluations (EvaSys)"
+ * Plugin "Evaluations (evasys)"
  *
  * @package    block_onlinesurvey
- * @copyright  2020 Alexander Bias on behalf of Electric Paper Evaluationssysteme GmbH
+ * @copyright  2020 Alexander Bias on behalf of evasys GmbH
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -65,6 +65,26 @@ function xmldb_block_onlinesurvey_upgrade($oldversion) {
 
         // Remember upgrade savepoint.
         upgrade_plugin_savepoint(true, 2020052200, 'block', 'onlinesurvey');
+    }
+
+    // Re-branding of the evasys brand.
+    if ($oldversion < 2020052205) {
+        // Check if the blocktitle is set in this Moodle instance.
+        $blocktitlesetting = get_config('block_onlinesurvey', 'blocktitle');
+        if (!empty($blocktitlesetting)) {
+
+            // If the blocktitle contains the substring 'EvaSys' (case-sensitive).
+            if (strpos($blocktitlesetting, 'EvaSys') !== false) {
+                // Replace the substring with 'evasys' (case-sensitive).
+                $newblocktitle = str_replace('EvaSys', 'evasys', $blocktitlesetting);
+
+                // Write the setting back to the DB.
+                set_config('blocktitle', $newblocktitle, 'block_onlinesurvey');
+            }
+        }
+
+        // Remember upgrade savepoint.
+        upgrade_plugin_savepoint(true, 2020052205, 'block', 'onlinesurvey');
     }
 
     return true;
