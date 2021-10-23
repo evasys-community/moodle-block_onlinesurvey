@@ -1,11 +1,11 @@
 @block @block_onlinesurvey @javascript @block_onlinesurvey_soap
-Feature: Using the onlinesurvey block with the EvaSys SOAP API
-  In order to provide access to our EvaSys online surveys
+Feature: Using the onlinesurvey block with the evasys SOAP API
+  In order to provide access to our evasys online surveys
   As admin
-  I want to configure the block_onlinesurvey plugin to connect to EvaSys via SOAP and want to add the block to the Dashboard
+  I want to configure the block_onlinesurvey plugin to connect to evasys via SOAP and want to add the block to the Dashboard
 
 # This behat test feature file is fully working.
-# But it needs a working EvaSys backend with surveys and users set up in a way as this test expects them as well.
+# But it needs a working evasys backend with surveys and users set up in a way as this test expects them as well.
 # Because of that, the feature file is currently only shipped as disabled skeleton.
 
   Background:
@@ -42,21 +42,21 @@ Feature: Using the onlinesurvey block with the EvaSys SOAP API
     And I log in as "admin"
     And I am on site homepage
     And I turn editing mode on
-    And I add the "Evaluations (EvaSys)" block
-    And I configure the "Evaluations (EvaSys)" block
+    And I add the "Evaluations (evasys)" block
+    And I configure the "Evaluations (evasys)" block
     And I set the following fields to these values:
       | Page contexts | 2 |
     And I press "Save changes"
     And I turn editing mode off
     And I follow "Dashboard" in the user menu
     And I press "Customise this page"
-    And I configure the "Evaluations (EvaSys)" block
+    And I configure the "Evaluations (evasys)" block
     And I set the following fields to these values:
       | Display on page types | Dashboard page |
     And I press "Save changes"
     And I log out
 
-  Scenario: View block in compact mode with a student who does not have any surveys in EvaSys
+  Scenario: View block in compact mode with a student who does not have any surveys in evasys
     Given the following config values are set as admin:
       | config       | value    | plugin             |
       | presentation | brief    | block_onlinesurvey |
@@ -64,7 +64,7 @@ Feature: Using the onlinesurvey block with the EvaSys SOAP API
     And I switch to "block_onlinesurvey_contentframe" iframe
     Then I should see "No open surveys available"
 
-  Scenario: View block in compact mode with a user who is a student in EvaSys
+  Scenario: View block in compact mode with a user who is a student in evasys
     Given the following config values are set as admin:
       | config       | value    | plugin             |
       | presentation | brief    | block_onlinesurvey |
@@ -85,7 +85,7 @@ Feature: Using the onlinesurvey block with the EvaSys SOAP API
     And I wait "2" seconds
     And "div.block_onlinesurvey_custom-modal_container" "css_element" should not exist
 
-  Scenario: View block in compact mode with a user who is a teacher in EvaSys
+  Scenario: View block in compact mode with a user who is a teacher in evasys
     Given the following config values are set as admin:
       | config       | value    | plugin             |
       | presentation | brief    | block_onlinesurvey |
@@ -93,7 +93,7 @@ Feature: Using the onlinesurvey block with the EvaSys SOAP API
     And I switch to "block_onlinesurvey_contentframe" iframe
     Then I should see "No open surveys available"
 
-  Scenario: View block in detailed mode with a student who does not have any surveys in EvaSys
+  Scenario: View block in detailed mode with a student who does not have any surveys in evasys
     Given the following config values are set as admin:
       | config       | value    | plugin             |
       | presentation | detailed | block_onlinesurvey |
@@ -101,7 +101,7 @@ Feature: Using the onlinesurvey block with the EvaSys SOAP API
     And I switch to "block_onlinesurvey_contentframe" iframe
     Then I should see "No open surveys available"
 
-  Scenario: View block in detailed mode with a user who is a student in EvaSys
+  Scenario: View block in detailed mode with a user who is a student in evasys
     Given the following config values are set as admin:
       | config       | value    | plugin             |
       | presentation | detailed | block_onlinesurvey |
@@ -111,7 +111,7 @@ Feature: Using the onlinesurvey block with the EvaSys SOAP API
     And I should see "Environmental Design"
     And I should see "Design Projects"
 
-  Scenario: View block in detailed mode with a user who is a teacher in EvaSys
+  Scenario: View block in detailed mode with a user who is a teacher in evasys
     Given the following config values are set as admin:
       | config       | value    | plugin             |
       | presentation | detailed | block_onlinesurvey |

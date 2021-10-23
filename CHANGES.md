@@ -4,13 +4,17 @@ moodle-block_onlinesurvey
 Changes
 -------
 
+### Unreleased
+
+* 2021-10-24 - Re-branding of the evasys brand.
+
 ### v3.8-r4
 
 * 2020-09-22 - Bugfix: Remove a PHP debug warning in LTI Compact view mode which was triggered due to an uninitialized parameter.
 
 ### v3.8-r3
 
-* 2020-08-19 - Improvement: Adapt Behat tests to latest changes in the plugin and the EvaSys Demo system.
+* 2020-08-19 - Improvement: Adapt Behat tests to latest changes in the plugin and the evasys Demo system.
 * 2020-08-19 - Improvement: Make Moodle codechecker a little bit happier.
 * 2020-08-19 - Release: Remove DE language pack from the codebase as this language is now managed in AMOS.
 
@@ -32,13 +36,13 @@ Changes
 * 2020-05-22 - Feature: Add admin setting to offer the enlarged list view even if there aren't any open surveys.
 * 2020-05-21 - Improvement: Add note when expert settings are processed.
 * 2020-05-21 - Improvement: Improve the height of the iFrame when there aren't any surveys and when there are surveys.
-* 2020-05-12 - Feature: Add admin setting to show a spinner icon while the list of open surveys is being loaded from EvaSys.
+* 2020-05-12 - Feature: Add admin setting to show a spinner icon while the list of open surveys is being loaded from evasys.
 * 2020-01-17 - Improvement: Update Travis CI configuration from upstream.
 * 2020-01-16 - Release: Update README.md section about supported themes and added Classic which is part of Moodle core since Moodle 3.7.
 * 2020-01-16 - Bugfix: Due to MDL-65936, it is not possible anymore to include FontAwesome with pure CSS (i.e. without SCSS) from Moodle 3.8 on. Thus, we have to ship our own packaged version of FontAwesome for the show_surveys.php iFrame unfortunately.
 * 2020-01-15 - Release: Raise Moodle Core versions which are tested by Travis for the upcoming release.
-* 2020-01-14 - Improvement: Add Behat tests for automated testing. However, these need a working EvaSys backend which has to be setup separately.
-* 2020-01-09 - Improvement: Raise the SOAP API Version from 51 to 61 to improve the SOAP survey result display for users who do not have and never had any surveys in EvaSys.
+* 2020-01-14 - Improvement: Add Behat tests for automated testing. However, these need a working evasys backend which has to be setup separately.
+* 2020-01-09 - Improvement: Raise the SOAP API Version from 51 to 61 to improve the SOAP survey result display for users who do not have and never had any surveys in evasys.
 * 2020-01-09 - Release: Raise required Moodle core version to 3.5 as this is the oldest currently supported core version.
 * 2019-10-05 - Cleanup: Move the contents of lib.php to locallib.php to slightly improve the performance of the plugin.
 * 2019-10-01 - Improvement: Improve the look and feel of the block in compact mode (LTI + SOAP) and in detailed mode (SOAP).
@@ -60,12 +64,12 @@ Changes
 * 2019-02-20 - Cleanup: Restructure settings page and language pack.
 * 2019-02-18 - Cleanup: Remove unused support for LTI consumer key and LTI course context.
 * 2019-02-18 - Cleanup: Fix plugin file tree and fix coding style. 
-* 2019-02-18 - Bugfix: Correct handling of connection timeouts to EvaSys.
+* 2019-02-18 - Bugfix: Correct handling of connection timeouts to evasys.
 
 ### v2.1
 
 * 2018-09-10 - Feature: Add admin setting for adding additional CSS which will be added to the iframe.
-* 2018-09-10 - Improvement: When connecting to EvaSys via SOAP, reload the survey list everytime the block is shown instead of only when the user logs in.
+* 2018-09-10 - Improvement: When connecting to evasys via SOAP, reload the survey list everytime the block is shown instead of only when the user logs in.
 * 2018-09-10 - Feature: Add admin setting for hiding the block if no surveys are available.
 * 2018-09-10 - Feature: Add admin setting for showing the survey list in a compact mode.
 

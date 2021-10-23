@@ -15,10 +15,10 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Plugin "Evaluations (EvaSys)"
+ * Plugin "Evaluations (evasys)"
  *
  * @package    block_onlinesurvey
- * @copyright  2018 Soon Systems GmbH on behalf of Electric Paper Evaluationssysteme GmbH
+ * @copyright  2018 Soon Systems GmbH on behalf of evasys GmbH
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -177,7 +177,7 @@ if ($ADMIN->fulltree) {
     unset($userdataoptions);
 
 
-    // Custom field in EvaSys.
+    // Custom field in evasys.
     $customfieldidoptions = array();
     $customfieldnr = get_string('setting_customfieldnumber', 'block_onlinesurvey', null, true);
     $customfieldidoptions[1] = $customfieldnr." 1";
@@ -219,7 +219,7 @@ if ($ADMIN->fulltree) {
     );
 
 
-    // EvaSys server (SOAP).
+    // evasys server (SOAP).
     $settings->add(
             new admin_setting_configtext(
                     'block_onlinesurvey/survey_server',
@@ -232,7 +232,7 @@ if ($ADMIN->fulltree) {
     );
 
 
-    // EvaSys path for online surveys (SOAP).
+    // evasys path for online surveys (SOAP).
     $settings->add(
             new admin_setting_configtext(
                     'block_onlinesurvey/survey_login',
@@ -245,7 +245,7 @@ if ($ADMIN->fulltree) {
     );
 
 
-    // EvaSys SOAP user.
+    // evasys SOAP user.
     $settings->add(
             new admin_setting_configtext(
                     'block_onlinesurvey/survey_user',
@@ -257,7 +257,7 @@ if ($ADMIN->fulltree) {
     );
 
 
-    // EvaSys SOAP password.
+    // evasys SOAP password.
     $settings->add(
             new admin_setting_configpasswordunmask(
                     'block_onlinesurvey/survey_pwd',
