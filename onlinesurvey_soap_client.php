@@ -15,10 +15,10 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Plugin "Evaluations (EvaSys)"
+ * Plugin "Evaluations (evasys)"
  *
  * @package    block_onlinesurvey
- * @copyright  2018 Soon Systems GmbH on behalf of Electric Paper Evaluationssysteme GmbH
+ * @copyright  2018 Soon Systems GmbH on behalf of evasys GmbH
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -32,7 +32,7 @@ require_once($CFG->libdir.'/filelib.php');
  * Onlinesurvey SOAP client which extends the standard SoapClient class.
  *
  * @package    block_onlinesurvey
- * @copyright  2018 Soon Systems GmbH on behalf of Electric Paper Evaluationssysteme GmbH
+ * @copyright  2018 Soon Systems GmbH on behalf of evasys GmbH
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class onlinesurvey_soap_client extends SoapClient {

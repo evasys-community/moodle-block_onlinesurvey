@@ -1,11 +1,11 @@
 @block @block_onlinesurvey @javascript @block_onlinesurvey_behavior
 Feature: Configuring the behavior of the onlinesurvey block
-  In order to adapt the presentation of our EvaSys online surveys in Moodle
+  In order to adapt the presentation of our evasys online surveys in Moodle
   As admin
   I want to configure the behavior of the block_onlinesurvey plugin in multiple aspects
 
 # This behat test feature file is fully working.
-# But it needs a working EvaSys backend with surveys and users set up in a way as this test expects them as well.
+# But it needs a working evasys backend with surveys and users set up in a way as this test expects them as well.
 # Because of that, the feature file is currently only shipped as disabled skeleton.
 
   Background:
@@ -40,15 +40,15 @@ Feature: Configuring the behavior of the onlinesurvey block
     And I log in as "admin"
     And I am on site homepage
     And I turn editing mode on
-    And I add the "Evaluations (EvaSys)" block
-    And I configure the "Evaluations (EvaSys)" block
+    And I add the "Evaluations (evasys)" block
+    And I configure the "Evaluations (evasys)" block
     And I set the following fields to these values:
       | Page contexts | 2 |
     And I press "Save changes"
     And I turn editing mode off
     And I follow "Dashboard" in the user menu
     And I press "Customise this page"
-    And I configure the "Evaluations (EvaSys)" block
+    And I configure the "Evaluations (evasys)" block
     And I set the following fields to these values:
       | Display on page types | Dashboard page |
     And I press "Save changes"
@@ -56,25 +56,25 @@ Feature: Configuring the behavior of the onlinesurvey block
 
   Scenario: Change the block title
     When I log in as "tjohnson"
-    Then "Evaluations (EvaSys)" "block" should exist
+    Then "Evaluations (evasys)" "block" should exist
     And I log out
     And the following config values are set as admin:
       | config     | value              | plugin             |
-      | blocktitle | Our EvaSys surveys | block_onlinesurvey |
+      | blocktitle | Our evasys surveys | block_onlinesurvey |
     And I log in as "tjohnson"
-    Then "Our EvaSys surveys" "block" should exist
+    Then "Our evasys surveys" "block" should exist
 
   Scenario: Display the block only when surveys are available
     Given the following config values are set as admin:
       | config            | value | plugin             |
       | survey_hide_empty | 1     | block_onlinesurvey |
     When I log in as "tjohnson"
-    Then "Evaluations (EvaSys)" "block" should exist
-    And "Evaluations (EvaSys)" "block" should be visible
+    Then "Evaluations (evasys)" "block" should exist
+    And "Evaluations (evasys)" "block" should be visible
     And I log out
     And I log in as "student1"
-    Then "Evaluations (EvaSys)" "block" should exist
-    And "Evaluations (EvaSys)" "block" should not be visible
+    Then "Evaluations (evasys)" "block" should exist
+    And "Evaluations (evasys)" "block" should not be visible
 
   Scenario: Display the login popup when surveys are available
     Given the following config values are set as admin:
@@ -83,7 +83,7 @@ Feature: Configuring the behavior of the onlinesurvey block
       | survey_popupinfo_title   | You have open surveys!      | block_onlinesurvey |
       | survey_popupinfo_content | Thank you for your support! | block_onlinesurvey |
     When I log in as "tjohnson"
-    Then "Evaluations (EvaSys)" "block" should exist
+    Then "Evaluations (evasys)" "block" should exist
     And I wait "2" seconds
     And "div.block_onlinesurvey_custom-modal_container" "css_element" should exist
     And I should see "You have open surveys!" in the ".block_onlinesurvey_custom-modal_title" "css_element"
@@ -96,7 +96,7 @@ Feature: Configuring the behavior of the onlinesurvey block
     And I wait "5" seconds
     And "div.block_onlinesurvey_custom-modal_container" "css_element" should not exist
 
-  Scenario: Always offer enlarged list view in detailed mode to a user who does not have any surveys in EvaSys
+  Scenario: Always offer enlarged list view in detailed mode to a user who does not have any surveys in evasys
     Given the following config values are set as admin:
       | config       | value    | plugin             |
       | offer_zoom   | 1        | block_onlinesurvey |
@@ -107,7 +107,7 @@ Feature: Configuring the behavior of the onlinesurvey block
     And I switch to the main frame
     And "All surveys" "button" should exist
 
-  Scenario: Always offer enlarged list view in detailed mode to a user who is a student in EvaSys
+  Scenario: Always offer enlarged list view in detailed mode to a user who is a student in evasys
     Given the following config values are set as admin:
       | config       | value    | plugin             |
       | offer_zoom   | 1        | block_onlinesurvey |
@@ -118,7 +118,7 @@ Feature: Configuring the behavior of the onlinesurvey block
     And I switch to the main frame
     And "All surveys" "button" should exist
 
-  Scenario: Don't always offer enlarged list view in detailed mode to a user who does not have any surveys in EvaSys
+  Scenario: Don't always offer enlarged list view in detailed mode to a user who does not have any surveys in evasys
     Given the following config values are set as admin:
       | config       | value    | plugin             |
       | offer_zoom   | 0        | block_onlinesurvey |
@@ -129,7 +129,7 @@ Feature: Configuring the behavior of the onlinesurvey block
     And I switch to the main frame
     And "Zoom survey list" "button" should not be visible
 
-  Scenario: Don't always offer enlarged list view in detailed mode to a user who is a student in EvaSys
+  Scenario: Don't always offer enlarged list view in detailed mode to a user who is a student in evasys
     Given the following config values are set as admin:
       | config       | value    | plugin             |
       | offer_zoom   | 0        | block_onlinesurvey |
@@ -140,7 +140,7 @@ Feature: Configuring the behavior of the onlinesurvey block
     And I switch to the main frame
     And "Zoom survey list" "button" should be visible
 
-  Scenario: Always offer enlarged list view in compact mode to a user who does not have any surveys in EvaSys
+  Scenario: Always offer enlarged list view in compact mode to a user who does not have any surveys in evasys
     Given the following config values are set as admin:
       | config       | value | plugin             |
       | offer_zoom   | 1     | block_onlinesurvey |
@@ -150,7 +150,7 @@ Feature: Configuring the behavior of the onlinesurvey block
     And I should see "No open surveys available"
     And ".block_onlinesurvey_compact_magnifier" "css_element" should exist
 
-  Scenario: Always offer enlarged list view in compact mode to a user who is a student in EvaSys
+  Scenario: Always offer enlarged list view in compact mode to a user who is a student in evasys
     Given the following config values are set as admin:
       | config       | value | plugin             |
       | offer_zoom   | 1     | block_onlinesurvey |
@@ -160,7 +160,7 @@ Feature: Configuring the behavior of the onlinesurvey block
     And I should not see "No open surveys available"
     And ".block_onlinesurvey_compact_magnifier" "css_element" should exist
 
-  Scenario: Don't always offer enlarged list view in compact mode to a user who does not have any surveys in EvaSys
+  Scenario: Don't always offer enlarged list view in compact mode to a user who does not have any surveys in evasys
     Given the following config values are set as admin:
       | config       | value | plugin             |
       | offer_zoom   | 0     | block_onlinesurvey |
@@ -170,7 +170,7 @@ Feature: Configuring the behavior of the onlinesurvey block
     And I should see "No open surveys available"
     And ".block_onlinesurvey_compact_magnifier" "css_element" should not exist
 
-  Scenario: Don't always offer enlarged list view in compact mode to a user who is a student in EvaSys
+  Scenario: Don't always offer enlarged list view in compact mode to a user who is a student in evasys
     Given the following config values are set as admin:
       | config       | value | plugin             |
       | offer_zoom   | 0     | block_onlinesurvey |
