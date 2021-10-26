@@ -128,13 +128,21 @@ This plugin has not been tested with Moodle's support for right-to-left (RTL) la
 If you want to use this plugin with a RTL language and it doesn't work as-is, you are free to send us a pull request on Github with modifications.
 
 
-Copyrights
-----------
+Maintainers & Copyright
+-----------------------
 
-Plugin maintainer / product owner
-evasys GmbH
+Product owner:\
+evasys GmbH\
 www.evasys.de
 
-Development and customizing
-Soon-Systems-GmbH
+Current maintainer and developer:\
+Moodle partner lern.link\
+www.lernlink.de
+
+
+Credits
+-------
+
+This plugin was initially developed by:\
+Soon-Systems-GmbH\
 www.soon-systems.de
