@@ -6,6 +6,7 @@ Changes
 
 ### Unreleased
 
+* 2021-10-26 - Update maintainers in the README file.
 * 2021-10-24 - Re-branding of the evasys brand.
 
 ### v3.5-r5
