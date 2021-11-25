@@ -1,7 +1,7 @@
 moodle-block_onlinesurvey
 =========================
 
-[![Moodle Plugin CI](https://github.com/evasys-community/moodle-block_onlinesurvey/workflows/Moodle%20Plugin%20CI/badge.svg?branch=master)](https://github.com/evasys-community/moodle-block_onlinesurvey/actions?query=workflow%3A%22Moodle+Plugin+CI%22+branch%3Amaster)
+[![Moodle Plugin CI](https://github.com/evasys-community/moodle-block_onlinesurvey/workflows/Moodle%20Plugin%20CI/badge.svg?branch=MOODLE_311_STABLE)](https://github.com/evasys-community/moodle-block_onlinesurvey/actions?query=workflow%3A%22Moodle+Plugin+CI%22+branch%3AMOODLE_311_STABLE)
 
 Moodle block plugin which allows you to quickly and easily integrate survey information data from evasys into Moodle. With this block, you can place links to evasys online surveys directly on the Moodle frontpage and dashboard as well as on course overview pages.
 
