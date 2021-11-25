@@ -4,6 +4,10 @@ moodle-block_onlinesurvey
 Changes
 -------
 
+### Unreleased
+
+* 2021-11-25 - Prepare compatibility for Moodle 3.9.
+
 ### v3.8-r5
 
 * 2021-11-24 - Update PDF documentation to match the re-branding of the evasys brand. 
