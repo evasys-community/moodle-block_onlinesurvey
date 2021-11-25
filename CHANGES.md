@@ -4,7 +4,7 @@ moodle-block_onlinesurvey
 Changes
 -------
 
-### Unreleased
+### v3.11-r1
 
 * 2021-11-27 - Prepare compatibility for Moodle 3.11.
 
