@@ -4,6 +4,10 @@ moodle-block_onlinesurvey
 Changes
 -------
 
+### Unreleased
+
+* 2022-07-26 - Prepare compatibility for Moodle 4.0.
+
 ### v3.11-r3
 
 * 2022-08-08 - Bugfix: The block content didn't load if the evasys server responded quicker than the Moodle page loads - Credits to @JayBraker
