@@ -4,7 +4,7 @@ moodle-block_onlinesurvey
 Changes
 -------
 
-### Unreleased
+### v3.11-r2
 
 * 2022-04-26 - Improvement: Actually make use of rtrim when fetching the LTI content from the server - Credits to @JayBraker
 
