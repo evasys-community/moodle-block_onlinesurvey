@@ -807,7 +807,7 @@ function block_onlinesurvey_lti_post_launch_html_curl($parameter, $endpoint, $co
     foreach ($fields as $key => $value) {
         $fieldsstring .= $key.'='.$value.'&';
     }
-    rtrim($fieldsstring, '&');
+    $fieldsstring = rtrim($fieldsstring, '&');
 
     $curl = new curl;
     $timeout = isset($config->survey_timeout) ? $config->survey_timeout : BLOCK_ONLINESURVEY_DEFAULT_TIMEOUT;
