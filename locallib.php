@@ -513,8 +513,8 @@ function block_onlinesurvey_get_lti_content($config = null, $context = null, $co
         } else {
             $reinstructor = BLOCK_ONLINESURVEY_LTI_REGEX_INSTRUCTOR_DEFAULT;
         }
-        if (empty($matches) && !empty($reinstructor)) {
-            $surveycount = preg_match_all($reinstructor, $content2, $matches, PREG_SET_ORDER, 0);
+        if (!empty($reinstructor)) {
+            $surveycount += preg_match_all($reinstructor, $content2, $matches, PREG_SET_ORDER, 0);
         }
     }
 
