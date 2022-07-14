@@ -211,8 +211,9 @@ class block_onlinesurvey extends block_base {
 
             // Testing reveals that the iframe requires the permissions "allow-same-origin allow-scripts",
             // hence the sandbox attribute can not be used.
+            $source = $config->show_spinner ? 'about:blank' : $url;
             $this->content->text .= '<iframe id="block_onlinesurvey_contentframe" '.
-                    'class="'.$connectionclass.' '.$presentationclass.'" src="'.$url.'"></iframe>';
+                    'class="'.$connectionclass.' '.$presentationclass.'" src="'.$source.'"></iframe>';
 
             // If we are showing detailed mode.
             if ($config->presentation == 'detailed') {
@@ -251,7 +252,7 @@ class block_onlinesurvey extends block_base {
             $this->page->requires->css('/blocks/onlinesurvey/style/block_onlinesurvey_modal-zoom.css');
 
             if ($config->show_spinner) {
-                $this->page->requires->js_call_amd('block_onlinesurvey/spinner', 'init');
+                $this->page->requires->js_call_amd('block_onlinesurvey/spinner', 'init', array($url));
                 $this->page->requires->css('/blocks/onlinesurvey/style/block_onlinesurvey_spinner.css');
             }
 
