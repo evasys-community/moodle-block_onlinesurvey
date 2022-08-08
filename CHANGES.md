@@ -6,6 +6,7 @@ Changes
 
 ### Unreleased
 
+* 2022-08-08 - Improvement: Handle the LTI iFrame height for users who are a student and a teacher at the same time - Credits to @Amrita1991
 * 2022-07-26 - Updated Moodle Plugin CI to latest upstream recommendations
 
 ### v3.9-r2
