@@ -4,7 +4,7 @@ moodle-block_onlinesurvey
 Changes
 -------
 
-### Unreleased
+### v3.10-r3
 
 * 2022-08-08 - Bugfix: The block content didn't load if the evasys server responded quicker than the Moodle page loads - Credits to @JayBraker
 * 2022-08-08 - Improvement: Handle the LTI iFrame height for users who are a student and a teacher at the same time - Credits to @Amrita1991
