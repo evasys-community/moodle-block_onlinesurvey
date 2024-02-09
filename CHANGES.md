@@ -4,6 +4,10 @@ moodle-block_onlinesurvey
 Changes
 -------
 
+### v4.0-r2
+
+* 2024-02-09 - Add in tested compatability for Moodle up to 4.3.
+
 ### v4.0-r1
 
 * 2022-07-26 - Prepare compatibility for Moodle 4.0.
