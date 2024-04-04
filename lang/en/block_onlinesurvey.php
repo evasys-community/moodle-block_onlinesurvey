@@ -30,6 +30,7 @@ defined('MOODLE_INTERNAL') || die();
 
 $string['pluginname'] = 'Evaluations (evasys)';
 $string['lti'] = 'LTI';
+$string['lti13'] = 'LTI 1.3';
 $string['soap'] = 'SOAP';
 
 
@@ -92,6 +93,16 @@ $string['setting_customfieldnumber'] = 'Custom field No.';
 
 $string['setting_survey_timeout'] = 'Connection timeout';
 $string['setting_survey_timeout_desc'] = 'Maximum response time (in seconds) of the evasys server. If the evasys server didn\'t answer within this time, the request is aborted and the surveys are not shown to the user.';
+
+/*************************/
+/* LTI 1.3 settings
+/*************************/
+$string['setting_heading_lti13'] = 'LTI 1.3 settings';
+$string['setting_heading_lti13_desc'] = 'The settings in this section define how the evasys block will communicate with evasys.<br /><em>These settings are only required if you selected "LTI 1.3" in the "Communication protocol" setting.</em>';
+$string['publickey_help'] = 'The public key (in PEM format) provided by the tool to allow signatures of incoming messages and service requests to be verified.<br>
+<strong>Only required if key type is set to RSA</strong>';
+$string['publickeyset_help'] = 'Public keyset from where this site will retrieve the tool\'s public key to allow signatures of incoming messages and service requests to be verified.<br>
+<strong>Only required if key type is set to Keyset URL</strong>';
 
 
 /*************************/
