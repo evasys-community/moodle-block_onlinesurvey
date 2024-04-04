@@ -116,7 +116,7 @@ if (!empty($error)) {
 } else {
     if ($connectiontype == 'SOAP') {
         block_onlinesurvey_get_soap_content($config, $moodleusername, $moodleemail, $modalzoom);
-    } else if ($connectiontype == 'LTI') {
+    } else if ($connectiontype == 'LTI' || $connectiontype == 'LTI13') {
         block_onlinesurvey_get_lti_content($config, $context, $course, $modalzoom);
     }
 }

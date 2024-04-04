@@ -562,9 +562,11 @@ function block_onlinesurvey_get_lti_content($config = null, $context = null, $co
  * @param string $config block settings of "block_onlinesurvey"
  * @param string $context optional context for LTI request - not yet supported by LTI provider
  * @param string $course optional course for LTI request - not yet supported by LTI provider
- * @return multitype:string
+ * @param string $nonce the nonce value to use (applies to LTI 1.3 only)
+ * @param string $messagetype LTI Message Type for this launch
+ * @return array the endpoint URL and parameters (including the signature)
  */
-function block_onlinesurvey_get_launch_data($config = null, $context = null, $course = null) {
+function block_onlinesurvey_get_launch_data($config = null, $context = null, $course = null, $nonce = '', $messagetype = 'basic-lti-launch-request') {
     global $CFG, $PAGE;
 
     require_once($CFG->dirroot.'/mod/lti/locallib.php');
@@ -572,13 +574,33 @@ function block_onlinesurvey_get_launch_data($config = null, $context = null, $co
     if (empty($config)) {
         $config = get_config("block_onlinesurvey");
     }
+    $ltiversion = $config->connectiontype;
+    $typeid = 0;
+    /*
+    ICTODO: check if we need to get the type id from somewhere
+    lti_get_launch_data does it so:
+    $tool = lti_get_instance_type($instance); // gets it from table {lti_types} - we don't have that here though
+    if ($tool) {
+        $typeid = $tool->id;
+        $ltiversion = $tool->ltiversion;
+    } else {
+        $typeid = null;
+        $ltiversion = LTI_VERSION_1;
+    }
+    */
+
+
     // Default the organizationid if not specified.
     if (empty($config->lti_tool_consumer_instance_guid)) {
         $urlparts = parse_url($CFG->wwwroot);
         $config->lti_tool_consumer_instance_guid = $urlparts['host'];
     }
 
-    $key = '';
+    if ($ltiversion === LTI_VERSION_1P3) {
+        $key = $config->lti_clientid;
+    } else {
+        $key = '';
+    }
     if (!empty($config->lti_password)) {
         $secret = $config->lti_password;
     } else if (is_array($config) && !empty($config['lti_password'])) {
@@ -614,13 +636,13 @@ function block_onlinesurvey_get_launch_data($config = null, $context = null, $co
         $course = $PAGE->course;
     }
 
-    $allparams = block_onlinesurvey_build_request_lti($config, $course);
+    $allparams = block_onlinesurvey_build_request_lti($config, $course, $messagetype);
 
     if (!isset($config->id)) {
         $config->id = null;
     }
     $requestparams = $allparams;
-    $requestparams = array_merge($requestparams, lti_build_standard_message($config, $orgid, false));
+    $requestparams = array_merge($requestparams, lti_build_standard_message($config, $orgid, false, $messagetype));
     $customstr = '';
     if (isset($config->lti_customparameters)) {
         $customstr = $config->lti_customparameters;
@@ -645,8 +667,12 @@ function block_onlinesurvey_get_launch_data($config = null, $context = null, $co
     }
 
     // Consumer key currently not used -> $key can be '' -> check "(true or !empty(key))".
-    if ((true or !empty($key)) && !empty($secret)) {
-        $parms = lti_sign_parameters($requestparams, $endpoint, "POST", $key, $secret);
+    if ((true or !empty($key)) && !empty($secret)) { // ICNOTICE: matches mod/lti/locallib.php, lines 632ff
+        if ($ltiversion !== LTI_VERSION_1P3) {
+            $parms = lti_sign_parameters($requestparams, $endpoint, 'POST', $key, $secret);
+        } else {
+            $parms = lti_sign_jwt($requestparams, $endpoint, $key, $typeid, $nonce);
+        }
 
         $endpointurl = new \moodle_url($endpoint);
         $endpointparams = $endpointurl->params();
@@ -672,9 +698,10 @@ function block_onlinesurvey_get_launch_data($config = null, $context = null, $co
  * Builds array of parameters for the LTI request
  * @param object $config block settings of "block_onlinesurvey"
  * @param object $course course that is used for some context attributes
+ * @param string $messagetype LTI Message Type for this launch
  * @return multitype:string NULL
  */
-function block_onlinesurvey_build_request_lti($config, $course) {
+function block_onlinesurvey_build_request_lti($config, $course, $messagetype) {
     global $USER;
 
     $roles = block_onlinesurvey_get_ims_roles($USER, $config);
@@ -687,6 +714,9 @@ function block_onlinesurvey_build_request_lti($config, $course) {
                     'context_label' => $course->shortname,
                     'context_title' => $course->fullname,
     );
+    if ($messagetype) {
+        $requestparams['lti_message_type'] = $messagetype;
+    }
     if ($course->format == 'site') {
         $requestparams['context_type'] = 'Group';
     } else {

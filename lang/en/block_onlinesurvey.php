@@ -100,9 +100,9 @@ $string['setting_survey_timeout_desc'] = 'Maximum response time (in seconds) of 
 $string['setting_heading_lti13'] = 'LTI 1.3 settings';
 $string['setting_heading_lti13_desc'] = 'The settings in this section define how the evasys block will communicate with evasys.<br /><em>These settings are only required if you selected "LTI 1.3" in the "Communication protocol" setting.</em>';
 $string['publickey_help'] = 'The public key (in PEM format) provided by the tool to allow signatures of incoming messages and service requests to be verified.<br>
-<strong>Only required if key type is set to RSA</strong>';
+<em>Only required if key type is set to RSA</em>';
 $string['publickeyset_help'] = 'Public keyset from where this site will retrieve the tool\'s public key to allow signatures of incoming messages and service requests to be verified.<br>
-<strong>Only required if key type is set to Keyset URL</strong>';
+<em>Only required if key type is set to Keyset URL</em>';
 
 
 /*************************/
@@ -139,7 +139,8 @@ $string['setting_survey_lti_url'] = 'evasys LTI provider URL';
 $string['setting_survey_lti_url_desc'] = 'URL of the LTI provider PHP file on the evasys server (https://[SERVERNAME]/customer/lti/lti_provider.php).';
 
 $string['setting_survey_lti_password'] = 'evasys LTI password';
-$string['setting_survey_lti_password_desc'] = 'Password of the evasys LTI interface.';
+$string['setting_survey_lti_password_desc'] = 'Password of the evasys LTI interface.<br>
+<em>Not required for LTI 1.3!</em>';
 
 $string['setting_lti_customparameters'] = 'evasys LTI Custom parameter';
 $string['setting_lti_customparameters_desc'] = 'Here the custom parameters are stored, which can be used to define settings for displaying the surveys, e.g. whether the student view should also display completed surveys (learner_show_completed_surveys=1) or whether the reports of the surveys can also be called up in the instructor view (instructor_show_report=1). Each parameter has to be added on a separate line. For detailed information on the available parameters, please consult the evasys LTI manual.';

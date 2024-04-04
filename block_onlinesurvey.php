@@ -120,32 +120,31 @@ class block_onlinesurvey extends block_base {
                         $this->isconfigured = false;
                         $this->error = "WSDL namespace parse error";
                     }
-                } else if ($this->connectiontype == 'LTI') {
+                } else if ($this->connectiontype == 'LTI' || $this->connectiontype == 'LTI13') {
                     // Quick check of some LTI settings.
-                    if (empty($config->lti_url) || empty($config->lti_password) || empty($config->lti_learnermapping)) {
+                    $this->isconfigured = true;
+
+                    $errorinfo = '';
+                    if (empty($config->lti_url)) {
+                        $errorinfo .= get_string('error_lti_url_missing', 'block_onlinesurvey').'<br>';
+                    }
+                    if (empty($config->lti_password) && $this->connectiontype == 'LTI') {
+                        $errorinfo .= get_string('error_lti_password_missing', 'block_onlinesurvey').'<br>';
+                    }
+                    if (empty($config->lti_learnermapping)) {
+                        $errorinfo .= get_string('error_lti_learnermapping_missing', 'block_onlinesurvey').'<br>';
+                    }
+
+                    if (!empty($errorinfo)) {
                         $this->isconfigured = false;
                         $this->error = get_string('error_lti_settings_error', 'block_onlinesurvey');
-
-                        $errorinfo = '';
-                        if (empty($config->lti_url)) {
-                            $errorinfo .= get_string('error_lti_url_missing', 'block_onlinesurvey').'<br>';
-                        }
-                        if (empty($config->lti_password)) {
-                            $errorinfo .= get_string('error_lti_password_missing', 'block_onlinesurvey').'<br>';
-                        }
-                        if (empty($config->lti_learnermapping)) {
-                            $errorinfo .= get_string('error_lti_learnermapping_missing', 'block_onlinesurvey').'<br>';
-                        }
 
                         $context = context_system::instance();
                         if (has_capability('block/onlinesurvey:view_debugdetails', $context)) {
                             if (!empty($errorinfo)) {
-                                $this->error .= "<br>".$errorinfo;
+                                $this->error .= "<br>" . $errorinfo;
                             }
                         }
-
-                    } else {
-                        $this->isconfigured = true;
                     }
                 }
             } else {
