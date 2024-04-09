@@ -470,7 +470,7 @@ if ($ADMIN->fulltree) {
                 new admin_setting_configempty(
                     'block_onlinesurvey/lti_deploymentid',
                     get_string('clientid', 'block_onlinesurvey', null, true),
-
+                    $clientid
                 )
             );
         }
