@@ -24,8 +24,10 @@
 
 require_once(dirname(__FILE__).'/../../config.php');
 require_once(dirname(__FILE__).'/locallib.php');
-
+require_once(dirname(__FILE__).'/classes/logger.php');
 require_login();
+$logger = new \block_onlinesurvey\Logger();
+$logger->log('called show_surveys.php');
 $systemcontext = context_system::instance();
 require_capability('block/onlinesurvey:view', $systemcontext);
 
@@ -72,6 +74,9 @@ if (isset($config)) {
 } else {
     $error = get_string('error_config_not_accessible', 'block_onlinesurvey');
 }
+if ($error) {
+    $logger->log('got error: ' . $error);
+}
 
 $title = get_string('pluginname', 'block_onlinesurvey');
 if (isset($config) && !empty($config)) {
@@ -117,6 +122,7 @@ if (!empty($error)) {
     if ($connectiontype == 'SOAP') {
         block_onlinesurvey_get_soap_content($config, $moodleusername, $moodleemail, $modalzoom);
     } else if ($connectiontype == 'LTI' || $connectiontype == 'LTI13') {
+        $logger->log('getting lti content for config:', $config);
         block_onlinesurvey_get_lti_content($config, $context, $course, $modalzoom);
     }
 }

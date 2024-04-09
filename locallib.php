@@ -459,7 +459,8 @@ function block_onlinesurvey_print_exceptions($e) {
  */
 function block_onlinesurvey_get_lti_content($config = null, $context = null, $course = null, $modalzoom = 0) {
     global $CFG, $SESSION;
-
+    require_once(__DIR__ . '/classes/logger.php');
+    $logger = new \block_onlinesurvey\Logger();
     require_once($CFG->dirroot.'/mod/lti/locallib.php');
 
     if (empty($config)) {
@@ -469,7 +470,9 @@ function block_onlinesurvey_get_lti_content($config = null, $context = null, $co
     $courseid = (!empty($course->id)) ? $course->id : 1;
 
     list($endpoint, $parameter) = block_onlinesurvey_lti_get_launch_data($config, $context, $course);
-
+    $logger->log('inside block_onlinesurvey_get_lti_content, after calling block_onlinesurvey_lti_get_launch_data');
+    $logger->log('got endpoint: ', $endpoint);
+    $logger->log('got parameter: ', $parameter);
     $debuglaunch = $config->survey_debug;
 
     $surveycount = 0;
@@ -479,6 +482,7 @@ function block_onlinesurvey_get_lti_content($config = null, $context = null, $co
         $content2 = block_onlinesurvey_lti_post_launch_html_curl($parameter, $endpoint, $config);
     } catch (Exception $e) {
         $lticontentstr = $e->getMessage();
+        $logger->log('got error in block_onlinesurvey_get_lti_content(): ' . $e->getMessage());
         echo $lticontentstr;
         return '';
     }
