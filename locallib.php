@@ -468,7 +468,7 @@ function block_onlinesurvey_get_lti_content($config = null, $context = null, $co
 
     $courseid = (!empty($course->id)) ? $course->id : 1;
 
-    list($endpoint, $parameter) = block_onlinesurvey_get_launch_data($config, $context, $course);
+    list($endpoint, $parameter) = block_onlinesurvey_lti_get_launch_data($config, $context, $course);
 
     $debuglaunch = $config->survey_debug;
 
@@ -566,7 +566,7 @@ function block_onlinesurvey_get_lti_content($config = null, $context = null, $co
  * @param string $messagetype LTI Message Type for this launch
  * @return array the endpoint URL and parameters (including the signature)
  */
-function block_onlinesurvey_get_launch_data($config = null, $context = null, $course = null, $nonce = '', $messagetype = 'basic-lti-launch-request') {
+function block_onlinesurvey_lti_get_launch_data($config = null, $context = null, $course = null, $nonce = '', $messagetype = 'basic-lti-launch-request') {
     global $CFG, $PAGE;
 
     require_once($CFG->dirroot.'/mod/lti/locallib.php');
@@ -575,7 +575,7 @@ function block_onlinesurvey_get_launch_data($config = null, $context = null, $co
         $config = get_config("block_onlinesurvey");
     }
     $ltiversion = $config->connectiontype;
-    $typeid = 0;
+    $typeid = $config->typeid;
     /*
     ICTODO: check if we need to get the type id from somewhere
     lti_get_launch_data does it so:
@@ -1058,8 +1058,4 @@ function block_onlinesurvey_get_lti_type_config() {
         $return[$key] = $value->value;
     }
     return $return;
-}
-
-function block_onlinesurvey_get_deploymentid() {
-
 }

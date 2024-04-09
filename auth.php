@@ -24,8 +24,11 @@
 
 require_once(__DIR__ . '/../../config.php');
 require_once($CFG->dirroot . '/mod/lti/locallib.php');
+require_once(__DIR__ . '/classes/logger.php');
+require_once(__DIR__ . '/locallib.php');
+$logger = new \block_onlinesurvey\Logger();
 global $_POST, $_SERVER;
-
+$logger->log('called blocks/onlinesurvey/auth.php');
 if (!isloggedin() && empty($_POST['repost'])) {
     header_remove("Set-Cookie");
     $PAGE->set_pagelayout('popup');
@@ -35,6 +38,9 @@ if (!isloggedin() && empty($_POST['repost'])) {
     echo $output->header();
     echo $output->render($page);
     echo $output->footer();
+    $logger->log('in blocks/onlinesurvey/auth.php: not logged in or empty repost');
+    $logger->log('is logged in?', isloggedin());
+    $logger->log('empty repost?', empty($_POST['repost']));
     return;
 }
 
@@ -48,6 +54,7 @@ $state = optional_param('state', '', PARAM_TEXT);
 $responsemode = optional_param('response_mode', '', PARAM_TEXT);
 $nonce = optional_param('nonce', '', PARAM_TEXT);
 $prompt = optional_param('prompt', '', PARAM_TEXT);
+$typeid = block_onlinesurvey_get_lti_typeid();
 
 $ok = !empty($scope) && !empty($responsetype) && !empty($clientid) &&
       !empty($redirecturi) && !empty($loginhint) &&
@@ -57,10 +64,19 @@ if (!$ok) {
     $error = 'invalid_request';
 }
 $ltimessagehint = json_decode($ltimessagehintenc);
+$logger->log('ltimessagehint:', $ltimessagehint);
 $ok = $ok && isset($ltimessagehint->launchid);
 if (!$ok) {
     $error = 'invalid_request';
     $desc = 'No launch id in LTI hint';
+    $logger->log($error . ' ' . $desc,
+        ['scope' => $scope,
+        'responsetype' => $responsetype,
+        'clientid' => $clientid,
+        'redirecturi' => $redirecturi,
+        'loginhint' => $loginhint,
+        'nonce' => $nonce]
+    );
 }
 if ($ok && ($scope !== 'openid')) {
     $ok = false;
@@ -78,19 +94,27 @@ if ($ok) {
     $ok = ($clientid === $config->lti_clientid);
     if (!$ok) {
         $error = 'unauthorized_client';
+        $logger->log('clientid didn\'t match. client id given: ', $clientid);
+        $logger->log('client id expected: ', $config->lti_clientid);
     }
 }
 if ($ok && ($loginhint !== $USER->id)) {
     $ok = false;
     $error = 'access_denied';
+    $logger->log('access denied for user ' . $USER->id);
+    $logger->log('loginhint: ', $loginhint);
 }
 
 // If we're unable to load up config; we cannot trust the redirect uri for POSTing to.
 if (empty($config)) {
+    $logger->log('error, empty config');
     throw new moodle_exception('invalidrequest', 'error');
 } else {
     $uris = array_map("trim", explode("\n", $config->lti_redirectionuris));
     if (!in_array($redirecturi, $uris)) {
+        $logger->log('error, redirecturi not in valid uris');
+        $logger->log('redirecturi:', $redirecturi);
+        $logger->log('uris:', $uris);
         throw new moodle_exception('invalidrequest', 'error');
     }
 }
@@ -100,31 +124,32 @@ if ($ok) {
         if (!$ok) {
             $error = 'invalid_request';
             $desc = 'Invalid response_mode';
+            $logger->log('error: ' . $error . ' - ' . $desc);
         }
     } else {
         $ok = false;
         $error = 'invalid_request';
         $desc = 'Missing response_mode';
+        $logger->log('error: ' . $error . ' - ' . $desc);
     }
 }
 if ($ok && !empty($prompt) && ($prompt !== 'none')) {
     $ok = false;
     $error = 'invalid_request';
     $desc = 'Invalid prompt';
+    $logger->log('error: ' . $error . ' - ' . $desc);
 }
 
 if ($ok) {
-    $course = $DB->get_record('course', array('id' => $courseid), '*', MUST_EXIST);
     $config = get_config('block_onlinesurvey');
     require_login();
     if ($id) {
         $cm = get_coursemodule_from_id('lti', $id, 0, false, MUST_EXIST);
-        $context = context_module::instance($cm->id);
-        require_login($course, true, $cm);
+        $context = context_system::instance();
+        require_login(null, true, $cm);
         require_capability('mod/lti:view', $context);
-        $lti = $DB->get_record('lti', array('id' => $cm->instance), '*', MUST_EXIST);
-        $lti->cmid = $cm->id;
-        list($endpoint, $params) = lti_get_launch_data($lti, $nonce, $messagetype, $foruserid);
+        $lti = get_config('block_onlinesurbey');
+        list($endpoint, $params) = block_onlinesurvey_lti_get_launch_data($lti, $context, $messagetype, $foruserid);
     } else {
         require_login($course);
         $context = context_course::instance($courseid);
