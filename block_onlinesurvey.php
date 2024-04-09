@@ -276,6 +276,10 @@ class block_onlinesurvey extends block_base {
         return true;
     }
 
+    function instance_allow_config() {
+        return true;
+    }
+
     /**
      * Returns false which means that only one instance is allowed.
      *
@@ -312,5 +316,23 @@ class block_onlinesurvey extends block_base {
      */
     public function get_title() {
         return $this->title;
+    }
+
+
+    /**
+     * Return the plugin config settings for external functions.
+     *
+     * @return stdClass the configs for both the block instance and plugin
+     * @since Moodle 3.8
+     */
+    public function get_config_for_external() {
+        // Return all settings for all users since it is safe (no private keys, etc..).
+        $instanceconfigs = !empty($this->config) ? $this->config : new stdClass();
+        $pluginconfigs = get_config('block_onlinesurvey');
+
+        return (object) [
+            'instance' => $instanceconfigs,
+            'plugin' => $pluginconfigs,
+        ];
     }
 }

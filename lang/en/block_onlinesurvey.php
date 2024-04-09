@@ -101,9 +101,14 @@ $string['setting_heading_lti13'] = 'LTI 1.3 settings';
 $string['setting_heading_lti13_desc'] = 'The settings in this section define how the evasys block will communicate with evasys.<br /><em>These settings are only required if you selected "LTI 1.3" in the "Communication protocol" setting.</em>';
 $string['publickey_help'] = 'The public key (in PEM format) provided by the tool to allow signatures of incoming messages and service requests to be verified.<br>
 <em>Only required if key type is set to RSA</em>';
+$string['publickeyset'] = 'Public keyset';
+$string['accesstoken'] = 'Access token';
+$string['authrequest'] = 'Auth request';
 $string['publickeyset_help'] = 'Public keyset from where this site will retrieve the tool\'s public key to allow signatures of incoming messages and service requests to be verified.<br>
 <em>Only required if key type is set to Keyset URL</em>';
-
+$string['setting_lti_initiatelogin_desc'] = '<em>Usually the same as in the lti_url setting above (https://[SERVERNAME]/customer/lti/lti_provider.php).</em>';
+$string['setting_lti_redirectionuris_desc'] = '<em>Usually the same as in the lti_url setting above (https://[SERVERNAME]/customer/lti/lti_provider.php).</em>';
+$string['lti13_infos'] = 'Connection data for LTI 1.3:';
 
 /*************************/
 /* SOAP settings.

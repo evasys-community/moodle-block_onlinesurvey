@@ -380,76 +380,82 @@ if ($ADMIN->fulltree) {
         )
     );
 
-    $settings->add(
-        new admin_setting_configtext(
-            'block_onlinesurvey/lti_clientid',
-            get_string('clientidadmin', 'lti', null, true),
-            get_string('clientidadmin_help', 'lti', null, true),
-            '',
-            PARAM_TEXT,
-            80
-        )
+    $setting = new admin_setting_configtext(
+        'block_onlinesurvey/lti_clientid',
+        get_string('clientidadmin', 'lti', null, true),
+        get_string('clientidadmin_help', 'lti', null, true),
+        '',
+        PARAM_TEXT,
+        80
     );
+    $settings->add($setting);
 
     $keyoptions = [
         LTI_RSA_KEY => get_string('keytype_rsa', 'lti'),
         LTI_JWK_KEYSET => get_string('keytype_keyset', 'lti'),
     ];
-    $settings->add(
-        new admin_setting_configselect(
-            'block_onlinesurvey/lti_keytype',
-            get_string('keytype', 'lti', null, true),
-            get_string('keytype_help', 'lti', null, true),
-            LTI_JWK_KEYSET,
-            $keyoptions
-        )
+    $setting = new admin_setting_configselect(
+        'block_onlinesurvey/lti_keytype',
+        get_string('keytype', 'lti', null, true),
+        get_string('keytype_help', 'lti', null, true),
+        LTI_JWK_KEYSET,
+        $keyoptions
     );
+    $setting->set_updatedcallback('block_onlinesurvey_settings_updated');
+    $settings->add($setting);
 
-    $settings->add(
+    $setting =
         new admin_setting_configtextarea(
             'block_onlinesurvey/lti_publickey',
             get_string('publickey', 'lti', null, true),
             get_string('publickey_help', 'block_onlinesurvey', null, true),
             '',
             PARAM_TEXT
-        )
     );
+    $setting->set_updatedcallback('block_onlinesurvey_settings_updated');
+    $settings->add($setting);
 
-    $settings->add(
-        new admin_setting_configtext(
-            'block_onlinesurvey/lti_publickeyset',
-            get_string('publickeyset', 'lti', null, true),
-            get_string('publickeyset_help', 'block_onlinesurvey', null, true),
-            '',
-            PARAM_RAW,
-            80
-        )
-    );
-
-    $settings->add(
+    $setting =
         new admin_setting_configtext(
             'block_onlinesurvey/lti_initiatelogin',
             get_string('initiatelogin', 'lti', null, true),
-            get_string('initiatelogin_help', 'lti', null, true),
+            get_string('initiatelogin_help', 'lti', null, true) . '<br>' . get_string('setting_lti_initiatelogin_desc', 'block_onlinesurvey'),
             '',
             PARAM_URL,
             64
-        )
-    );
+        );
+    $setting->set_updatedcallback('block_onlinesurvey_settings_updated');
+    $settings->add($setting);
 
-    $settings->add(
+    $setting =
         new admin_setting_configtextarea(
             'block_onlinesurvey/lti_redirectionuris',
             get_string('redirectionuris', 'lti', null, true),
-            get_string('redirectionuris_help', 'lti', null, true),
+            get_string('redirectionuris_help', 'lti', null, true) . '<br>' . get_string('setting_lti_initiatelogin_desc', 'block_onlinesurvey'),
             '',
             PARAM_TEXT,
             60,
             3
-        )
-    );
+        );
+    $setting->set_updatedcallback('block_onlinesurvey_settings_updated');
+    $settings->add($setting);
+    // $type = block_onlinesurvey_get_lti_type();
+    $typeconfig = block_onlinesurvey_get_lti_type_config();
+    if ($typeconfig) {
+        $displayitems = ['publickeyset', 'accesstoken', 'authrequest'];
+        foreach($displayitems as $displayitem) {
+            if (array_key_exists($displayitem, $typeconfig) && !empty($typeconfig[$displayitem])) {
+                $setting =
+                    new admin_setting_configempty(
+                        'block_onlinesurvey/lti_' . $displayitem,
+                        get_string($displayitem, 'block_onlinesurvey', null, true),
+                        $typeconfig[$displayitem]
+                    );
+                $settings->add($setting);
+            }
+        }
 
-
+    }
 
     /*************************/
     /* Expert settings.

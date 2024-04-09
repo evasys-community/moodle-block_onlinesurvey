@@ -865,3 +865,197 @@ function block_onlinesurvey_lti_post_launch_html_curl($parameter, $endpoint, $co
 
     return $ret;
 }
+function block_onlinesurvey_lti_initiate_login($config, $messagetype = 'basic-lti-launch-request',
+                                               $title = '', $text = '', $foruserid = 0) {
+    global $SESSION;
+
+    $params = block_onlinesurvey_lti_build_login_request($config, $messagetype, $foruserid, $title, $text);
+
+    $r = "<form action=\"" . $config->lti_initiatelogin .
+        "\" name=\"ltiInitiateLoginForm\" id=\"ltiInitiateLoginForm\" method=\"post\" " .
+        "encType=\"application/x-www-form-urlencoded\">\n";
+
+    foreach ($params as $key => $value) {
+        $key = htmlspecialchars($key, ENT_COMPAT);
+        $value = htmlspecialchars($value, ENT_COMPAT);
+        $r .= "  <input type=\"hidden\" name=\"{$key}\" value=\"{$value}\"/>\n";
+    }
+    $r .= "</form>\n";
+
+    $r .= "<script type=\"text/javascript\">\n" .
+        "//<![CDATA[\n" .
+        "document.ltiInitiateLoginForm.submit();\n" .
+        "//]]>\n" .
+        "</script>\n";
+
+    return $r;
+}
+
+/**
+ * Prepares an LTI 1.3 login request
+ *
+ * @param stdClass       $config    Tool type configuration
+ * @param string         $messagetype   LTI message type
+ * @param int            $foruserid Id of the user targeted by the launch
+ * @param string         $title     Title of content item
+ * @param string         $text      Description of content item
+ * @return array Login request parameters
+ */
+function block_onlinesurvey_lti_build_login_request($config, $messagetype, $foruserid=0, $title = '', $text = '') {
+    global $USER, $CFG, $SESSION;
+    $ltihint = [];
+
+    $endpoint = $config->lti_toolurl;
+//    if (($messagetype === 'ContentItemSelectionRequest') && !empty($config->lti_toolurl_ContentItemSelectionRequest)) {
+//        $endpoint = $config->lti_toolurl_ContentItemSelectionRequest;
+//    }
+    $launchid = "ltilaunch_$messagetype".rand();
+    $SESSION->$launchid =
+        "{$messagetype},{$foruserid}," . base64_encode($title) . ',' . base64_encode($text);
+
+    $endpoint = trim($endpoint);
+
+    $ltihint['launchid'] = $launchid;
+    // If SSL is forced make sure https is on the normal launch URL.
+    if (isset($config->lti_forcessl) && ($config->lti_forcessl == '1')) {
+        $endpoint = lti_ensure_url_is_https($endpoint);
+    } else if (!strstr($endpoint, '://')) {
+        $endpoint = 'http://' . $endpoint;
+    }
+
+    $params = array();
+    $params['iss'] = $CFG->wwwroot;
+    $params['target_link_uri'] = $endpoint;
+    $params['login_hint'] = $USER->id;
+    $params['lti_message_hint'] = json_encode($ltihint);
+    $params['client_id'] = $config->lti_clientid;
+    return $params;
+}
+
+function block_onlinesurvey_settings_updated($arg) {
+    $config = get_config('block_onlinesurvey');
+    if (!isset($config->typeid)) {
+        $typeid = block_onlinesurvey_create_lti_type();
+        set_config('typeid', $typeid, 'block_onlinesurvey');
+
+    }
+    block_onlinesurvey_update_lti_type();
+    $clientid = block_onlinesurvey_get_clientid($config->typeid);
+    set_config('lti_clientid', $clientid, 'block_onlinesurvey');
+}
+
+function block_onlinesurvey_get_clientid($typeid) {
+    global $DB;
+    $clientid = $DB->get_field('lti_types', 'clientid', ['id' => $typeid]);
+    return $clientid;
+}
+
+function block_onlinesurvey_create_lti_type() {
+    global $DB, $USER;
+    list($ltitype, $configparams) = block_onlinesurvey_get_params();
+    $id = lti_add_type($ltitype, $configparams);
+    return $id;
+}
+
+function block_onlinesurvey_update_lti_type() {
+    global $DB;
+    list($ltitype, $configparams) = block_onlinesurvey_get_params();
+    lti_update_type($ltitype, $configparams);
+    $config = get_config('block_onlinesurvey');
+    $publickeyset = $DB->get_field('lti_types_config',  'value', ['typeid' => $config->typeid, 'name' => 'publickeyset']);
+    set_config('block_onlinesurvey/lti_publickeyset', $publickeyset);
+}
+
+function block_onlinesurvey_get_params() {
+    global $USER;
+    $ltitype = [
+        'name' => 'block_onlinesurvey',
+        'baseurl' => '',
+        'tooldomain' => '',
+        'state' => '1',
+        'course' => '0',
+        'coursevisible' => '1',
+        'ltiversion' => '1.3.0',
+        'clientid' => '',
+        'toolproxyid' => '',
+        'enabledcapability' => '',
+        'parameter' => '',
+        'icon' => '',
+        'secureicon' => '',
+        'createdby' => $USER->id,
+        'timecreated' => time(),
+        'timemodified' => time(),
+        'description' => time(),
+    ];
+    $settings2config = [
+        'lti_clientid',
+        'lti_keytype',
+        'lti_publickey',
+        'lti_publickeyset',
+        'lti_accesstoken',
+        'lti_authrequest',
+        'lti_initiatelogin',
+        'lti_redirectionuris'
+    ];
+    $config = get_config('block_onlinesurvey');
+    foreach($ltitype as $key => $value) {
+        if (isset($config->$key)) {
+            $ltitype[$key] = $config->$key;
+        }
+        if (isset($config->{'lti_'.$key})) {
+            $ltitype[$key] = $config->{'lti_'.$key};
+        }
+    }
+    if (isset($config->lti_url)) {
+        $ltitype['baseurl'] = $config->lti_url;
+    }
+    if (isset($config->typeid)) {
+        $ltitype['id'] = $config->typeid;
+        $type = lti_get_type($config->typeid);
+        $urls = get_tool_type_urls($type);
+        set_config('lti_publickeyset', $urls['publickeyset'], 'block_onlinesurvey');
+        set_config('lti_authrequest', $urls['authrequest'], 'block_onlinesurvey');
+        set_config('lti_accesstoken', $urls['accesstoken'], 'block_onlinesurvey');
+        $config->lti_publickeyset = $urls['publickeyset'];
+        $config->lti_authrequest = $urls['authrequest'];
+        $config->lti_accesstoken = $urls['accesstoken'];
+    }
+    $configparams = [];
+    foreach($settings2config as $key) {
+        if (isset($config->$key)) {
+            $configparams[$key] = $config->$key;
+            $configkeyname = str_replace('lti_', '', $key);
+            $configparams[$configkeyname] = $config->$key;
+        }
+    }
+
+    $ltitype = (object)$ltitype;
+    $configparams = (object)$configparams;
+    return [$ltitype, $configparams];
+}
+
+function block_onlinesurvey_get_lti_typeid() {
+    return get_config('block_onlinesurvey', 'typeid');
+}
+
+function block_onlinesurvey_get_lti_type() {
+    $typeid = block_onlinesurvey_get_lti_typeid();
+    if (empty($typeid)) {
+        return null;
+    }
+    return lti_get_type($typeid);
+}
+
+function block_onlinesurvey_get_lti_type_config() {
+    global $DB;
+    $typeid = block_onlinesurvey_get_lti_typeid();
+    if (empty($typeid)) {
+        return null;
+    }
+    $config = $DB->get_records('lti_types_config', ['typeid' => $typeid], '', 'name,value');
+    $return = [];
+    foreach($config as $key => $value) {
+        $return[$key] = $value->value;
+    }
+    return $return;
+}
