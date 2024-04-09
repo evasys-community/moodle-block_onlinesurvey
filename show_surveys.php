@@ -34,7 +34,7 @@ require_capability('block/onlinesurvey:view', $systemcontext);
 global $USER, $PAGE;
 
 // Block settings.
-$config = get_config("block_onlinesurvey");
+$config = block_onlinesurvey_get_launch_config();
 $error = '';
 $debugmode = false;
 
