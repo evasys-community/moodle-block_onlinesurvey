@@ -380,16 +380,6 @@ if ($ADMIN->fulltree) {
         )
     );
 
-    $setting = new admin_setting_configtext(
-        'block_onlinesurvey/lti_clientid',
-        get_string('clientidadmin', 'lti', null, true),
-        get_string('clientidadmin_help', 'lti', null, true),
-        '',
-        PARAM_TEXT,
-        80
-    );
-    $settings->add($setting);
-
     $keyoptions = [
         LTI_RSA_KEY => get_string('keytype_rsa', 'lti'),
         LTI_JWK_KEYSET => get_string('keytype_keyset', 'lti'),
