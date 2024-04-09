@@ -1090,6 +1090,9 @@ function block_onlinesurvey_get_launch_config() {
     if (empty($config->lti_clientid)) {
         $config->lti_clientid = block_onlinesurvey_get_clientid($config->typeid);
     }
+    if (empty($config->lti_deploymentid)) {
+        $config->lti_deploymentid = $config->typeid;
+    }
     return $config;
 }
 function block_onlinesurvey_get_accesstoken($typeid) {
