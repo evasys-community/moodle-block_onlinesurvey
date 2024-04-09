@@ -35,6 +35,8 @@ define('BLOCK_ONLINESURVEY_LTI_REGEX_INSTRUCTOR_DEFAULT',
 define('BLOCK_ONLINESURVEY_PRESENTATION_BRIEF', "brief");
 define('BLOCK_ONLINESURVEY_PRESENTATION_DETAILED', "detailed");
 
+require_once($CFG->dirroot . '/mod/lti/locallib.php');
+
 /**
  * Request surveys for the current user according to email or username and displays the result.
  * @param string $config block settings of "block_onlinesurvey"
