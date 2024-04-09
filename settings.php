@@ -454,7 +454,16 @@ if ($ADMIN->fulltree) {
                 $settings->add($setting);
             }
         }
-
+    }
+    $deploymentid = block_onlinesurvey_get_lti_typeid();
+    if (!empty($deploymentid)) {
+        $settings->add(
+            new admin_setting_configempty(
+                'block_onlinesurvey/lti_deploymentid',
+                get_string('deploymentid', 'block_onlinesurvey', null, true),
+                $deploymentid
+            )
+        );
     }
 
     /*************************/

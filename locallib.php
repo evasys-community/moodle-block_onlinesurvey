@@ -1059,3 +1059,7 @@ function block_onlinesurvey_get_lti_type_config() {
     }
     return $return;
 }
+
+function block_onlinesurvey_get_deploymentid() {
+
+}

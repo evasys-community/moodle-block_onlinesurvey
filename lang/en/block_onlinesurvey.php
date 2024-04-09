@@ -109,6 +109,7 @@ $string['publickeyset_help'] = 'Public keyset from where this site will retrieve
 $string['setting_lti_initiatelogin_desc'] = '<em>Usually the same as in the lti_url setting above (https://[SERVERNAME]/customer/lti/lti_provider.php).</em>';
 $string['setting_lti_redirectionuris_desc'] = '<em>Usually the same as in the lti_url setting above (https://[SERVERNAME]/customer/lti/lti_provider.php).</em>';
 $string['lti13_infos'] = 'Connection data for LTI 1.3:';
+$string['deploymentid'] = 'Deployment id';
 
 /*************************/
 /* SOAP settings.
