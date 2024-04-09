@@ -468,7 +468,7 @@ if ($ADMIN->fulltree) {
         if (!empty($clientid)) {
             $settings->add(
                 new admin_setting_configempty(
-                    'block_onlinesurvey/lti_deploymentid',
+                    'block_onlinesurvey/lti_clientid',
                     get_string('clientid', 'block_onlinesurvey', null, true),
                     $clientid
                 )
