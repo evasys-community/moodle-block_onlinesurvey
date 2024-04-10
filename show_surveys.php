@@ -24,6 +24,7 @@
 
 require_once(dirname(__FILE__).'/../../config.php');
 require_once(dirname(__FILE__).'/locallib.php');
+require_once($CFG->dirroot .'/mod/lti/locallib.php');
 require_once(dirname(__FILE__).'/classes/logger.php');
 require_login();
 $logger = new \block_onlinesurvey\Logger('block_onlinesurvey_show_survey.txt');
@@ -122,7 +123,6 @@ if (!empty($error)) {
     $logger->log('got error: ', $error);
 } else {
     $logger->log('no errors so far, handling connectiontype:', $connectiontype);
-    $logger->log('is constant LTI_VERSION_1P3 set? Current value (should be "1.3.0"):', LTI_VERSION_1P3);
     if ($connectiontype == 'SOAP') {
         block_onlinesurvey_get_soap_content($config, $moodleusername, $moodleemail, $modalzoom);
     } else if ($connectiontype == 'LTI' || $connectiontype == LTI_VERSION_1P3) {

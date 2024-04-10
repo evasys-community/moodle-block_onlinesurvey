@@ -27,6 +27,7 @@ defined('MOODLE_INTERNAL') || die();
 if ($ADMIN->fulltree) {
 
     require_once($CFG->dirroot . '/blocks/onlinesurvey/locallib.php');
+    require_once($CFG->dirroot . '/mod/lti/locallib.php');
 
     /*************************/
     /* Appearance settings.
@@ -151,7 +152,7 @@ if ($ADMIN->fulltree) {
     $communicationoptions = array();
     $communicationoptions["SOAP"] = get_string('soap', 'block_onlinesurvey', null, true);
     $communicationoptions["LTI"] = get_string('lti', 'block_onlinesurvey', null, true);
-    $communicationoptions["LTI13"] = get_string('lti13', 'block_onlinesurvey', null, true);
+    $communicationoptions[LTI_VERSION_1P3] = get_string('lti13', 'block_onlinesurvey', null, true);
     $settings->add(
             new admin_setting_configselect('block_onlinesurvey/connectiontype',
                     get_string('setting_communication_interface', 'block_onlinesurvey', null, true),
