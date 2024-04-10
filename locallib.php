@@ -462,7 +462,7 @@ function block_onlinesurvey_print_exceptions($e) {
 function block_onlinesurvey_get_lti_content($config = null, $context = null, $course = null, $modalzoom = 0) {
     global $CFG, $SESSION;
     require_once(__DIR__ . '/classes/logger.php');
-    $logger = new \block_onlinesurvey\Logger();
+    $logger = new \block_onlinesurvey\Logger('block_onlinesurvey_get_lti_content.txt');
     require_once($CFG->dirroot.'/mod/lti/locallib.php');
 
     if (empty($config)) {
