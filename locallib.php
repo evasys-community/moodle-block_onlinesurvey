@@ -477,7 +477,7 @@ function block_onlinesurvey_get_lti_content($config = null, $context = null, $co
 
     $courseid = (!empty($course->id)) ? $course->id : 1;
     $logger->log('about to get launch data');
-    list($endpoint, $parameter) = block_onlinesurvey_lti_get_launch_data($config, $context, $course);
+    list($endpoint, $parameter) = block_onlinesurvey_lti_get_launch_data($config, $course);
     $logger->log('inside block_onlinesurvey_get_lti_content, after calling block_onlinesurvey_lti_get_launch_data');
     $logger->log('got endpoint: ', $endpoint);
     $logger->log('got parameter: ', $parameter);
@@ -572,13 +572,12 @@ function block_onlinesurvey_get_lti_content($config = null, $context = null, $co
  * Return the endpoint and parameter for lti request based on the block settings.
  * This function uses '/mod/lti/locallib.php'.
  * @param string $config block settings of "block_onlinesurvey"
- * @param string $context optional context for LTI request - not yet supported by LTI provider
  * @param string $course optional course for LTI request - not yet supported by LTI provider
  * @param string $nonce the nonce value to use (applies to LTI 1.3 only)
  * @param string $messagetype LTI Message Type for this launch
  * @return array the endpoint URL and parameters (including the signature)
  */
-function block_onlinesurvey_lti_get_launch_data($config = null, $context = null, $course = null, $nonce = '', $messagetype = 'basic-lti-launch-request') {
+function block_onlinesurvey_lti_get_launch_data($config = null, $course = null, $nonce = '', $messagetype = 'basic-lti-launch-request') {
     global $CFG, $PAGE;
 
     require_once($CFG->dirroot.'/mod/lti/locallib.php');
