@@ -917,7 +917,7 @@ function block_onlinesurvey_lti_build_login_request($config, $messagetype, $foru
     global $USER, $CFG, $SESSION;
     $ltihint = [];
 
-    $endpoint = $config->lti_toolurl;
+    $endpoint = $config->lti_url;
 //    if (($messagetype === 'ContentItemSelectionRequest') && !empty($config->lti_toolurl_ContentItemSelectionRequest)) {
 //        $endpoint = $config->lti_toolurl_ContentItemSelectionRequest;
 //    }
@@ -929,11 +929,8 @@ function block_onlinesurvey_lti_build_login_request($config, $messagetype, $foru
 
     $ltihint['launchid'] = $launchid;
     // If SSL is forced make sure https is on the normal launch URL.
-    if (isset($config->lti_forcessl) && ($config->lti_forcessl == '1')) {
-        $endpoint = lti_ensure_url_is_https($endpoint);
-    } else if (!strstr($endpoint, '://')) {
-        $endpoint = 'http://' . $endpoint;
-    }
+
+    $endpoint = lti_ensure_url_is_https($endpoint);
 
     $params = array();
     $params['iss'] = $CFG->wwwroot;
@@ -941,6 +938,7 @@ function block_onlinesurvey_lti_build_login_request($config, $messagetype, $foru
     $params['login_hint'] = $USER->id;
     $params['lti_message_hint'] = json_encode($ltihint);
     $params['client_id'] = $config->lti_clientid;
+    $params['lti_deployment_id'] = block_onlinesurvey_get_lti_typeid();
     return $params;
 }
 
