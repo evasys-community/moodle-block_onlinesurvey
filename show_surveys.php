@@ -121,9 +121,11 @@ if (!empty($error)) {
     }
     $logger->log('got error: ', $error);
 } else {
+    $logger->log('no errors so far, handling connectiontype:', $connectiontype);
+    $logger->log('is constant LTI_VERSION_1P3 set? Current value (should be "1.3.0"):', LTI_VERSION_1P3);
     if ($connectiontype == 'SOAP') {
         block_onlinesurvey_get_soap_content($config, $moodleusername, $moodleemail, $modalzoom);
-    } else if ($connectiontype == 'LTI' || $connectiontype == 'LTI13') {
+    } else if ($connectiontype == 'LTI' || $connectiontype == LTI_VERSION_1P3) {
         $logger->log('getting lti content for config:', $config);
         if ($config->lti_ltiversion === LTI_VERSION_1P3) {
             if (!isset($SESSION->lti_initiatelogin_status)) {
