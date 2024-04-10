@@ -148,6 +148,7 @@ if ($ok && !empty($prompt) && ($prompt !== 'none')) {
 
 if ($ok) {
     $config = get_config('block_onlinesurvey');
+    $logger->log('all okay, about to call require_login');
     require_login();
 //    if ($id) {
         $context = context_system::instance();
@@ -181,6 +182,8 @@ if ($ok) {
     if (!empty($desc)) {
         $params['error_description'] = $desc;
     }
+    $logger->log('not ok, got error and error:', $error);
+    $logger->log('and error description:', $desc);
 }
 if (isset($state)) {
     $params['state'] = $state;

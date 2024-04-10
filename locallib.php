@@ -583,6 +583,7 @@ function block_onlinesurvey_lti_get_launch_data($config = null, $course = null, 
 
     require_once($CFG->dirroot.'/mod/lti/locallib.php');
     $logger = new \block_onlinesurvey\Logger('block_onlinesurvey_lti_get_launch_data.txt');
+    $logger->log('called block_onlinesurvey_lti_get_launch_data with config:', $config);
     if (empty($config)) {
         $config = get_config("block_onlinesurvey");
     }
@@ -624,32 +625,35 @@ function block_onlinesurvey_lti_get_launch_data($config = null, $course = null, 
     $endpoint = !empty($config->lti_url) ? $config->lti_url : $config['lti_url'];
     $endpoint = trim($endpoint);
 
+    $logger->log('in line ' . __LINE__ );
     // If the current request is using SSL and a secure tool URL is specified, use it.
     if (lti_request_is_using_ssl() && !empty($config->securetoolurl)) {
+        $logger->log('in line ' . __LINE__ );
         $endpoint = trim($config->securetoolurl);
     }
-
+    $logger->log('in line ' . __LINE__ );
     // If SSL is forced, use the secure tool url if specified. Otherwise, make sure https is on the normal launch URL.
     if (isset($config->forcessl) && ($config->forcessl == '1')) {
         if (!empty($config->securetoolurl)) {
             $endpoint = trim($config->securetoolurl);
         }
-
+        $logger->log('about to call lti_ensure_url_is_https, in line ' . __LINE__ );
         $endpoint = lti_ensure_url_is_https($endpoint);
+        $logger->log('called lti_ensure_url_is_https, in line ' . __LINE__ );
     } else {
         if (!strstr($endpoint, '://')) {
             $endpoint = 'http://' . $endpoint;
         }
     }
-
+    $logger->log('in line ' . __LINE__ );
     $orgid = $config->lti_tool_consumer_instance_guid;
 
     if (empty($course)) {
         $course = $PAGE->course;
     }
-
+    $logger->log('about to call block_onlinesurvey_build_request_lti, in line ' . __LINE__ );
     $allparams = block_onlinesurvey_build_request_lti($config, $course, $messagetype);
-
+    $logger->log('called block_onlinesurvey_build_request_lti, got allparams:', $allparams );
     if (!isset($config->id)) {
         $config->id = null;
     }
