@@ -581,7 +581,7 @@ function block_onlinesurvey_lti_get_launch_data($config = null, $course = null, 
     global $CFG, $PAGE;
 
     require_once($CFG->dirroot.'/mod/lti/locallib.php');
-
+    $logger = new \block_onlinesurvey\Logger('block_onlinesurvey_lti_get_launch_data.txt');
     if (empty($config)) {
         $config = get_config("block_onlinesurvey");
     }
@@ -680,9 +680,19 @@ function block_onlinesurvey_lti_get_launch_data($config = null, $course = null, 
     // Consumer key currently not used -> $key can be '' -> check "(true or !empty(key))".
     if ((true or !empty($key)) && !empty($secret)) { // ICNOTICE: matches mod/lti/locallib.php, lines 632ff
         if ($ltiversion !== LTI_VERSION_1P3) {
+            $logger->log('not lti version 1p3. current ltiversion:', $ltiversion);
+            $logger->log('about to call lti_sign_parameters');
             $parms = lti_sign_parameters($requestparams, $endpoint, 'POST', $key, $secret);
+            $logger->log('called lti_sign_parameters and got parms:', $parms);
         } else {
+            $logger->log('about to call lti_sign_jwt');
+            $logger->log('with requestparams:', $requestparams);
+            $logger->log('with endpoint:', $endpoint);
+            $logger->log('with key:', $key);
+            $logger->log('with typeid:', $typeid);
+            $logger->log('with nonce:', $nonce);
             $parms = lti_sign_jwt($requestparams, $endpoint, $key, $typeid, $nonce);
+            $logger->log('called lti_sign_jwt and got $parms: ', $parms);
         }
 
         $endpointurl = new \moodle_url($endpoint);
