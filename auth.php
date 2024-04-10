@@ -88,7 +88,13 @@ if ($ok && ($responsetype !== 'id_token')) {
 }
 if ($ok) {
     $launchid = $ltimessagehint->launchid;
+    $logger->log('line ' . __LINE__ . ', launchid:', $launchid);
+    $logger->log('line ' . __LINE__ . ', session launchid:', $SESSION->$launchid);
     list($messagetype, $foruserid, $titleb64, $textb64) = explode(',', $SESSION->$launchid, 7);
+    $logger->log('got messagetype: ', $messagetype);
+    $logger->log('got foruserid: ', $foruserid);
+    $logger->log('got titleb64: ', $titleb64);
+    $logger->log('got textb64: ', $textb64);
     unset($SESSION->$launchid);
     $config = lti_get_type_type_config($typeid);
     $ok = ($clientid === $config->lti_clientid);
@@ -143,14 +149,15 @@ if ($ok && !empty($prompt) && ($prompt !== 'none')) {
 if ($ok) {
     $config = get_config('block_onlinesurvey');
     require_login();
-    if ($id) {
-        $cm = get_coursemodule_from_id('lti', $id, 0, false, MUST_EXIST);
+//    if ($id) {
         $context = context_system::instance();
-        require_login(null, true, $cm);
         require_capability('mod/lti:view', $context);
-        $lti = get_config('block_onlinesurbey');
+        $lti = get_config('block_onlinesurvey');
+        $logger->log('about to call block_onlinesurvey_lti_get_launch_data');
         list($endpoint, $params) = block_onlinesurvey_lti_get_launch_data($lti, $context, $messagetype, $foruserid);
-    } else {
+        $logger->log('called block_onlinesurvey_lti_get_launch_data and got endpoint:', $endpoint);
+        $logger->log('and got params:', $params);
+   /* } else {
         require_login($course);
         $context = context_course::instance($courseid);
         require_capability('moodle/course:manageactivities', $context);
@@ -169,7 +176,7 @@ if ($ok) {
                                                             [], [], false, true, false, false, false, $nonce);
         $endpoint = $request->url;
         $params = $request->params;
-    }
+    }*/
 } else {
     $params['error'] = $error;
     if (!empty($desc)) {

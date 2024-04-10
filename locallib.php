@@ -463,14 +463,20 @@ function block_onlinesurvey_get_lti_content($config = null, $context = null, $co
     global $CFG, $SESSION;
     require_once(__DIR__ . '/classes/logger.php');
     $logger = new \block_onlinesurvey\Logger('block_onlinesurvey_get_lti_content.txt');
+    $logger->log('inside block_onlinesurvey_get_lti_content with these settings:');
+    $logger->log('config:', $config);
+    $logger->log('context:', $context);
+    $logger->log('course:', $course);
+    $logger->log('modalzoom:', $modalzoom);
     require_once($CFG->dirroot.'/mod/lti/locallib.php');
 
     if (empty($config)) {
+        $logger->log('config is empty, so about to call block_onlinesurvey_get_launch_config');
         $config = block_onlinesurvey_get_launch_config();
     }
 
     $courseid = (!empty($course->id)) ? $course->id : 1;
-
+    $logger->log('about to get launch data');
     list($endpoint, $parameter) = block_onlinesurvey_lti_get_launch_data($config, $context, $course);
     $logger->log('inside block_onlinesurvey_get_lti_content, after calling block_onlinesurvey_lti_get_launch_data');
     $logger->log('got endpoint: ', $endpoint);
