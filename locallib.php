@@ -1029,7 +1029,7 @@ function block_onlinesurvey_get_params() {
     if (isset($config->typeid)) {
         $ltitype['id'] = $config->typeid;
         $type = lti_get_type($config->typeid);
-        $urls = get_tool_type_urls($type);
+        $urls = block_onlinesurvey_get_tool_type_urls($type);
         set_config('lti_publickeyset', $urls['publickeyset'], 'block_onlinesurvey');
         set_config('lti_authrequest', $urls['authrequest'], 'block_onlinesurvey');
         set_config('lti_accesstoken', $urls['accesstoken'], 'block_onlinesurvey');
@@ -1097,13 +1097,36 @@ function block_onlinesurvey_get_launch_config() {
 }
 function block_onlinesurvey_get_accesstoken($typeid) {
     $type = lti_get_type($typeid);
-    $urls = get_tool_type_urls($type);
+    $urls = block_onlinesurvey_get_tool_type_urls($type);
     set_config('lti_accesstoken', $urls['accesstoken'], 'block_onlinesurvey');
     return $urls['accesstoken'];
 }
 function block_onlinesurvey_get_authrequest($typeid) {
     $type = lti_get_type($typeid);
-    $urls = get_tool_type_urls($type);
+    $urls = block_onlinesurvey_get_tool_type_urls($type);
     set_config('lti_authrequest', $urls['authrequest'], 'block_onlinesurvey');
     return $urls['authrequest'];
+}
+
+/**
+ * Returns the icon and edit urls for the tool type and the course url if it is a course type.
+ *
+ * @param stdClass $type The tool type
+ *
+ * @return array The urls of the tool type
+ */
+function block_onlinesurvey_get_tool_type_urls(\stdClass $type) {
+    $urls = array(
+        'icon' => get_tool_type_icon_url($type),
+        'edit' => get_tool_type_edit_url($type),
+    );
+
+    $url = new moodle_url('/blocks/onlinesurvey/certs.php');
+    $urls['publickeyset'] = $url->out();
+    $url = new moodle_url('/blocks/onlinesurvey/token.php');
+    $urls['accesstoken'] = $url->out();
+    $url = new moodle_url('/blocks/onlinesurvey/auth.php');
+    $urls['authrequest'] = $url->out();
+
+    return $urls;
 }
