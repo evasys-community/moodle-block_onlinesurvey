@@ -137,9 +137,11 @@ if (!empty($error)) {
                 echo block_onlinesurvey_lti_initiate_login($config, $msgtype, '', '', $foruserid);
                 exit;
             } else {
+                $logger->log('lti_initiatelogin_status is already set:', $SESSION->lti_initiatelogin_status);
                 unset($SESSION->lti_initiatelogin_status);
             }
         }
+        $logger->log('about to call block_onlinesurvey_get_lti_content');
         block_onlinesurvey_get_lti_content($config, $context, $course, $modalzoom);
     }
 }
