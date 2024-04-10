@@ -127,7 +127,7 @@ if (!empty($error)) {
         block_onlinesurvey_get_soap_content($config, $moodleusername, $moodleemail, $modalzoom);
     } else if ($connectiontype == 'LTI' || $connectiontype == LTI_VERSION_1P3) {
         $logger->log('getting lti content for config:', $config);
-        if ($config->lti_ltiversion === LTI_VERSION_1P3) {
+        if ($connectiontype === LTI_VERSION_1P3) {
             if (!isset($SESSION->lti_initiatelogin_status)) {
                 $msgtype = 'basic-lti-launch-request';
                 if ($action === 'gradeReport') {
