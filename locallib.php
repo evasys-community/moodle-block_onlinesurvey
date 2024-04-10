@@ -587,8 +587,12 @@ function block_onlinesurvey_lti_get_launch_data($config = null, $course = null, 
     if (empty($config)) {
         $config = get_config("block_onlinesurvey");
     }
+
     $ltiversion = $config->connectiontype;
     $typeid = $config->typeid;
+    if (empty($config->lti_clientid)) {
+        $config->lti_clientid = block_onlinesurvey_get_clientid($typeid);
+    }
     /*
     ICTODO: check if we need to get the type id from somewhere
     lti_get_launch_data does it so:
