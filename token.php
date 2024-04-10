@@ -31,7 +31,7 @@ require_once(__DIR__ . '/../../config.php');
 require_once($CFG->dirroot . '/mod/lti/locallib.php');
 require_once($CFG->dirroot . '/blocks/onlinesurvey/classes/logger.php'); // ICON CORE CHANGE
 use block_onlinesurvey\Logger; // ICON CORE CHANGE
-$logger = new Logger(); // ICON CORE CHANGE
+$logger = new Logger('block_onlinesurvey_token.txt'); // ICON CORE CHANGE
 
 $response = new \mod_lti\local\ltiservice\response();
 

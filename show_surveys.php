@@ -26,7 +26,7 @@ require_once(dirname(__FILE__).'/../../config.php');
 require_once(dirname(__FILE__).'/locallib.php');
 require_once(dirname(__FILE__).'/classes/logger.php');
 require_login();
-$logger = new \block_onlinesurvey\Logger();
+$logger = new \block_onlinesurvey\Logger('block_onlinesurvey_show_survey.php');
 $logger->log('called show_surveys.php');
 $systemcontext = context_system::instance();
 require_capability('block/onlinesurvey:view', $systemcontext);
