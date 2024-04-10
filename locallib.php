@@ -683,7 +683,7 @@ function block_onlinesurvey_lti_get_launch_data($config = null, $course = null, 
     }
 
     // Consumer key currently not used -> $key can be '' -> check "(true or !empty(key))".
-    if ((true or !empty($key)) && !empty($secret)) { // ICNOTICE: matches mod/lti/locallib.php, lines 632ff
+    if ((!empty($key) && !empty($secret)) || ($ltiversion === LTI_VERSION_1P3)) { // ICNOTICE: matches mod/lti/locallib.php, lines 632ff
         if ($ltiversion !== LTI_VERSION_1P3) {
             $logger->log('not lti version 1p3. current ltiversion:', $ltiversion);
             $logger->log('about to call lti_sign_parameters');
@@ -712,6 +712,7 @@ function block_onlinesurvey_lti_get_launch_data($config = null, $course = null, 
             }
         }
     } else {
+        $logger->log('secret was empty, had to skip the lti_sign procedure');
         // If no key and secret, do the launch unsigned.
         $returnurlparams['unsigned'] = '1';
         $parms = $requestparams;
