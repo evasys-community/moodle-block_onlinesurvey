@@ -874,9 +874,15 @@ function block_onlinesurvey_lti_post_launch_html_curl($parameter, $endpoint, $co
 function block_onlinesurvey_lti_initiate_login($config, $messagetype = 'basic-lti-launch-request',
                                                $title = '', $text = '', $foruserid = 0) {
     global $SESSION;
-
+    $logger = new \block_onlinesurvey\Logger('block_onlinesurvey_lti_initiate_login.txt');
+    $logger->log('about to call block_onlinesurvey_lti_build_login_request with the following parameters:');
+    $logger->log('config:', $config);
+    $logger->log('messagetype:', $messagetype);
+    $logger->log('foruserid:', $foruserid);
+    $logger->log('title:', $title);
+    $logger->log('text:', $text);
     $params = block_onlinesurvey_lti_build_login_request($config, $messagetype, $foruserid, $title, $text);
-
+    $logger->log('function called, received params:', $params);
     $r = "<form action=\"" . $config->lti_initiatelogin .
         "\" name=\"ltiInitiateLoginForm\" id=\"ltiInitiateLoginForm\" method=\"post\" " .
         "encType=\"application/x-www-form-urlencoded\">\n";
