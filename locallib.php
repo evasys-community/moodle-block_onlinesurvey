@@ -36,6 +36,7 @@ define('BLOCK_ONLINESURVEY_PRESENTATION_BRIEF', "brief");
 define('BLOCK_ONLINESURVEY_PRESENTATION_DETAILED', "detailed");
 
 require_once($CFG->dirroot . '/mod/lti/locallib.php');
+require_once(__DIR__ . '/classes/logger.php');
 
 /**
  * Request surveys for the current user according to email or username and displays the result.
