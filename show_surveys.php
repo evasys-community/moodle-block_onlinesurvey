@@ -30,6 +30,7 @@ $logger = new \block_onlinesurvey\Logger('block_onlinesurvey_show_survey.txt');
 $logger->log('called show_surveys.php');
 $systemcontext = context_system::instance();
 require_capability('block/onlinesurvey:view', $systemcontext);
+$action = optional_param('action', '', PARAM_TEXT);
 $foruserid = optional_param('user', 0, PARAM_INT);
 global $USER, $PAGE;
 
@@ -118,6 +119,7 @@ if (!empty($error)) {
     } else if ($debugmode) {
         echo  get_string('error_occured', 'block_onlinesurvey', $error);
     }
+    $logger->log('got error: ', $error);
 } else {
     if ($connectiontype == 'SOAP') {
         block_onlinesurvey_get_soap_content($config, $moodleusername, $moodleemail, $modalzoom);
