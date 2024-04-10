@@ -30,7 +30,7 @@ $logger = new \block_onlinesurvey\Logger('block_onlinesurvey_show_survey.txt');
 $logger->log('called show_surveys.php');
 $systemcontext = context_system::instance();
 require_capability('block/onlinesurvey:view', $systemcontext);
-
+$foruserid = optional_param('user', 0, PARAM_INT);
 global $USER, $PAGE;
 
 // Block settings.
@@ -123,6 +123,19 @@ if (!empty($error)) {
         block_onlinesurvey_get_soap_content($config, $moodleusername, $moodleemail, $modalzoom);
     } else if ($connectiontype == 'LTI' || $connectiontype == 'LTI13') {
         $logger->log('getting lti content for config:', $config);
+        if ($config->lti_ltiversion === LTI_VERSION_1P3) {
+            if (!isset($SESSION->lti_initiatelogin_status)) {
+                $msgtype = 'basic-lti-launch-request';
+                if ($action === 'gradeReport') {
+                    $msgtype = 'LtiSubmissionReviewRequest';
+                }
+                $logger->log('about to initiate login'); // ICON CORE CHANGE
+                echo block_onlinesurvey_lti_initiate_login($config, $msgtype, '', '', $foruserid);
+                exit;
+            } else {
+                unset($SESSION->lti_initiatelogin_status);
+            }
+        }
         block_onlinesurvey_get_lti_content($config, $context, $course, $modalzoom);
     }
 }
