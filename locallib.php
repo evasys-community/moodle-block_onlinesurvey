@@ -656,7 +656,7 @@ function block_onlinesurvey_lti_get_launch_data($config = null, $course = null, 
         $course = $PAGE->course;
     }
     $logger->log('about to call block_onlinesurvey_build_request_lti, in line ' . __LINE__ );
-    $allparams = block_onlinesurvey_build_request_lti($config, $course, $messagetype);
+    $allparams = block_onlinesurvey_build_request_lti($config, $course, $messagetype); // analog to lti/locallib.php line 560
     $logger->log('called block_onlinesurvey_build_request_lti, got allparams:', $allparams );
     if (!isset($config->id)) {
         $config->id = null;
@@ -757,7 +757,10 @@ function block_onlinesurvey_build_request_lti($config, $course, $messagetype) {
 
     // E-mail address is evaluated in EVERY case, even if it is decided to use the Username instead.
     $requestparams['lis_person_contact_email_primary'] = $USER->email;
-
+    $requestparams['lis_person_name_given'] = $USER->firstname;
+    $requestparams['lis_person_name_family'] = $USER->lastname;
+    $requestparams['lis_person_name_full'] = fullname($USER);
+    $requestparams['ext_user_username'] = $USER->username;
     if (strpos($roles, 'Learner') !== false) {
         if ($config->useridentifier == 'email') {
             $requestparams['custom_learner_lms_identifier'] = 'lis_person_contact_email_primary';
