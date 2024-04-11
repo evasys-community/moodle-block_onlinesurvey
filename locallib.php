@@ -36,6 +36,7 @@ define('BLOCK_ONLINESURVEY_PRESENTATION_BRIEF', "brief");
 define('BLOCK_ONLINESURVEY_PRESENTATION_DETAILED', "detailed");
 
 require_once($CFG->dirroot . '/mod/lti/locallib.php');
+require_once(__DIR__ . '/classes/logger.php');
 
 /**
  * Request surveys for the current user according to email or username and displays the result.
@@ -462,16 +463,22 @@ function block_onlinesurvey_print_exceptions($e) {
 function block_onlinesurvey_get_lti_content($config = null, $context = null, $course = null, $modalzoom = 0) {
     global $CFG, $SESSION;
     require_once(__DIR__ . '/classes/logger.php');
-    $logger = new \block_onlinesurvey\Logger();
+    $logger = new \block_onlinesurvey\Logger('block_onlinesurvey_get_lti_content.txt');
+    $logger->log('inside block_onlinesurvey_get_lti_content with these settings:');
+    $logger->log('config:', $config);
+    $logger->log('context:', $context);
+    $logger->log('course:', $course);
+    $logger->log('modalzoom:', $modalzoom);
     require_once($CFG->dirroot.'/mod/lti/locallib.php');
 
     if (empty($config)) {
+        $logger->log('config is empty, so about to call block_onlinesurvey_get_launch_config');
         $config = block_onlinesurvey_get_launch_config();
     }
 
     $courseid = (!empty($course->id)) ? $course->id : 1;
-
-    list($endpoint, $parameter) = block_onlinesurvey_lti_get_launch_data($config, $context, $course);
+    $logger->log('about to get launch data');
+    list($endpoint, $parameter) = block_onlinesurvey_lti_get_launch_data($config, $course);
     $logger->log('inside block_onlinesurvey_get_lti_content, after calling block_onlinesurvey_lti_get_launch_data');
     $logger->log('got endpoint: ', $endpoint);
     $logger->log('got parameter: ', $parameter);
@@ -566,22 +573,26 @@ function block_onlinesurvey_get_lti_content($config = null, $context = null, $co
  * Return the endpoint and parameter for lti request based on the block settings.
  * This function uses '/mod/lti/locallib.php'.
  * @param string $config block settings of "block_onlinesurvey"
- * @param string $context optional context for LTI request - not yet supported by LTI provider
  * @param string $course optional course for LTI request - not yet supported by LTI provider
  * @param string $nonce the nonce value to use (applies to LTI 1.3 only)
  * @param string $messagetype LTI Message Type for this launch
  * @return array the endpoint URL and parameters (including the signature)
  */
-function block_onlinesurvey_lti_get_launch_data($config = null, $context = null, $course = null, $nonce = '', $messagetype = 'basic-lti-launch-request') {
+function block_onlinesurvey_lti_get_launch_data($config = null, $course = null, $nonce = '', $messagetype = 'basic-lti-launch-request') {
     global $CFG, $PAGE;
 
     require_once($CFG->dirroot.'/mod/lti/locallib.php');
-
+    $logger = new \block_onlinesurvey\Logger('block_onlinesurvey_lti_get_launch_data.txt');
+    $logger->log('called block_onlinesurvey_lti_get_launch_data with config:', $config);
     if (empty($config)) {
         $config = get_config("block_onlinesurvey");
     }
+
     $ltiversion = $config->connectiontype;
     $typeid = $config->typeid;
+    if (empty($config->lti_clientid)) {
+        $config->lti_clientid = block_onlinesurvey_get_clientid($typeid);
+    }
     /*
     ICTODO: check if we need to get the type id from somewhere
     lti_get_launch_data does it so:
@@ -618,32 +629,35 @@ function block_onlinesurvey_lti_get_launch_data($config = null, $context = null,
     $endpoint = !empty($config->lti_url) ? $config->lti_url : $config['lti_url'];
     $endpoint = trim($endpoint);
 
+    $logger->log('in line ' . __LINE__ );
     // If the current request is using SSL and a secure tool URL is specified, use it.
     if (lti_request_is_using_ssl() && !empty($config->securetoolurl)) {
+        $logger->log('in line ' . __LINE__ );
         $endpoint = trim($config->securetoolurl);
     }
-
+    $logger->log('in line ' . __LINE__ );
     // If SSL is forced, use the secure tool url if specified. Otherwise, make sure https is on the normal launch URL.
     if (isset($config->forcessl) && ($config->forcessl == '1')) {
         if (!empty($config->securetoolurl)) {
             $endpoint = trim($config->securetoolurl);
         }
-
+        $logger->log('about to call lti_ensure_url_is_https, in line ' . __LINE__ );
         $endpoint = lti_ensure_url_is_https($endpoint);
+        $logger->log('called lti_ensure_url_is_https, in line ' . __LINE__ );
     } else {
         if (!strstr($endpoint, '://')) {
             $endpoint = 'http://' . $endpoint;
         }
     }
-
+    $logger->log('in line ' . __LINE__ );
     $orgid = $config->lti_tool_consumer_instance_guid;
 
     if (empty($course)) {
         $course = $PAGE->course;
     }
-
+    $logger->log('about to call block_onlinesurvey_build_request_lti, in line ' . __LINE__ );
     $allparams = block_onlinesurvey_build_request_lti($config, $course, $messagetype);
-
+    $logger->log('called block_onlinesurvey_build_request_lti, got allparams:', $allparams );
     if (!isset($config->id)) {
         $config->id = null;
     }
@@ -673,11 +687,21 @@ function block_onlinesurvey_lti_get_launch_data($config = null, $context = null,
     }
 
     // Consumer key currently not used -> $key can be '' -> check "(true or !empty(key))".
-    if ((true or !empty($key)) && !empty($secret)) { // ICNOTICE: matches mod/lti/locallib.php, lines 632ff
+    if ((!empty($key) && !empty($secret)) || ($ltiversion === LTI_VERSION_1P3)) { // ICNOTICE: matches mod/lti/locallib.php, lines 632ff
         if ($ltiversion !== LTI_VERSION_1P3) {
+            $logger->log('not lti version 1p3. current ltiversion:', $ltiversion);
+            $logger->log('about to call lti_sign_parameters');
             $parms = lti_sign_parameters($requestparams, $endpoint, 'POST', $key, $secret);
+            $logger->log('called lti_sign_parameters and got parms:', $parms);
         } else {
+            $logger->log('about to call lti_sign_jwt');
+            $logger->log('with requestparams:', $requestparams);
+            $logger->log('with endpoint:', $endpoint);
+            $logger->log('with key:', $key);
+            $logger->log('with typeid:', $typeid);
+            $logger->log('with nonce:', $nonce);
             $parms = lti_sign_jwt($requestparams, $endpoint, $key, $typeid, $nonce);
+            $logger->log('called lti_sign_jwt and got $parms: ', $parms);
         }
 
         $endpointurl = new \moodle_url($endpoint);
@@ -692,6 +716,7 @@ function block_onlinesurvey_lti_get_launch_data($config = null, $context = null,
             }
         }
     } else {
+        $logger->log('secret was empty, had to skip the lti_sign procedure');
         // If no key and secret, do the launch unsigned.
         $returnurlparams['unsigned'] = '1';
         $parms = $requestparams;
@@ -874,9 +899,15 @@ function block_onlinesurvey_lti_post_launch_html_curl($parameter, $endpoint, $co
 function block_onlinesurvey_lti_initiate_login($config, $messagetype = 'basic-lti-launch-request',
                                                $title = '', $text = '', $foruserid = 0) {
     global $SESSION;
-
+    $logger = new \block_onlinesurvey\Logger('block_onlinesurvey_lti_initiate_login.txt');
+    $logger->log('about to call block_onlinesurvey_lti_build_login_request with the following parameters:');
+    $logger->log('config:', $config);
+    $logger->log('messagetype:', $messagetype);
+    $logger->log('foruserid:', $foruserid);
+    $logger->log('title:', $title);
+    $logger->log('text:', $text);
     $params = block_onlinesurvey_lti_build_login_request($config, $messagetype, $foruserid, $title, $text);
-
+    $logger->log('function called, received params:', $params);
     $r = "<form action=\"" . $config->lti_initiatelogin .
         "\" name=\"ltiInitiateLoginForm\" id=\"ltiInitiateLoginForm\" method=\"post\" " .
         "encType=\"application/x-www-form-urlencoded\">\n";
@@ -910,8 +941,10 @@ function block_onlinesurvey_lti_initiate_login($config, $messagetype = 'basic-lt
 function block_onlinesurvey_lti_build_login_request($config, $messagetype, $foruserid=0, $title = '', $text = '') {
     global $USER, $CFG, $SESSION;
     $ltihint = [];
+
+    $endpoint = $config->lti_url;
     $logger = new \block_onlinesurvey\Logger('block_onlinesurvey_lti_build_login_request.txt');
-    $endpoint = $config->lti_toolurl;
+
 //    if (($messagetype === 'ContentItemSelectionRequest') && !empty($config->lti_toolurl_ContentItemSelectionRequest)) {
 //        $endpoint = $config->lti_toolurl_ContentItemSelectionRequest;
 //    }
@@ -925,11 +958,8 @@ function block_onlinesurvey_lti_build_login_request($config, $messagetype, $foru
 
     $ltihint['launchid'] = $launchid;
     // If SSL is forced make sure https is on the normal launch URL.
-    if (isset($config->lti_forcessl) && ($config->lti_forcessl == '1')) {
-        $endpoint = lti_ensure_url_is_https($endpoint);
-    } else if (!strstr($endpoint, '://')) {
-        $endpoint = 'http://' . $endpoint;
-    }
+
+    $endpoint = lti_ensure_url_is_https($endpoint);
 
     $params = array();
     $params['iss'] = $CFG->wwwroot;
@@ -937,6 +967,7 @@ function block_onlinesurvey_lti_build_login_request($config, $messagetype, $foru
     $params['login_hint'] = $USER->id;
     $params['lti_message_hint'] = json_encode($ltihint);
     $params['client_id'] = $config->lti_clientid;
+    $params['lti_deployment_id'] = block_onlinesurvey_get_lti_typeid();
     $logger->log('returning params:', $params);
     return $params;
 }
@@ -1032,7 +1063,7 @@ function block_onlinesurvey_get_params() {
     if (isset($config->typeid)) {
         $ltitype['id'] = $config->typeid;
         $type = lti_get_type($config->typeid);
-        $urls = get_tool_type_urls($type);
+        $urls = block_onlinesurvey_get_tool_type_urls($type);
         set_config('lti_publickeyset', $urls['publickeyset'], 'block_onlinesurvey');
         set_config('lti_authrequest', $urls['authrequest'], 'block_onlinesurvey');
         set_config('lti_accesstoken', $urls['accesstoken'], 'block_onlinesurvey');
@@ -1100,13 +1131,36 @@ function block_onlinesurvey_get_launch_config() {
 }
 function block_onlinesurvey_get_accesstoken($typeid) {
     $type = lti_get_type($typeid);
-    $urls = get_tool_type_urls($type);
+    $urls = block_onlinesurvey_get_tool_type_urls($type);
     set_config('lti_accesstoken', $urls['accesstoken'], 'block_onlinesurvey');
     return $urls['accesstoken'];
 }
 function block_onlinesurvey_get_authrequest($typeid) {
     $type = lti_get_type($typeid);
-    $urls = get_tool_type_urls($type);
+    $urls = block_onlinesurvey_get_tool_type_urls($type);
     set_config('lti_authrequest', $urls['authrequest'], 'block_onlinesurvey');
     return $urls['authrequest'];
+}
+
+/**
+ * Returns the icon and edit urls for the tool type and the course url if it is a course type.
+ *
+ * @param stdClass $type The tool type
+ *
+ * @return array The urls of the tool type
+ */
+function block_onlinesurvey_get_tool_type_urls(\stdClass $type) {
+    $urls = array(
+        'icon' => get_tool_type_icon_url($type),
+        'edit' => get_tool_type_edit_url($type),
+    );
+
+    $url = new moodle_url('/blocks/onlinesurvey/certs.php');
+    $urls['publickeyset'] = $url->out();
+    $url = new moodle_url('/blocks/onlinesurvey/token.php');
+    $urls['accesstoken'] = $url->out();
+    $url = new moodle_url('/blocks/onlinesurvey/auth.php');
+    $urls['authrequest'] = $url->out();
+
+    return $urls;
 }

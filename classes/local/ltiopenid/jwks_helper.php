@@ -69,7 +69,7 @@ class jwks_helper {
         $privatekey = self::get_private_key();
         $res = openssl_pkey_get_private($privatekey['key']);
         $details = openssl_pkey_get_details($res);
-        $logger = new Logger(); // ICON CORE CHANGE BEGIN
+        $logger = new Logger('block_onlinesurvey_jwks_helper.txt'); // ICON CORE CHANGE BEGIN
         $logger->log('inside mod/lti jwks_helper.php, line ' . __LINE__);
         $logger->log('got res:', $res);
         $logger->log('got details:', $res);

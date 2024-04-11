@@ -23,7 +23,7 @@
  */
 
 defined('MOODLE_INTERNAL') || die();
-
+require_once($CFG->dirroot . '/mod/lti/locallib.php');
 /**
  * Onlinesurvey block.
  *
@@ -120,7 +120,7 @@ class block_onlinesurvey extends block_base {
                         $this->isconfigured = false;
                         $this->error = "WSDL namespace parse error";
                     }
-                } else if ($this->connectiontype == 'LTI' || $this->connectiontype == 'LTI13') {
+                } else if ($this->connectiontype == 'LTI' || $this->connectiontype == LTI_VERSION_1P3) {
                     // Quick check of some LTI settings.
                     $this->isconfigured = true;
 

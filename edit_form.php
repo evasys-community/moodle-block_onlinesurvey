@@ -21,7 +21,8 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 defined('MOODLE_INTERNAL') || die();
-require_once __DIR__ . '/locallib.php';
+require_once(__DIR__ . '/locallib.php');
+require_once($CFG->dirroot .'/mod/lti/locallib.php');
 /**
  * Form for editing Online Survey block.
  *
@@ -33,7 +34,7 @@ class block_onlinesurvey_edit_form extends block_edit_form
     {
         $config = get_config('block_onlinesurvey');
         $lticonfig = block_onlinesurvey_get_lti_type_config();
-        if ($config->connectiontype == 'LTI13' && $lticonfig) {
+        if ($config->connectiontype == LTI_VERSION_1P3 && $lticonfig) {
             $displayitems = ['publickeyset', 'accesstoken', 'authrequest', 'deploymentid', 'clientid'];
             $headerdisplayedyet = false;
             $lticonfig['deploymentid'] = block_onlinesurvey_get_lti_typeid();
