@@ -88,6 +88,9 @@ if ($ok && ($responsetype !== 'id_token')) {
 }
 if ($ok) {
     $launchid = $ltimessagehint->launchid;
+    $logger->log('\$launchid:', $launchid);
+    $logger->log('\$SESSION->\$launchid:', $SESSION->$launchid);
+
     list($messagetype, $foruserid, $titleb64, $textb64) = explode(',', $SESSION->$launchid, 7);
     unset($SESSION->$launchid);
     $config = lti_get_type_type_config($typeid);

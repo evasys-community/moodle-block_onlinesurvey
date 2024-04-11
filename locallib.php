@@ -910,7 +910,7 @@ function block_onlinesurvey_lti_initiate_login($config, $messagetype = 'basic-lt
 function block_onlinesurvey_lti_build_login_request($config, $messagetype, $foruserid=0, $title = '', $text = '') {
     global $USER, $CFG, $SESSION;
     $ltihint = [];
-
+    $logger = new \block_onlinesurvey\Logger('block_onlinesurvey_lti_build_login_request.txt');
     $endpoint = $config->lti_toolurl;
 //    if (($messagetype === 'ContentItemSelectionRequest') && !empty($config->lti_toolurl_ContentItemSelectionRequest)) {
 //        $endpoint = $config->lti_toolurl_ContentItemSelectionRequest;
@@ -918,6 +918,8 @@ function block_onlinesurvey_lti_build_login_request($config, $messagetype, $foru
     $launchid = "ltilaunch_$messagetype".rand();
     $SESSION->$launchid =
         "{$messagetype},{$foruserid}," . base64_encode($title) . ',' . base64_encode($text);
+    $logger->log('\$launchid:', $launchid);
+    $logger->log('\$SESSION->\$launchid:', $SESSION->$launchid);
 
     $endpoint = trim($endpoint);
 
@@ -935,6 +937,7 @@ function block_onlinesurvey_lti_build_login_request($config, $messagetype, $foru
     $params['login_hint'] = $USER->id;
     $params['lti_message_hint'] = json_encode($ltihint);
     $params['client_id'] = $config->lti_clientid;
+    $logger->log('returning params:', $params);
     return $params;
 }
 
