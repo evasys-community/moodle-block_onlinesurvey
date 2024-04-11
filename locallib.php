@@ -579,7 +579,7 @@ function block_onlinesurvey_get_lti_content($config = null, $context = null, $co
  * @return array the endpoint URL and parameters (including the signature)
  */
 function block_onlinesurvey_lti_get_launch_data($config = null, $course = null, $nonce = '', $messagetype = 'basic-lti-launch-request') {
-    global $CFG, $PAGE;
+    global $CFG, $PAGE, $USER, $DB;
 
     require_once($CFG->dirroot.'/mod/lti/locallib.php');
     $logger = new \block_onlinesurvey\Logger('block_onlinesurvey_lti_get_launch_data.txt');
@@ -672,7 +672,8 @@ function block_onlinesurvey_lti_get_launch_data($config = null, $course = null, 
     // so we build "dummys".
     $toolproxy = new stdClass();
     $tool = new stdClass();
-    $tool->ltiversion = LTI_VERSION_1;
+//    $tool->ltiversion = LTI_VERSION_1; // ICTODO: this shouldn't be hardcoded - we use LTI_VERSION_1P3
+    $tool->ltiversion = $ltiversion;
     $tool->parameter = '';
     $tool->enabledcapability = array();
     $instance = null;
@@ -685,7 +686,23 @@ function block_onlinesurvey_lti_get_launch_data($config = null, $course = null, 
     if (!empty($target)) {
         $requestparams['launch_presentation_document_target'] = $target;
     }
-
+    $basicoutcome = new \stdClass();
+    $servicesalt = $DB->get_field('lti_types_config', 'value', ['typeid'=>$typeid, 'name'=>'servicesalt']);
+    $basicoutcome->lis_result_sourcedid = json_encode(lti_build_sourcedid($typeid,
+        $USER->id,
+        $servicesalt,
+        $typeid));
+    $serviceurl = new \moodle_url('/mod/lti/service.php');
+    $serviceurl = $serviceurl->out();
+    $forcessl = false;
+    if (!empty($CFG->mod_lti_forcessl)) {
+        $forcessl = true;
+    }
+    if ((isset($toolconfig['forcessl']) && ($toolconfig['forcessl'] == '1')) or $forcessl) {
+        $serviceurl = lti_ensure_url_is_https($serviceurl);
+    }
+    $basicoutcome->lis_outcome_service_url = $serviceurl;
+    $requestparams['https://purl.imsglobal.org/spec/lti-bo/claim/basicoutcome'] = $basicoutcome;
     // Consumer key currently not used -> $key can be '' -> check "(true or !empty(key))".
     if ((!empty($key) && !empty($secret)) || ($ltiversion === LTI_VERSION_1P3)) { // ICNOTICE: matches mod/lti/locallib.php, lines 632ff
         if ($ltiversion !== LTI_VERSION_1P3) {
