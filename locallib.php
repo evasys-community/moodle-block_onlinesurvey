@@ -716,6 +716,7 @@ function block_onlinesurvey_lti_get_launch_data($config = null, $nonce = '', $me
             $logger->log('called lti_sign_parameters and got parms:', $parms);
         } else {
             $requestparams['https://purl.imsglobal.org/spec/lti/claim/version'] = '1.3.0';
+            $requestparams['lti_version'] = '1.3.0';
             $logger->log('about to call lti_sign_jwt');
             $logger->log('with requestparams:', $requestparams);
             $logger->log('with endpoint:', $endpoint);
