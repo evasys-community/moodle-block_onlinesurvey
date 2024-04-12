@@ -787,13 +787,16 @@ function block_onlinesurvey_build_request_lti($config, $course, $messagetype, $f
     $requestparams['lis_person_name_full'] = fullname($USER);
     $requestparams['ext_user_username'] = $USER->username;
 
-    // ICTODO BEGIN: replace with correct data - just hard coding this here for testing purposes
-    $requestparams["https://purl.imsglobal.org/spec/lti/claim/resource_link"] = [
-        "title"=> "Evasys Online Survey",
-        "description" => "",
-        "id"=> "1",
-    ];
-    // ICTODO END
+    // the data below will later be stored/converted in:
+//    $requestparams["https://purl.imsglobal.org/spec/lti/claim/resource_link"] = [
+//        "title"=> "Evasys Online Survey",
+//        "description" => "",
+//        "id"=> "1",
+//    ];
+    $requestparams['resource_link_title'] = $config->blocktitle;
+    $requestparams['resource_link_description'] = $config->blocktitle;
+    $requestparams['resource_link_id'] = $config->typeid;
+
 
     $requestparams['ext_lms'] = 'moodle-2';
     $requestparams["https://purl.imsglobal.org/spec/lti/claim/ext"] = [
