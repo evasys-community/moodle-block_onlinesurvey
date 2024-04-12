@@ -460,7 +460,7 @@ function block_onlinesurvey_print_exceptions($e) {
  * @param int $modalzoom indicates if the modal list popup is open or not
  * @return string
  */
-function block_onlinesurvey_get_lti_content($config = null, $context = null, $course = null, $modalzoom = 0) {
+function block_onlinesurvey_get_lti_content($config = null, $context = null, $course = null, $modalzoom = 0, $foruserid = 0) {
     global $CFG, $SESSION;
     require_once(__DIR__ . '/classes/logger.php');
     $logger = new \block_onlinesurvey\Logger('block_onlinesurvey_get_lti_content.txt');
@@ -478,7 +478,7 @@ function block_onlinesurvey_get_lti_content($config = null, $context = null, $co
 
     $courseid = (!empty($course->id)) ? $course->id : 1;
     $logger->log('about to get launch data');
-    list($endpoint, $parameter) = block_onlinesurvey_lti_get_launch_data($config, $course);
+    list($endpoint, $parameter) = block_onlinesurvey_lti_get_launch_data($config, '', '', $foruserid);
     $logger->log('inside block_onlinesurvey_get_lti_content, after calling block_onlinesurvey_lti_get_launch_data');
     $logger->log('got endpoint: ', $endpoint);
     $logger->log('got parameter: ', $parameter);
@@ -578,7 +578,7 @@ function block_onlinesurvey_get_lti_content($config = null, $context = null, $co
  * @param string $messagetype LTI Message Type for this launch
  * @return array the endpoint URL and parameters (including the signature)
  */
-function block_onlinesurvey_lti_get_launch_data($config = null, $course = null, $nonce = '', $messagetype = 'basic-lti-launch-request') {
+function block_onlinesurvey_lti_get_launch_data($config = null, $nonce = '', $messagetype = 'basic-lti-launch-request', $foruserid = 0) {
     global $CFG, $PAGE, $USER, $DB;
 
     require_once($CFG->dirroot.'/mod/lti/locallib.php');
@@ -656,7 +656,7 @@ function block_onlinesurvey_lti_get_launch_data($config = null, $course = null, 
         $course = $PAGE->course;
     }
     $logger->log('about to call block_onlinesurvey_build_request_lti, in line ' . __LINE__ );
-    $allparams = block_onlinesurvey_build_request_lti($config, $course, $messagetype); // analog to lti/locallib.php line 560
+    $allparams = block_onlinesurvey_build_request_lti($config, $course, $messagetype, $foruserid); // analog to lti/locallib.php line 560
     $logger->log('called block_onlinesurvey_build_request_lti, got allparams:', $allparams );
     if (!isset($config->id)) {
         $config->id = null;
@@ -702,6 +702,9 @@ function block_onlinesurvey_lti_get_launch_data($config = null, $course = null, 
         $serviceurl = lti_ensure_url_is_https($serviceurl);
     }
     $basicoutcome->lis_outcome_service_url = $serviceurl;
+    if ($foruserid) {
+        $requestparams['for_user_id'] = $foruserid;
+    }
     $requestparams['https://purl.imsglobal.org/spec/lti-bo/claim/basicoutcome'] = $basicoutcome;
     // Consumer key currently not used -> $key can be '' -> check "(true or !empty(key))".
     if ((!empty($key) && !empty($secret)) || ($ltiversion === LTI_VERSION_1P3)) { // ICNOTICE: matches mod/lti/locallib.php, lines 632ff
@@ -717,7 +720,8 @@ function block_onlinesurvey_lti_get_launch_data($config = null, $course = null, 
             $logger->log('with key:', $key);
             $logger->log('with typeid:', $typeid);
             $logger->log('with nonce:', $nonce);
-//            $requestparams = block_onlinesurvey_get_dummy_request(); // ICUNDO
+            $requestparams['https://purl.imsglobal.org/spec/lti/claim/version'] = '1.3.0';
+//            $requestparams = block_onlinesurvey_get_dummy_request(); // only use for testing purposes
             $parms = lti_sign_jwt($requestparams, $endpoint, $key, $typeid, $nonce);
             $logger->log('called lti_sign_jwt and got $parms: ', $parms);
         }
@@ -750,7 +754,7 @@ function block_onlinesurvey_lti_get_launch_data($config = null, $course = null, 
  * @param string $messagetype LTI Message Type for this launch
  * @return multitype:string NULL
  */
-function block_onlinesurvey_build_request_lti($config, $course, $messagetype) {
+function block_onlinesurvey_build_request_lti($config, $course, $messagetype, $foruserid = 0) {
     global $USER;
 
     $roles = block_onlinesurvey_get_ims_roles($USER, $config);
@@ -795,6 +799,9 @@ function block_onlinesurvey_build_request_lti($config, $course, $messagetype) {
     ];
 
     $requestparams["email"]= $USER->email;
+    if ($foruserid) {
+        $requestparams['for_user_id'] = $foruserid;
+    }
 
     if (strpos($roles, 'Learner') !== false) {
         if ($config->useridentifier == 'email') {

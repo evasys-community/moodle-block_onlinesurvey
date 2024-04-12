@@ -155,7 +155,7 @@ if ($ok) {
         $context = context_system::instance();
         $lti = get_config('block_onlinesurvey');
         $logger->log('about to call block_onlinesurvey_lti_get_launch_data');
-        list($endpoint, $params) = block_onlinesurvey_lti_get_launch_data($lti, $messagetype, $foruserid);
+        list($endpoint, $params) = block_onlinesurvey_lti_get_launch_data($lti, $nonce, $messagetype, $foruserid);
         $logger->log('called block_onlinesurvey_lti_get_launch_data and got endpoint:', $endpoint);
         $logger->log('and got params:', $params);
    /* } else {
