@@ -706,6 +706,7 @@ function block_onlinesurvey_lti_get_launch_data($config = null, $nonce = '', $me
         $requestparams['for_user_id'] = $foruserid;
     }
     $requestparams['https://purl.imsglobal.org/spec/lti-bo/claim/basicoutcome'] = $basicoutcome;
+    $requestparams['resource_link_id'] = block_onlinesurvey_get_lti_typeid();
 
     // Consumer key currently not used -> $key can be '' -> check "(true or !empty(key))".
     if ((!empty($key) && !empty($secret)) || ($ltiversion === LTI_VERSION_1P3)) { // ICNOTICE: matches mod/lti/locallib.php, lines 632ff
