@@ -795,7 +795,7 @@ function block_onlinesurvey_build_request_lti($config, $course, $messagetype, $f
 //    ];
     $requestparams['resource_link_title'] = $config->blocktitle;
     $requestparams['resource_link_description'] = $config->blocktitle;
-    $requestparams['resource_link_id'] = $config->typeid;
+    $requestparams['resource_link_id'] = block_onlinesurvey_get_lti_typeid();
 
 
     $requestparams['ext_lms'] = 'moodle-2';
