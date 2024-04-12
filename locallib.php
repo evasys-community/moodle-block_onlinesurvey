@@ -375,7 +375,7 @@ function block_onlinesurvey_get_surveys($soapconfigobj) {
                 $client->__setSoapHeaders($soapheader);
             } else {
                 $retval->error = block_onlinesurvey_handle_error("SOAP client configuration error");
-                return $result;
+                return $retval;
             }
 
             if (!empty($soapconfigobj->useridentifier)) {
@@ -802,6 +802,7 @@ function block_onlinesurvey_build_request_lti($config, $course, $messagetype, $f
     if ($foruserid) {
         $requestparams['for_user_id'] = $foruserid;
     }
+    $requestparams["https://purl.imsglobal.org/spec/lti/claim/version"] = '1.3.0';
 
     if (strpos($roles, 'Learner') !== false) {
         if ($config->useridentifier == 'email') {
