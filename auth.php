@@ -28,7 +28,7 @@ require_once(__DIR__ . '/classes/logger.php');
 require_once(__DIR__ . '/locallib.php');
 $logger = new \block_onlinesurvey\Logger('block_onlinesurvey_auth.txt');
 global $_POST, $_SERVER;
-$logger->log('called blocks/onlinesurvey/auth.php');
+$logger->log('called blocks/onlinesurvey/auth.php', \block_onlinesurvey\Logger::LEVEL_VERBOSE);
 if (!isloggedin() && empty($_POST['repost'])) {
     header_remove("Set-Cookie");
     $PAGE->set_pagelayout('popup');
@@ -64,7 +64,7 @@ if (!$ok) {
     $error = 'invalid_request';
 }
 $ltimessagehint = json_decode($ltimessagehintenc);
-$logger->log('ltimessagehint:', $ltimessagehint);
+$logger->log('ltimessagehint:', $ltimessagehint, \block_onlinesurvey\Logger::LEVEL_VERBOSE);
 $ok = $ok && isset($ltimessagehint->launchid);
 if (!$ok) {
     $error = 'invalid_request';
@@ -75,7 +75,8 @@ if (!$ok) {
         'clientid' => $clientid,
         'redirecturi' => $redirecturi,
         'loginhint' => $loginhint,
-        'nonce' => $nonce]
+        'nonce' => $nonce],
+        \block_onlinesurvey\Logger::LEVEL_VERBOSE
     );
 }
 if ($ok && ($scope !== 'openid')) {

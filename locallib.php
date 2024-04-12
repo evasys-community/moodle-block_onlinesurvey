@@ -717,7 +717,7 @@ function block_onlinesurvey_lti_get_launch_data($config = null, $course = null, 
             $logger->log('with key:', $key);
             $logger->log('with typeid:', $typeid);
             $logger->log('with nonce:', $nonce);
-            $requestparams = block_onlinesurvey_get_dummy_request(); // ICUNDO
+//            $requestparams = block_onlinesurvey_get_dummy_request(); // ICUNDO
             $parms = lti_sign_jwt($requestparams, $endpoint, $key, $typeid, $nonce);
             $logger->log('called lti_sign_jwt and got $parms: ', $parms);
         }
