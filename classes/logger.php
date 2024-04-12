@@ -16,7 +16,7 @@ class Logger {
     }
     function log($message, $obj = null, $level = self::LEVEL_VERY_VERBOSE) {
         global $CFG;
-        if ($level < $this->level) {
+        if ($level > $this->level) {
             return;
         }
         if (!is_null($obj)) {

@@ -706,6 +706,7 @@ function block_onlinesurvey_lti_get_launch_data($config = null, $nonce = '', $me
         $requestparams['for_user_id'] = $foruserid;
     }
     $requestparams['https://purl.imsglobal.org/spec/lti-bo/claim/basicoutcome'] = $basicoutcome;
+
     // Consumer key currently not used -> $key can be '' -> check "(true or !empty(key))".
     if ((!empty($key) && !empty($secret)) || ($ltiversion === LTI_VERSION_1P3)) { // ICNOTICE: matches mod/lti/locallib.php, lines 632ff
         if ($ltiversion !== LTI_VERSION_1P3) {
@@ -714,13 +715,14 @@ function block_onlinesurvey_lti_get_launch_data($config = null, $nonce = '', $me
             $parms = lti_sign_parameters($requestparams, $endpoint, 'POST', $key, $secret);
             $logger->log('called lti_sign_parameters and got parms:', $parms);
         } else {
+            $requestparams['https://purl.imsglobal.org/spec/lti/claim/version'] = '1.3.0';
             $logger->log('about to call lti_sign_jwt');
             $logger->log('with requestparams:', $requestparams);
             $logger->log('with endpoint:', $endpoint);
             $logger->log('with key:', $key);
             $logger->log('with typeid:', $typeid);
             $logger->log('with nonce:', $nonce);
-            $requestparams['https://purl.imsglobal.org/spec/lti/claim/version'] = '1.3.0';
+
 //            $requestparams = block_onlinesurvey_get_dummy_request(); // only use for testing purposes
             $parms = lti_sign_jwt($requestparams, $endpoint, $key, $typeid, $nonce);
             $logger->log('called lti_sign_jwt and got $parms: ', $parms);
