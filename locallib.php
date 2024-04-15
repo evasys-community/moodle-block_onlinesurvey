@@ -509,7 +509,9 @@ function block_onlinesurvey_get_lti_content($config = null, $context = null, $co
 
         if (!empty($re)) {
             $surveycount = preg_match_all($re, $content2, $matches, PREG_SET_ORDER, 0);
-
+            $logger->log('got surveycount: ', $surveycount);
+            $logger->log('got matches: ', $matches);
+            $logger->log('$config->survey_show_popupinfo: ', $config->survey_show_popupinfo);
             $SESSION->block_onlinesurvey_curl_checked = true;
 
             if (!empty($matches) && !empty($config->survey_show_popupinfo)) {
@@ -548,8 +550,11 @@ function block_onlinesurvey_get_lti_content($config = null, $context = null, $co
     }
 
     if ($config->presentation == BLOCK_ONLINESURVEY_PRESENTATION_BRIEF && !$modalzoom) {
+        $logger->log('creating summary');
         $lticontentstr .= block_onlinesurvey_createsummary($surveycount);
     } else {
+        $logger->log('not creating summary. $config->presentation:', $config->presentation);
+        $logger->log('$modalzoom:', $modalzoom);
         if (empty($context)) {
             $context = context_system::instance();
         }
