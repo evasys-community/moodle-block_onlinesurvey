@@ -994,7 +994,7 @@ function block_onlinesurvey_lti_initiate_login($config, $messagetype = 'basic-lt
     });
 
 document.addEventListener('readystatechange', (event) => {
-  console.log('readystate:', \${document.readyState});
+  console.log('readystate:', document.readyState);
 });
 
 document.addEventListener('DOMContentLoaded', (event) => {
