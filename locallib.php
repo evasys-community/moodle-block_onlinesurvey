@@ -956,6 +956,8 @@ function block_onlinesurvey_lti_post_launch_html_curl($parameter, $endpoint, $co
         if (in_array($errornumber, array(CURLE_OPERATION_TIMEDOUT, CURLE_OPERATION_TIMEOUTED))) {
             throw new Exception("$msgoutput");
         }
+    } else {
+        $logger->log('No errors in curl call. Got response:', $ret);
     }
 
     return $ret;
