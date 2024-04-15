@@ -909,7 +909,8 @@ function block_onlinesurvey_get_ims_roles($user, $config) {
  * @return string result of the curl LTI request
  */
 function block_onlinesurvey_lti_post_launch_html_curl($parameter, $endpoint, $config) {
-
+    $logger = new \block_onlinesurvey\Logger('block_onlinesurvey_launch_via_curl.txt', \block_onlinesurvey\Logger::LEVEL_VERY_VERBOSE);
+    $logger->log('using curl to launch LTI');
     // Set POST variables.
     $fields = array();
 
@@ -939,7 +940,6 @@ function block_onlinesurvey_lti_post_launch_html_curl($parameter, $endpoint, $co
 
     if ($errornumber = $curl->get_errno()) {
         $msgoutput = get_string('error_survey_curl_timeout_msg', 'block_onlinesurvey');
-        $logger = new \block_onlinesurvey\Logger('block_onlinesurvey_launch_via_curl.txt', \block_onlinesurvey\Logger::LEVEL_VERY_VERBOSE);
         $logger->log('got curl error', $curl->get_info());
         $logger->log('error number: ', $errornumber);
         $logger->log('response', $curl->get_raw_response());
