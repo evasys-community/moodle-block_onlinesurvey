@@ -988,7 +988,19 @@ function block_onlinesurvey_lti_initiate_login($config, $messagetype = 'basic-lt
 
     $r .= "<script type=\"text/javascript\">\n" .
         "//<![CDATA[\n" .
-        "document.ltiInitiateLoginForm.submit();\n" .
+        "document.ltiInitiateLoginForm.submit();
+        window.addEventListener("\load\", (event) => {
+        console.log(\"load\");
+    });
+
+document.addEventListener(\"readystatechange\", (event) => {
+  console.log(readystate: \${document.readyState});
+});
+
+document.addEventListener(\"DOMContentLoaded\", (event) => {
+  console.log(DOMContentLoaded);
+});
+        \n" .
         "//]]>\n" .
         "</script>\n";
 
