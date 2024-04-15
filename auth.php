@@ -50,6 +50,7 @@ $clientid = optional_param('client_id', '', PARAM_TEXT);
 $redirecturi = optional_param('redirect_uri', '', PARAM_URL);
 $loginhint = optional_param('login_hint', '', PARAM_TEXT);
 $ltimessagehintenc = optional_param('lti_message_hint', '', PARAM_TEXT);
+$ltimessagehintenc = htmlspecialchars_decode(urldecode($ltimessagehintenc));
 $state = optional_param('state', '', PARAM_TEXT);
 $responsemode = optional_param('response_mode', '', PARAM_TEXT);
 $nonce = optional_param('nonce', '', PARAM_TEXT);
