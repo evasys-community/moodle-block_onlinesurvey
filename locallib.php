@@ -986,6 +986,15 @@ function block_onlinesurvey_lti_initiate_login($config, $messagetype = 'basic-lt
     return $r;
 }
 
+function block_onlinesurvey_lti_initiate_login_via_curl($config, $messagetype = 'basic-lti-launch-request',
+                                                        $title = '', $text = '', $foruserid = 0) {
+    $endpoint = $config->lti_initiatelogin;
+    $params = block_onlinesurvey_lti_build_login_request($config, $messagetype, $foruserid, $title, $text);
+    $content2 = block_onlinesurvey_lti_post_launch_html_curl($params, $endpoint, $config);
+    return $content2;
+}
+
+
 /**
  * Prepares an LTI 1.3 login request
  *
