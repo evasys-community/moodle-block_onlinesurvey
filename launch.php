@@ -78,6 +78,7 @@ if ($typeid) {
             }
             $logger->log('about to initiate login'); // ICON CORE CHANGE
             echo lti_initiate_login($cm->course, $cmid, $lti, $config, $msgtype, '', '', $foruserid);
+            $SESSION->lti_initiatelogin_status = true;
             exit;
         } else {
             unset($SESSION->lti_initiatelogin_status);
