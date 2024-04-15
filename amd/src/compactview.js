@@ -29,6 +29,8 @@ define(['core/str'], function(Str) {
             console.log('document.parent:', document.parent);
             console.log('window:', window);
             console.log('window.parent:', window.parent);
+            var iframeElem = document.getElementById('block_onlinesurvey_contentframe');
+            console.log('iframeElem:', iframeElem);
             // $surveycount = preg_match_all($re, $content2, $matches, PREG_SET_ORDER, 0);
             // if (isset($config->lti_regex_instructor) && !empty($config->lti_regex_instructor)) {
             //     $reinstructor = $config->lti_regex_instructor;
