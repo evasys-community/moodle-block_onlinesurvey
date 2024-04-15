@@ -136,6 +136,7 @@ try {
                     }
                     $logger->log('about to initiate login'); // ICON CORE CHANGE
                     echo block_onlinesurvey_lti_initiate_login($config, $msgtype, '', '', $foruserid);
+                    $SESSION->lti_initiatelogin_status = true;
                     exit;
                 } else {
                     $logger->log('lti_initiatelogin_status is already set:', $SESSION->lti_initiatelogin_status);
