@@ -939,7 +939,12 @@ function block_onlinesurvey_lti_post_launch_html_curl($parameter, $endpoint, $co
 
     if ($errornumber = $curl->get_errno()) {
         $msgoutput = get_string('error_survey_curl_timeout_msg', 'block_onlinesurvey');
-
+        $logger = new \block_onlinesurvey\Logger('block_onlinesurvey_launch_via_curl.txt', \block_onlinesurvey\Logger::LEVEL_VERY_VERBOSE);
+        $logger->log('got curl error', $curl->get_info());
+        $logger->log('error number: ', $errornumber);
+        $logger->log('response', $curl->get_raw_response());
+        $logger->log('called curl with endpoint:', $endpoint);
+        $logger->log('called curl with $fieldsstring:', $fieldsstring);
         $context = context_system::instance();
         if (has_capability('block/onlinesurvey:view_debugdetails', $context)) {
             if (!empty($msgoutput)) {
