@@ -938,7 +938,8 @@ function block_onlinesurvey_lti_post_launch_html_curl($parameter, $endpoint, $co
     );
     $logger->log('about to call curl with endpoint:', $endpoint);
     $logger->log('and $fieldsstring:', $fieldsstring);
-    $ret = $curl->post($endpoint, $fieldsstring, $curloptions);
+//    $ret = $curl->post($endpoint, $fieldsstring, $curloptions);
+    $ret = $curl->post($endpoint, $parameter, $curloptions);
     $logger->log('curl called, still running');
 
     if ($errornumber = $curl->get_errno()) {
