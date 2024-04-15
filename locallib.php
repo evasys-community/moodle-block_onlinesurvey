@@ -936,15 +936,16 @@ function block_onlinesurvey_lti_post_launch_html_curl($parameter, $endpoint, $co
         'FRESH_CONNECT' => true,
         'TIMEOUT' => $timeout,
     );
+    $logger->log('about to call curl with endpoint:', $endpoint);
+    $logger->log('and $fieldsstring:', $fieldsstring);
     $ret = $curl->post($endpoint, $fieldsstring, $curloptions);
+    $logger->log('curl called, still running');
 
     if ($errornumber = $curl->get_errno()) {
         $msgoutput = get_string('error_survey_curl_timeout_msg', 'block_onlinesurvey');
         $logger->log('got curl error', $curl->get_info());
         $logger->log('error number: ', $errornumber);
         $logger->log('response', $curl->get_raw_response());
-        $logger->log('called curl with endpoint:', $endpoint);
-        $logger->log('called curl with $fieldsstring:', $fieldsstring);
         $context = context_system::instance();
         if (has_capability('block/onlinesurvey:view_debugdetails', $context)) {
             if (!empty($msgoutput)) {
