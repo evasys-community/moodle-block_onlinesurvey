@@ -26,7 +26,7 @@ require_once(__DIR__ . '/../../config.php');
 require_once($CFG->dirroot . '/mod/lti/locallib.php');
 require_once(__DIR__ . '/classes/logger.php');
 require_once(__DIR__ . '/locallib.php');
-$logger = new \block_onlinesurvey\Logger('block_onlinesurvey_auth.txt');
+$logger = new \block_onlinesurvey\Logger('block_onlinesurvey_auth.txt', \block_onlinesurvey\Logger::LEVEL_VERY_VERBOSE);
 global $_POST, $_SERVER;
 $logger->log('called blocks/onlinesurvey/auth.php', \block_onlinesurvey\Logger::LEVEL_VERBOSE);
 if (!isloggedin() && empty($_POST['repost'])) {
