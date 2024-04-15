@@ -3,6 +3,7 @@ define(['core/str'], function(Str) {
         init: function() {
             var iframeElem = document.getElementById('block_onlinesurvey_contentframe');
             var that = this;
+            console.log('compactview init. Got iframeElem:', iframeElem);
             iframeElem.addEventListener('DOMContentLoaded', (event) => {
                 console.log('iframe DOMContentLoaded');
                 console.log('event:', event);
