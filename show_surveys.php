@@ -27,7 +27,7 @@ require_once(dirname(__FILE__).'/locallib.php');
 require_once($CFG->dirroot .'/mod/lti/locallib.php');
 require_once(dirname(__FILE__).'/classes/logger.php');
 require_login();
-$logger = new \block_onlinesurvey\Logger('block_onlinesurvey_show_survey.txt');
+$logger = new \block_onlinesurvey\Logger('block_onlinesurvey_show_survey.txt', \block_onlinesurvey\Logger::LEVEL_VERY_VERBOSE);
 $logger->log('called show_surveys.php');
 try {
     $systemcontext = context_system::instance();
