@@ -72,6 +72,7 @@ if (!$ok) {
     $logger->log($error . ' ' . $desc,
         ['scope' => $scope,
         'responsetype' => $responsetype,
+        'lti_message_hint' => $ltimessagehintenc,
         'clientid' => $clientid,
         'redirecturi' => $redirecturi,
         'loginhint' => $loginhint,
