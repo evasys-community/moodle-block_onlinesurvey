@@ -998,7 +998,7 @@ document.addEventListener('readystatechange', (event) => {
 });
 
 document.addEventListener('DOMContentLoaded', (event) => {
-  console.log(DOMContentLoaded);
+  console.log('DOMContentLoaded');
 });
         \n" .
         "//]]>\n" .
