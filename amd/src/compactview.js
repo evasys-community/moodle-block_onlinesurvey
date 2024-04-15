@@ -9,6 +9,16 @@ define(['core/str'], function(Str) {
                 console.log('event:', event);
                 that.showcompact(event);
             });
+            iframeElem.addEventListener('readystatechange', (event) => {
+                console.log('iframe readystatechange');
+                console.log('event:', event);
+                that.showcompact(event);
+            });
+            iframeElem.addEventListener('load', (event) => {
+                console.log('iframe load');
+                console.log('event:', event);
+                that.showcompact(event);
+            });
         },
         showcompact: function (event) {
             var content = document.documentElement.innerHTML;
