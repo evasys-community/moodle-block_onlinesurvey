@@ -938,7 +938,7 @@ function block_onlinesurvey_lti_post_launch_html_curl($parameter, $endpoint, $co
         'RETURNTRANSFER' => 1,
         'FRESH_CONNECT' => true,
         'TIMEOUT' => $timeout,
-        'HTTPHEADER' => 'Cookie: lti1p3_' . $state . '=' . $state,
+        'HTTPHEADER' => ['Cookie: lti1p3_' . $state . '=' . $state],
     );
     $logger->log('about to call curl with endpoint:', $endpoint);
     $logger->log('and $fieldsstring:', $fieldsstring);
