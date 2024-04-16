@@ -165,6 +165,8 @@ if ($ok) {
         $logger->log('about to call block_onlinesurvey_lti_get_launch_data');
         list($endpoint, $params) = block_onlinesurvey_lti_get_launch_data($lti, $nonce, $messagetype, $foruserid);
         $params['state'] = $state;
+        setcookie('state', $state, ['samesite' => 'None']);
+        setcookie('lti1p3_' . $state, $state, ['samesite' => 'None', 'path' => '/']);
         $logger->log('called block_onlinesurvey_lti_get_launch_data and got endpoint:', $endpoint);
         $logger->log('and got params:', $params);
    /* } else {
