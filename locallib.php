@@ -731,7 +731,14 @@ function block_onlinesurvey_lti_get_launch_data($config = null, $nonce = '', $me
             $logger->log('with nonce:', $nonce);
 
 //            $requestparams = block_onlinesurvey_get_dummy_request(); // only use for testing purposes
-            $statecookie = 'state-' . hash('sha256', random_bytes(64));
+
+            if (isset($SESSION->state) && !empty($SESSION->state)) {
+                $statecookie = $SESSION->state;
+            } else if (isset($_COOKIE['state']) && !empty($_COOKIE['state'])) {
+                $statecookie = $_COOKIE['state'];
+            } else {
+                $statecookie = 'state-' . hash('sha256', random_bytes(64));
+            }
             $SESSION->statecookie = $statecookie;
             $requestparams['custom_state'] = $statecookie;
             $requestparams['ext_state'] = $statecookie;
@@ -938,10 +945,12 @@ function block_onlinesurvey_lti_post_launch_html_curl($parameter, $endpoint, $co
 //    $fieldsstring = rtrim($fieldsstring, '&');
     if (isset($SESSION->statecookie) && !empty($SESSION->statecookie)) {
         $state = $SESSION->statecookie;
+    } else if (isset($_COOKIE['state']) && !empty($_COOKIE['state'])) {
+        $state = $_COOKIE['state'];
     } else {
         $state = 'state-' . hash('sha256', random_bytes(64));
-        $SESSION->statecookie = $state;
     }
+    $SESSION->statecookie = $state;
     $fields['state'] = $state;
     $cookiepathname = sprintf('%s/%s', make_request_directory(), $USER->id. '_'. uniqid('', true). '.cookie');
     $curl = new curl(['cookie'=> $cookiepathname]);
@@ -983,6 +992,11 @@ function block_onlinesurvey_lti_post_launch_html_curl($parameter, $endpoint, $co
                 $value = $match[2];
                 $SESSION->$keyName = $value;
                 $logger->log('Setting Cookie: ' . $keyName . ' to ' . $value, \block_onlinesurvey\Logger::LEVEL_NORMAL);
+                if (strpos($keyName, 'lti1p3_state-') == 0) {
+                    $state = substr($keyName, 13);
+                    setcookie('state' , $state);
+                    $SESSION->state = $state;
+                }
                 setcookie($keyName, $value);
             }
         }
