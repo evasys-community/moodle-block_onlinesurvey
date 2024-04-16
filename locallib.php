@@ -922,19 +922,23 @@ function block_onlinesurvey_lti_post_launch_html_curl($parameter, $endpoint, $co
             $fields[$key] = urlencode($value);
         }
     }
+
+
     // Url-ify the data for the POST.
     $fieldsstring = '';
     foreach ($fields as $key => $value) {
         $fieldsstring .= $key.'='.$value.'&';
     }
     $fieldsstring = rtrim($fieldsstring, '&');
-
+    $state = 'state-' . hash('sha256', random_bytes(64));
+    $fields['state'] = $state;
     $curl = new curl;
     $timeout = isset($config->survey_timeout) ? $config->survey_timeout : BLOCK_ONLINESURVEY_DEFAULT_TIMEOUT;
     $curloptions = array(
         'RETURNTRANSFER' => 1,
         'FRESH_CONNECT' => true,
         'TIMEOUT' => $timeout,
+        'HTTPHEADER' => 'Cookie: lti1p3_' . $state . '=' . $state,
     );
     $logger->log('about to call curl with endpoint:', $endpoint);
     $logger->log('and $fieldsstring:', $fieldsstring);
