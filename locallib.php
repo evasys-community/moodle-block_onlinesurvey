@@ -976,6 +976,16 @@ function block_onlinesurvey_lti_post_launch_html_curl($parameter, $endpoint, $co
     } else {
         $logger->log('No errors in curl call. Got response:', $ret);
         $rawResponse = $curl->get_raw_response();
+        foreach($rawResponse as $responseItem) {
+            preg_match('/set-cookie: ([^=]*)=([^;]*)/', $responseItem, $match);
+            if ($match) {
+                $keyName = $match[1];
+                $value = $match[2];
+                $SESSION->$keyName = $value;
+                $logger->log('Setting Cookie: ' . $keyName . ' to ' . $value, \block_onlinesurvey\Logger::LEVEL_NORMAL);
+                setcookie($keyName, $value);
+            }
+        }
         $logger->log('Got raw response: ', $rawResponse);
         $info = $curl->get_info();
         $logger->log('Got info: ', $info);
