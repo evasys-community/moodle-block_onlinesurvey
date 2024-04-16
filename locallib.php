@@ -733,7 +733,7 @@ function block_onlinesurvey_lti_get_launch_data($config = null, $nonce = '', $me
 //            $requestparams = block_onlinesurvey_get_dummy_request(); // only use for testing purposes
             $statecookie = 'state-' . hash('sha256', random_bytes(64));
             $SESSION->statecookie = $statecookie;
-            $parms['custom_state'] = $statecookie;
+            $requestparams['custom_state'] = $statecookie;
             $parms = lti_sign_jwt($requestparams, $endpoint, $key, $typeid, $nonce);
             $logger->log('called lti_sign_jwt and got $parms: ', $parms);
         }
