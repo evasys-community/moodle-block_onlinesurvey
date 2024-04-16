@@ -992,8 +992,8 @@ function block_onlinesurvey_lti_post_launch_html_curl($parameter, $endpoint, $co
                 $value = $match[2];
                 $SESSION->$keyName = $value;
                 $logger->log('Setting Cookie: ' . $keyName . ' to ' . $value, \block_onlinesurvey\Logger::LEVEL_NORMAL);
-                if (strpos($keyName, 'lti1p3_state-') == 0) {
-                    $state = substr($keyName, 13);
+                if (strpos($keyName, 'lti1p3_') == 0) {
+                    $state = substr($keyName, 7);
                     setcookie('state' , $state);
                     $SESSION->state = $state;
                 }
