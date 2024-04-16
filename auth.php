@@ -190,6 +190,7 @@ if ($ok) {
 }
 if (isset($state)) {
     $params['state'] = $state;
+    $SESSION->state = $state;
 } else {
     $params['state'] = $SESSION->state;
 }
