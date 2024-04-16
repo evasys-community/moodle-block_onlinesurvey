@@ -192,8 +192,8 @@ if (isset($state)) {
     $params['state'] = $state;
 } else {
     $params['state'] = $SESSION->state;
-    $params['lti1p3_' . $SESSION->state] = $SESSION->state;
 }
+$params['lti1p3_' . $SESSION->state] = $SESSION->state;
 if (isset($SESSION->state)) {
     setcookie('lti1p3_' . $SESSION->state, $SESSION->state);
 }

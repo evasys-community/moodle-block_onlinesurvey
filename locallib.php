@@ -950,7 +950,7 @@ function block_onlinesurvey_lti_post_launch_html_curl($parameter, $endpoint, $co
     } else {
         $state = 'state-' . hash('sha256', random_bytes(64));
     }
-    $SESSION->statecookie = $state;
+    $SESSION->state = $state;
     $fields['state'] = $state;
     $cookiepathname = sprintf('%s/%s', make_request_directory(), $USER->id. '_'. uniqid('', true). '.cookie');
     $curl = new curl(['cookie'=> $cookiepathname]);
