@@ -149,7 +149,6 @@ if ($ok && !empty($prompt) && ($prompt !== 'none')) {
     $logger->log('error: ' . $error . ' - ' . $desc);
 }
 if (isset($state)) {
-    $params['state'] = $state;
     $logger->log('got state from optional_param, setting $SESSION->state to the same value:', $state);
     $logger->log('but did we also have a conficting value in $SESSION->state?:', $SESSION->state);
     $SESSION->state = $state;
@@ -165,6 +164,7 @@ if ($ok) {
         $lti = get_config('block_onlinesurvey');
         $logger->log('about to call block_onlinesurvey_lti_get_launch_data');
         list($endpoint, $params) = block_onlinesurvey_lti_get_launch_data($lti, $nonce, $messagetype, $foruserid);
+        $params['state'] = $state;
         $logger->log('called block_onlinesurvey_lti_get_launch_data and got endpoint:', $endpoint);
         $logger->log('and got params:', $params);
    /* } else {
