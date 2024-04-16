@@ -912,7 +912,7 @@ function block_onlinesurvey_get_ims_roles($user, $config) {
  * @return string result of the curl LTI request
  */
 function block_onlinesurvey_lti_post_launch_html_curl($parameter, $endpoint, $config) {
-    global $SESSION;
+    global $SESSION, $USER;
     $logger = new \block_onlinesurvey\Logger('block_onlinesurvey_launch_via_curl.txt', \block_onlinesurvey\Logger::LEVEL_VERY_VERBOSE);
     $logger->log('using curl to launch LTI');
     // Set POST variables.
@@ -941,7 +941,8 @@ function block_onlinesurvey_lti_post_launch_html_curl($parameter, $endpoint, $co
         $SESSION->statecookie = $state;
     }
     $fields['state'] = $state;
-    $curl = new curl(['cookie'=> 'lti1p3_' . $state . '=' . $state]);
+    $cookiepathname = sprintf('%s/%s', make_request_directory(), $USER->id. '_'. uniqid('', true). '.cookie');
+    $curl = new curl(['cookie'=> $cookiepathname]);
     $timeout = isset($config->survey_timeout) ? $config->survey_timeout : BLOCK_ONLINESURVEY_DEFAULT_TIMEOUT;
     $curloptions = array(
         'RETURNTRANSFER' => 1,
@@ -949,8 +950,8 @@ function block_onlinesurvey_lti_post_launch_html_curl($parameter, $endpoint, $co
         'TIMEOUT' => $timeout,
         'HTTPHEADER' => ['Cookie: lti1p3_' . $state . '=' . $state],
     );
-    $logger->log('about to call curl with endpoint:', $endpoint);
-    $logger->log('and $fieldsstring:', $fieldsstring);
+    $logger->log('about to call curl with endpoint:', $endpoint, \block_onlinesurvey\Logger::LEVEL_NORMAL);
+    $logger->log('and $fields:', $fields, \block_onlinesurvey\Logger::LEVEL_NORMAL);
 //    $ret = $curl->post($endpoint, $fieldsstring, $curloptions);
     $ret = $curl->post($endpoint, $fields, $curloptions);
     $logger->log('curl called, still running');
