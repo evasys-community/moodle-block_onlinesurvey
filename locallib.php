@@ -912,6 +912,7 @@ function block_onlinesurvey_get_ims_roles($user, $config) {
  * @return string result of the curl LTI request
  */
 function block_onlinesurvey_lti_post_launch_html_curl($parameter, $endpoint, $config) {
+    global $SESSION;
     $logger = new \block_onlinesurvey\Logger('block_onlinesurvey_launch_via_curl.txt', \block_onlinesurvey\Logger::LEVEL_VERY_VERBOSE);
     $logger->log('using curl to launch LTI');
     // Set POST variables.
