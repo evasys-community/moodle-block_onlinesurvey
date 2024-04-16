@@ -584,7 +584,7 @@ function block_onlinesurvey_get_lti_content($config = null, $context = null, $co
  * @return array the endpoint URL and parameters (including the signature)
  */
 function block_onlinesurvey_lti_get_launch_data($config = null, $nonce = '', $messagetype = 'basic-lti-launch-request', $foruserid = 0) {
-    global $CFG, $PAGE, $USER, $DB;
+    global $CFG, $PAGE, $USER, $DB, $SESSION;
 
     require_once($CFG->dirroot.'/mod/lti/locallib.php');
     $logger = new \block_onlinesurvey\Logger('block_onlinesurvey_lti_get_launch_data.txt');
@@ -731,6 +731,9 @@ function block_onlinesurvey_lti_get_launch_data($config = null, $nonce = '', $me
             $logger->log('with nonce:', $nonce);
 
 //            $requestparams = block_onlinesurvey_get_dummy_request(); // only use for testing purposes
+            $statecookie = 'state-' . hash('sha256', random_bytes(64));
+            $SESSION->statecookie = $statecookie;
+            $parms['custom_state'] = $statecookie;
             $parms = lti_sign_jwt($requestparams, $endpoint, $key, $typeid, $nonce);
             $logger->log('called lti_sign_jwt and got $parms: ', $parms);
         }
@@ -930,9 +933,14 @@ function block_onlinesurvey_lti_post_launch_html_curl($parameter, $endpoint, $co
         $fieldsstring .= $key.'='.$value.'&';
     }
     $fieldsstring = rtrim($fieldsstring, '&');
-    $state = 'state-' . hash('sha256', random_bytes(64));
+    if (isset($SESSION->statecookie) && !empty($SESSION->statecookie)) {
+        $state = $SESSION->statecookie;
+    } else {
+        $state = 'state-' . hash('sha256', random_bytes(64));
+        $SESSION->statecookie = $state;
+    }
     $fields['state'] = $state;
-    $curl = new curl;
+    $curl = new curl(['cookie'=> 'lti1p3_' . $state . '=lti1p3_' . $state]);
     $timeout = isset($config->survey_timeout) ? $config->survey_timeout : BLOCK_ONLINESURVEY_DEFAULT_TIMEOUT;
     $curloptions = array(
         'RETURNTRANSFER' => 1,
