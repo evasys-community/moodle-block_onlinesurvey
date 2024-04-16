@@ -734,6 +734,7 @@ function block_onlinesurvey_lti_get_launch_data($config = null, $nonce = '', $me
             $statecookie = 'state-' . hash('sha256', random_bytes(64));
             $SESSION->statecookie = $statecookie;
             $requestparams['custom_state'] = $statecookie;
+            $requestparams['ext_state'] = $statecookie;
             $parms = lti_sign_jwt($requestparams, $endpoint, $key, $typeid, $nonce);
             $logger->log('called lti_sign_jwt and got $parms: ', $parms);
         }
@@ -923,17 +924,18 @@ function block_onlinesurvey_lti_post_launch_html_curl($parameter, $endpoint, $co
         $key = htmlspecialchars($key);
         $value = htmlspecialchars($value);
         if ( $key != "ext_submit" ) {
-            $fields[$key] = urlencode($value);
+//            $fields[$key] = urlencode($value);
+            $fields[$key] = $value;
         }
     }
 
 
     // Url-ify the data for the POST.
-    $fieldsstring = '';
-    foreach ($fields as $key => $value) {
-        $fieldsstring .= $key.'='.$value.'&';
-    }
-    $fieldsstring = rtrim($fieldsstring, '&');
+//    $fieldsstring = '';
+//    foreach ($fields as $key => $value) {
+//        $fieldsstring .= $key.'='.$value.'&';
+//    }
+//    $fieldsstring = rtrim($fieldsstring, '&');
     if (isset($SESSION->statecookie) && !empty($SESSION->statecookie)) {
         $state = $SESSION->statecookie;
     } else {
@@ -973,6 +975,12 @@ function block_onlinesurvey_lti_post_launch_html_curl($parameter, $endpoint, $co
         }
     } else {
         $logger->log('No errors in curl call. Got response:', $ret);
+        $rawResponse = $curl->get_raw_response();
+        $logger->log('Got raw response: ', $rawResponse);
+        $info = $curl->get_info();
+        $logger->log('Got info: ', $info);
+        $security = $curl->get_security();
+        $logger->log('Got security: ', $security);
     }
 
     return $ret;
