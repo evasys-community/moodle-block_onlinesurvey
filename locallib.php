@@ -941,7 +941,7 @@ function block_onlinesurvey_lti_post_launch_html_curl($parameter, $endpoint, $co
         $SESSION->statecookie = $state;
     }
     $fields['state'] = $state;
-    $curl = new curl(['cookie'=> 'lti1p3_' . $state . '=lti1p3_' . $state]);
+    $curl = new curl(['cookie'=> 'lti1p3_' . $state . '=' . $state]);
     $timeout = isset($config->survey_timeout) ? $config->survey_timeout : BLOCK_ONLINESURVEY_DEFAULT_TIMEOUT;
     $curloptions = array(
         'RETURNTRANSFER' => 1,
