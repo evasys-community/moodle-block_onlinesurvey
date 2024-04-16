@@ -148,7 +148,14 @@ if ($ok && !empty($prompt) && ($prompt !== 'none')) {
     $desc = 'Invalid prompt';
     $logger->log('error: ' . $error . ' - ' . $desc);
 }
-
+if (isset($state)) {
+    $params['state'] = $state;
+    $logger->log('got state from optional_param, setting $SESSION->state to the same value:', $state);
+    $logger->log('but did we also have a conficting value in $SESSION->state?:', $SESSION->state);
+    $SESSION->state = $state;
+} else {
+    $params['state'] = $SESSION->state;
+}
 if ($ok) {
     $config = get_config('block_onlinesurvey');
     $logger->log('all okay, about to call require_login');
@@ -188,14 +195,7 @@ if ($ok) {
     $logger->log('not ok, got error and error:', $error);
     $logger->log('and error description:', $desc);
 }
-if (isset($state)) {
-    $params['state'] = $state;
-    $logger->log('got state from optional_param, setting $SESSION->state to the same value:', $state);
-    $logger->log('but did we also have a conficting value in $SESSION->state?:', $SESSION->state);
-    $SESSION->state = $state;
-} else {
-    $params['state'] = $SESSION->state;
-}
+
 $params['lti1p3_' . $SESSION->state] = $SESSION->state;
 if (isset($SESSION->state)) {
     setcookie('lti1p3_' . $SESSION->state, $SESSION->state);
