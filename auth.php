@@ -191,6 +191,7 @@ if ($ok) {
 if (isset($state)) {
     $params['state'] = $state;
     $logger->log('got state from optional_param, setting $SESSION->state to the same value:', $state);
+    $logger->log('but did we also have a conficting value in $SESSION->state?:', $SESSION->state);
     $SESSION->state = $state;
 } else {
     $params['state'] = $SESSION->state;

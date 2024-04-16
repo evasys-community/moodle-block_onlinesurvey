@@ -587,7 +587,7 @@ function block_onlinesurvey_lti_get_launch_data($config = null, $nonce = '', $me
     global $CFG, $PAGE, $USER, $DB, $SESSION;
 
     require_once($CFG->dirroot.'/mod/lti/locallib.php');
-    $logger = new \block_onlinesurvey\Logger('block_onlinesurvey_lti_get_launch_data.txt');
+    $logger = new \block_onlinesurvey\Logger('block_onlinesurvey_lti_get_launch_data.txt', \block_onlinesurvey\Logger::LEVEL_VERBOSE);
     $logger->log('called block_onlinesurvey_lti_get_launch_data with config:', $config);
     if (empty($config)) {
         $config = get_config("block_onlinesurvey");
