@@ -191,6 +191,9 @@ if ($ok) {
 if (isset($state)) {
     $params['state'] = $state;
 }
+if (isset($SESSION->state)) {
+    setcookie('lti1p3_' . $SESSION->state, $SESSION->state);
+}
 unset($SESSION->lti_message_hint);
 $r = '<form action="' . $redirecturi . "\" name=\"ltiAuthForm\" id=\"ltiAuthForm\" " .
      "method=\"post\" enctype=\"application/x-www-form-urlencoded\">\n";

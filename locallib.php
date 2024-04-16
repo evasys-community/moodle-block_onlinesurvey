@@ -943,10 +943,10 @@ function block_onlinesurvey_lti_post_launch_html_curl($parameter, $endpoint, $co
 //        $fieldsstring .= $key.'='.$value.'&';
 //    }
 //    $fieldsstring = rtrim($fieldsstring, '&');
-    if (isset($SESSION->statecookie) && !empty($SESSION->statecookie)) {
-        $state = $SESSION->statecookie;
-    } else if (isset($_COOKIE['state']) && !empty($_COOKIE['state'])) {
+    if (isset($_COOKIE['state']) && !empty($_COOKIE['state'])) {
         $state = $_COOKIE['state'];
+    } elseif (isset($SESSION->state) && !empty($SESSION->state)) {
+        $state = $SESSION->state;
     } else {
         $state = 'state-' . hash('sha256', random_bytes(64));
     }
