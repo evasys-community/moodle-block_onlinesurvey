@@ -190,6 +190,7 @@ if ($ok) {
 }
 if (isset($state)) {
     $params['state'] = $state;
+    $logger->log('got state from optional_param, setting $SESSION->state to the same value:', $state);
     $SESSION->state = $state;
 } else {
     $params['state'] = $SESSION->state;

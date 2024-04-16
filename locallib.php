@@ -733,15 +733,14 @@ function block_onlinesurvey_lti_get_launch_data($config = null, $nonce = '', $me
 //            $requestparams = block_onlinesurvey_get_dummy_request(); // only use for testing purposes
 
             if (isset($SESSION->state) && !empty($SESSION->state)) {
-                $statecookie = $SESSION->state;
-            } else if (isset($_COOKIE['state']) && !empty($_COOKIE['state'])) {
-                $statecookie = $_COOKIE['state'];
+                $state = $SESSION->state;
             } else {
-                $statecookie = 'state-' . hash('sha256', random_bytes(64));
+                $state = 'state-' . hash('sha256', random_bytes(64));
             }
-            $SESSION->statecookie = $statecookie;
-            $requestparams['custom_state'] = $statecookie;
-            $requestparams['ext_state'] = $statecookie;
+            $SESSION->state = $state;
+            $requestparams['custom_state'] = $state;
+            $requestparams['lti1p3_' . $state] = $state;
+            $requestparams['ext_state'] = $state;
             $parms = lti_sign_jwt($requestparams, $endpoint, $key, $typeid, $nonce);
             $logger->log('called lti_sign_jwt and got $parms: ', $parms);
         }
@@ -943,12 +942,12 @@ function block_onlinesurvey_lti_post_launch_html_curl($parameter, $endpoint, $co
 //        $fieldsstring .= $key.'='.$value.'&';
 //    }
 //    $fieldsstring = rtrim($fieldsstring, '&');
-    if (isset($_COOKIE['state']) && !empty($_COOKIE['state'])) {
-        $state = $_COOKIE['state'];
-    } elseif (isset($SESSION->state) && !empty($SESSION->state)) {
+    if (isset($SESSION->state) && !empty($SESSION->state)) {
         $state = $SESSION->state;
+        $logger->log('Session state is set, so we use that: ', $state);
     } else {
         $state = 'state-' . hash('sha256', random_bytes(64));
+        $logger->log('Session state is NOT set, so we created our own: ', $state);
     }
     $SESSION->state = $state;
     $fields['state'] = $state;
