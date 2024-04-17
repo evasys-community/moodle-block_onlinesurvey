@@ -153,7 +153,7 @@ if (isset($state)) {
     $logger->log('but did we also have a conficting value in $SESSION->state?:', $SESSION->state);
     $SESSION->state = $state;
 } else {
-    $params['state'] = $SESSION->state;
+    $state = $SESSION->state;
 }
 if ($ok) {
     $config = get_config('block_onlinesurvey');
