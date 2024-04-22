@@ -463,7 +463,8 @@ function block_onlinesurvey_print_exceptions($e) {
 function block_onlinesurvey_get_lti_content($config = null, $context = null, $course = null, $modalzoom = 0, $foruserid = 0) {
     global $CFG, $SESSION;
     require_once(__DIR__ . '/classes/logger.php');
-    $logger = new \block_onlinesurvey\Logger('block_onlinesurvey_get_lti_content.txt');
+//    $logger = new \block_onlinesurvey\Logger('block_onlinesurvey_get_lti_content.txt');
+    $logger = new \block_onlinesurvey\Logger();
     $logger->log('inside block_onlinesurvey_get_lti_content with these settings:');
     $logger->log('config:', $config);
     $logger->log('context:', $context);
@@ -586,7 +587,8 @@ function block_onlinesurvey_get_lti_content($config = null, $context = null, $co
 function block_onlinesurvey_lti_get_launch_data($config = null, $nonce = '', $messagetype = 'basic-lti-launch-request', $foruserid = 0) {
     global $CFG, $PAGE, $USER, $DB, $SESSION;
 
-    $logger2 = new \block_onlinesurvey\Logger('block_onlinesurvey_lti_get_launch_data.txt', \block_onlinesurvey\Logger::LEVEL_VERBOSE);
+//    $logger2 = new \block_onlinesurvey\Logger('block_onlinesurvey_lti_get_launch_data.txt', \block_onlinesurvey\Logger::LEVEL_VERBOSE);
+    $logger2 = new \block_onlinesurvey\Logger('', \block_onlinesurvey\Logger::LEVEL_VERBOSE);
     $logger2->log('called block_onlinesurvey_lti_get_launch_data with config:', $config);
     require_once($CFG->dirroot.'/mod/lti/locallib.php');
     if (empty($config)) {
@@ -920,7 +922,8 @@ function block_onlinesurvey_get_ims_roles($user, $config) {
  */
 function block_onlinesurvey_lti_post_launch_html_curl($parameter, $endpoint, $config) {
     global $SESSION, $USER;
-    $logger = new \block_onlinesurvey\Logger('block_onlinesurvey_launch_via_curl.txt', \block_onlinesurvey\Logger::LEVEL_VERY_VERBOSE);
+//    $logger = new \block_onlinesurvey\Logger('block_onlinesurvey_launch_via_curl.txt', \block_onlinesurvey\Logger::LEVEL_VERY_VERBOSE);
+    $logger = new \block_onlinesurvey\Logger('', \block_onlinesurvey\Logger::LEVEL_VERY_VERBOSE);
     $logger->log('using curl to launch LTI');
     // Set POST variables.
     $fields = array();
@@ -1026,7 +1029,8 @@ function block_onlinesurvey_lti_post_launch_html_curl($parameter, $endpoint, $co
 function block_onlinesurvey_lti_initiate_login($config, $messagetype = 'basic-lti-launch-request',
                                                $title = '', $text = '', $foruserid = 0) {
     global $SESSION;
-    $logger = new \block_onlinesurvey\Logger('block_onlinesurvey_lti_initiate_login.txt');
+//    $logger = new \block_onlinesurvey\Logger('block_onlinesurvey_lti_initiate_login.txt');
+    $logger = new \block_onlinesurvey\Logger();
     $logger->log('about to call block_onlinesurvey_lti_build_login_request with the following parameters:');
     $logger->log('config:', $config);
     $logger->log('messagetype:', $messagetype);
@@ -1080,7 +1084,8 @@ function block_onlinesurvey_lti_build_login_request($config, $messagetype, $foru
     $ltihint = [];
 
     $endpoint = $config->lti_url;
-    $logger = new \block_onlinesurvey\Logger('block_onlinesurvey_lti_build_login_request.txt');
+//    $logger = new \block_onlinesurvey\Logger('block_onlinesurvey_lti_build_login_request.txt');
+    $logger = new \block_onlinesurvey\Logger();
 
 //    if (($messagetype === 'ContentItemSelectionRequest') && !empty($config->lti_toolurl_ContentItemSelectionRequest)) {
 //        $endpoint = $config->lti_toolurl_ContentItemSelectionRequest;
@@ -1114,7 +1119,6 @@ function block_onlinesurvey_settings_updated($arg) {
     if (!isset($config->typeid)) {
         $typeid = block_onlinesurvey_create_lti_type();
         set_config('typeid', $typeid, 'block_onlinesurvey');
-
     }
     block_onlinesurvey_update_lti_type();
     $clientid = block_onlinesurvey_get_clientid($config->typeid);

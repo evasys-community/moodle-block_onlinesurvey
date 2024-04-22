@@ -51,7 +51,8 @@ require_once($CFG->dirroot.'/mod/lti/lib.php');
 require_once($CFG->dirroot.'/mod/lti/locallib.php');
 require_once($CFG->dirroot . '/blocks/onlinesurvey/classes/logger.php'); // ICON CORE CHANGE
 use block_onlinesurvey\Logger; // ICON CORE CHANGE
-$logger = new Logger('mod_lti_launch.txt'); // ICON CORE CHANGE
+//$logger = new Logger('mod_lti_launch.txt'); // ICON CORE CHANGE
+$logger = new Logger(); // ICON CORE CHANGE
 $logger->log('called mod/lti/launch.php'); // ICON CORE CHANGE
 
 $cmid = required_param('id', PARAM_INT); // Course Module ID.
