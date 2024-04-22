@@ -942,14 +942,14 @@ function block_onlinesurvey_lti_post_launch_html_curl($parameter, $endpoint, $co
 //        $fieldsstring .= $key.'='.$value.'&';
 //    }
 //    $fieldsstring = rtrim($fieldsstring, '&');
-    if (isset($SESSION->state) && !empty($SESSION->state)) {
-        $state = $SESSION->state;
+    if (isset($SESSION->lti_state) && !empty($SESSION->lti_state)) {
+        $state = $SESSION->lti_state;
         $logger->log('Session state is set, so we use that: ', $state);
     } else {
         $state = 'state-' . hash('sha256', random_bytes(64));
         $logger->log('Session state is NOT set, so we created our own: ', $state);
     }
-    $SESSION->state = $state;
+    $SESSION->lti_state = $state;
     $fields['state'] = $state;
     $cookiepathname = sprintf('%s/%s', make_request_directory(), $USER->id. '_'. uniqid('', true). '.cookie');
     $curl = new curl(['cookie'=> $cookiepathname]);
