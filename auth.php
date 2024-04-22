@@ -149,11 +149,11 @@ if ($ok && !empty($prompt) && ($prompt !== 'none')) {
     $logger->log('error: ' . $error . ' - ' . $desc);
 }
 if (isset($state)) {
-    $logger->log('got state from optional_param, setting $SESSION->state to the same value:', $state);
-    $logger->log('but did we also have a conficting value in $SESSION->state?:', $SESSION->state);
-    $SESSION->state = $state;
+    $logger->log('got state from optional_param, setting $SESSION->lti_state to the same value:', $state);
+    $logger->log('but did we also have a conficting value in $SESSION->lti_state?:', $SESSION->lti_state);
+    $SESSION->lti_state = $state;
 } else {
-    $state = $SESSION->state;
+    $state = $SESSION->lti_state;
 }
 if ($ok) {
     $config = get_config('block_onlinesurvey');
@@ -198,9 +198,9 @@ if ($ok) {
     $logger->log('and error description:', $desc);
 }
 
-$params['lti1p3_' . $SESSION->state] = $SESSION->state;
-if (isset($SESSION->state)) {
-    setcookie('lti1p3_' . $SESSION->state, $SESSION->state);
+$params['lti1p3_' . $SESSION->lti_state] = $SESSION->lti_state;
+if (isset($SESSION->lti_state)) {
+    setcookie('lti1p3_' . $SESSION->lti_state, $SESSION->lti_state);
 }
 unset($SESSION->lti_message_hint);
 $config = block_onlinesurvey_get_launch_config();
