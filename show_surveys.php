@@ -39,7 +39,7 @@ try {
 // Block settings.
     $config = block_onlinesurvey_get_launch_config();
     $error = '';
-    $debugmode = false;
+    $debugmode = true; // ICUNDO!
 
     $css = array();
 

@@ -1011,7 +1011,7 @@ function block_onlinesurvey_lti_post_launch_html_curl($parameter, $endpoint, $co
                 if (strpos($keyName, 'lti1p3_') == 0) {
                     $state = substr($keyName, 7);
                     setcookie('state' , $state);
-                    $SESSION->state = $state;
+                    $SESSION->lti_state = $state;
                 }
                 setcookie($keyName, $value);
             }
@@ -1119,6 +1119,7 @@ function block_onlinesurvey_settings_updated($arg) {
     if (!isset($config->typeid)) {
         $typeid = block_onlinesurvey_create_lti_type();
         set_config('typeid', $typeid, 'block_onlinesurvey');
+
     }
     block_onlinesurvey_update_lti_type();
     $clientid = block_onlinesurvey_get_clientid($config->typeid);
