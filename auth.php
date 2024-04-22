@@ -206,6 +206,7 @@ unset($SESSION->lti_message_hint);
 $config = block_onlinesurvey_get_launch_config();
 $return = block_onlinesurvey_lti_post_launch_html_curl($params, $redirecturi, $config);
 $logger->log('in auth.php, content returned from curl: ', $return);
+echo $return;
 //$r = '<form action="' . $redirecturi . "\" name=\"ltiAuthForm\" id=\"ltiAuthForm\" " .
 //     "method=\"post\" enctype=\"application/x-www-form-urlencoded\">\n";
 //if (!empty($params)) {
