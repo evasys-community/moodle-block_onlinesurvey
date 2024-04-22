@@ -203,19 +203,22 @@ if (isset($SESSION->state)) {
     setcookie('lti1p3_' . $SESSION->state, $SESSION->state);
 }
 unset($SESSION->lti_message_hint);
-$r = '<form action="' . $redirecturi . "\" name=\"ltiAuthForm\" id=\"ltiAuthForm\" " .
-     "method=\"post\" enctype=\"application/x-www-form-urlencoded\">\n";
-if (!empty($params)) {
-    foreach ($params as $key => $value) {
-        $key = htmlspecialchars($key, ENT_COMPAT);
-        $value = htmlspecialchars($value, ENT_COMPAT);
-        $r .= "  <input type=\"hidden\" name=\"{$key}\" value=\"{$value}\"/>\n";
-    }
-}
-$r .= "</form>\n";
-$r .= "<script type=\"text/javascript\">\n" .
-    "//<![CDATA[\n" .
-    "document.ltiAuthForm.submit();\n" .
-    "//]]>\n" .
-    "</script>\n";
-echo $r;
+$config = block_onlinesurvey_get_launch_config();
+$return = block_onlinesurvey_lti_post_launch_html_curl($params, $redirecturi, $config);
+$logger->log('in auth.php, content returned from curl: ', $return);
+//$r = '<form action="' . $redirecturi . "\" name=\"ltiAuthForm\" id=\"ltiAuthForm\" " .
+//     "method=\"post\" enctype=\"application/x-www-form-urlencoded\">\n";
+//if (!empty($params)) {
+//    foreach ($params as $key => $value) {
+//        $key = htmlspecialchars($key, ENT_COMPAT);
+//        $value = htmlspecialchars($value, ENT_COMPAT);
+//        $r .= "  <input type=\"hidden\" name=\"{$key}\" value=\"{$value}\"/>\n";
+//    }
+//}
+//$r .= "</form>\n";
+//$r .= "<script type=\"text/javascript\">\n" .
+//    "//<![CDATA[\n" .
+//    "document.ltiAuthForm.submit();\n" .
+//    "//]]>\n" .
+//    "</script>\n";
+//echo $r;

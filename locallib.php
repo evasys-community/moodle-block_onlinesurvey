@@ -954,11 +954,24 @@ function block_onlinesurvey_lti_post_launch_html_curl($parameter, $endpoint, $co
     $cookiepathname = sprintf('%s/%s', make_request_directory(), $USER->id. '_'. uniqid('', true). '.cookie');
     $curl = new curl(['cookie'=> $cookiepathname]);
     $timeout = isset($config->survey_timeout) ? $config->survey_timeout : BLOCK_ONLINESURVEY_DEFAULT_TIMEOUT;
+    $cookies = [];
+    if (isset($_COOKIE['lti1p3_' . $state])) {
+        $cookies[] = 'lti1p3_' . $state . '=' . $_COOKIE['lti1p3_' . $state];
+    } else {
+        $cookies[] = 'lti1p3_' . $state . '=' . $state;
+    }
+    if (isset($_COOKIE['LEGACY_lti1p3_' . $state])) {
+        $cookies[] = 'LEGACY_lti1p3_' . $state . '=' . $_COOKIE['LEGACY_lti1p3_' . $state];
+    }
+    if (isset($_COOKIE['evasys_session_cookie'])) {
+        $cookies[] = 'evasys_session_cookie=' . $_COOKIE['evasys_session_cookie'];
+    }
+    $cookies = implode('; ', $cookies);
     $curloptions = array(
         'RETURNTRANSFER' => 1,
         'FRESH_CONNECT' => true,
         'TIMEOUT' => $timeout,
-        'HTTPHEADER' => ['Cookie: lti1p3_' . $state . '=' . $state],
+        'HTTPHEADER' => ['Cookie: ' . $cookies],
     );
     $logger->log('about to call curl with endpoint:', $endpoint, \block_onlinesurvey\Logger::LEVEL_NORMAL);
     $logger->log('and $fields:', $fields, \block_onlinesurvey\Logger::LEVEL_NORMAL);
@@ -1008,6 +1021,7 @@ function block_onlinesurvey_lti_post_launch_html_curl($parameter, $endpoint, $co
 
     return $ret;
 }
+
 function block_onlinesurvey_lti_initiate_login($config, $messagetype = 'basic-lti-launch-request',
                                                $title = '', $text = '', $foruserid = 0) {
     global $SESSION;
