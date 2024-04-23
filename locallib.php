@@ -734,12 +734,12 @@ function block_onlinesurvey_lti_get_launch_data($config = null, $nonce = '', $me
 
 //            $requestparams = block_onlinesurvey_get_dummy_request(); // only use for testing purposes
 
-            if (isset($SESSION->state) && !empty($SESSION->state)) {
-                $state = $SESSION->state;
+            if (isset($SESSION->lti_state) && !empty($SESSION->lti_state)) {
+                $state = $SESSION->lti_state;
             } else {
                 $state = 'state-' . hash('sha256', random_bytes(64));
             }
-            $SESSION->state = $state;
+            $SESSION->lti_state = $state;
             $requestparams['custom_state'] = $state;
             $requestparams['lti1p3_' . $state] = $state;
             $requestparams['ext_state'] = $state;
