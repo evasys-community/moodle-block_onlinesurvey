@@ -1022,7 +1022,8 @@ function block_onlinesurvey_lti_post_launch_html_curl($parameter, $endpoint, $co
         $security = $curl->get_security();
         $logger->log('Got security: ', $security);
     }
-
+    // ICTODO: figure out why $state didn't have the expected value here
+    $ret = preg_replace('/value="state-[^"]*"/', 'value="' . $state . '"', $ret); // JUST TESTING!
     return $ret;
 }
 
