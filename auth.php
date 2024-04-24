@@ -122,33 +122,12 @@ if (isset($state)) {
 if ($ok) {
     $config = get_config('block_onlinesurvey');
     require_login();
-//    if ($id) {
-        $context = context_system::instance();
-        $lti = get_config('block_onlinesurvey');
-        list($endpoint, $params) = block_onlinesurvey_lti_get_launch_data($lti, $nonce, $messagetype, $foruserid);
-        $params['state'] = $state;
-        setcookie('state', $state, ['samesite' => 'None']);
-        setcookie('lti1p3_' . $state, $state, ['samesite' => 'None', 'path' => '/']);
-   /* } else {
-        require_login($course);
-        $context = context_course::instance($courseid);
-        require_capability('moodle/course:manageactivities', $context);
-        require_capability('mod/lti:addcoursetool', $context);
-        // Set the return URL. We send the launch container along to help us avoid frames-within-frames when the user returns.
-        $returnurlparams = [
-            'course' => $courseid,
-            'id' => $typeid,
-            'sesskey' => sesskey()
-        ];
-        $returnurl = new \moodle_url('/mod/lti/contentitem_return.php', $returnurlparams);
-        // Prepare the request.
-        $title = base64_decode($titleb64);
-        $text = base64_decode($textb64);
-        $request = lti_build_content_item_selection_request($typeid, $course, $returnurl, $title, $text,
-                                                            [], [], false, true, false, false, false, $nonce);
-        $endpoint = $request->url;
-        $params = $request->params;
-    }*/
+    $context = context_system::instance();
+    $lti = get_config('block_onlinesurvey');
+    list($endpoint, $params) = block_onlinesurvey_lti_get_launch_data($lti, $nonce, $messagetype, $foruserid);
+    $params['state'] = $state;
+    setcookie('state', $state, ['samesite' => 'None']);
+    setcookie('lti1p3_' . $state, $state, ['samesite' => 'None', 'path' => '/']);
 } else {
     $params['error'] = $error;
     if (!empty($desc)) {
@@ -159,6 +138,7 @@ if ($ok) {
 $params['lti1p3_' . $SESSION->lti_state] = $SESSION->lti_state;
 if (isset($SESSION->lti_state)) {
     setcookie('lti1p3_' . $SESSION->lti_state, $SESSION->lti_state);
+    block_onlinesurvey_remove_outdated_cookies($SESSION->lti_state);
 }
 unset($SESSION->lti_message_hint);
 $config = block_onlinesurvey_get_launch_config();

@@ -36,7 +36,6 @@ try {
 // Block settings.
     $config = block_onlinesurvey_get_launch_config();
     $error = '';
-    $debugmode = true; // ICUNDO!
 
     $css = array();
 
@@ -128,13 +127,7 @@ try {
                     if ($action === 'gradeReport') {
                         $msgtype = 'LtiSubmissionReviewRequest';
                     }
-//                    if ($config->presentation == BLOCK_ONLINESURVEY_PRESENTATION_BRIEF) {
-//                        echo block_onlinesurvey_lti_initiate_login_via_curl($config, $msgtype, '', '', $foruserid);
-//                    } else {
-                        echo block_onlinesurvey_lti_initiate_login($config, $msgtype, '', '', $foruserid);
-//                    }
-
-//                    $SESSION->lti_initiatelogin_status = true;
+                    echo block_onlinesurvey_lti_initiate_login($config, $msgtype, '', '', $foruserid);
                     exit;
                 } else {
                     unset($SESSION->lti_initiatelogin_status);
