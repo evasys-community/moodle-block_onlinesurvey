@@ -28,17 +28,12 @@ define('NO_MOODLE_COOKIES', true);
 
 require_once(__DIR__ . '/../../config.php');
 require_once(__DIR__ . '/classes/local/ltiopenid/jwks_helper.php');
-require_once(__DIR__ . '/classes/logger.php');
-//$logger = new \block_onlinesurvey\Logger('block_onlinesurvey_certs.txt');
-$logger = new \block_onlinesurvey\Logger();
-$logger->log('certs.php called, about to call get_jwks');
+
 @header('Content-Type: application/json; charset=utf-8');
 try {
     $jwks = jwks_helper::get_jwks();
-    $logger->log('got jwks: ', $jwks);
     $json = json_encode($jwks, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
-    $logger->log('encoded json: ', $json);
     echo $json;
 } catch(Exception $e) {
-    $logger->log('exception thrown: ' . $e->getMessage() . ', ' . $e->getCode() . ', ' . $e->getFile() . ', ' . $e->getLine());
+    // nothing here yet
 }

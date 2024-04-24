@@ -29,11 +29,7 @@ use Firebase\JWT\JWT;
 
 require_once(__DIR__ . '/../../config.php');
 require_once($CFG->dirroot . '/mod/lti/locallib.php');
-require_once($CFG->dirroot . '/blocks/onlinesurvey/classes/logger.php'); // ICON CORE CHANGE
-use block_onlinesurvey\Logger; // ICON CORE CHANGE
-//$logger = new Logger('block_onlinesurvey_token.txt'); // ICON CORE CHANGE
-$logger = new Logger(); // ICON CORE CHANGE
-$logger->log('token.php called');
+
 $response = new \mod_lti\local\ltiservice\response();
 
 $contenttype = isset($_SERVER['CONTENT_TYPE']) ? explode(';', $_SERVER['CONTENT_TYPE'], 2)[0] : '';
@@ -114,12 +110,6 @@ EOD;
 }
 EOD;
 }
-// ICON CORE CHANGE BEGIN
-$logger->log('in token.php');
-$logger->log('body: ', $body);
-$logger->log('error: ', $error);
-$logger->log('token: ', $token);
-// ICON CORE CHANGE END
 $response->set_body($body);
 
 $response->send();

@@ -49,11 +49,6 @@
 require_once("../../config.php");
 require_once($CFG->dirroot.'/mod/lti/lib.php');
 require_once($CFG->dirroot.'/mod/lti/locallib.php');
-require_once($CFG->dirroot . '/blocks/onlinesurvey/classes/logger.php'); // ICON CORE CHANGE
-use block_onlinesurvey\Logger; // ICON CORE CHANGE
-//$logger = new Logger('mod_lti_launch.txt'); // ICON CORE CHANGE
-$logger = new Logger(); // ICON CORE CHANGE
-$logger->log('called mod/lti/launch.php'); // ICON CORE CHANGE
 
 $cmid = required_param('id', PARAM_INT); // Course Module ID.
 $triggerview = optional_param('triggerview', 1, PARAM_BOOL);
@@ -68,16 +63,13 @@ if (empty($typeid) && ($tool = lti_get_tool_by_url_match($lti->toolurl))) {
     $typeid = $tool->id;
 }
 if ($typeid) {
-    $logger->log('got typeid:', $typeid); // ICON CORE CHANGE
     $config = lti_get_type_type_config($typeid);
-    $logger->log('got config:', $config); // ICON CORE CHANGE
     if ($config->lti_ltiversion === LTI_VERSION_1P3) {
         if (!isset($SESSION->lti_initiatelogin_status)) {
             $msgtype = 'basic-lti-launch-request';
             if ($action === 'gradeReport') {
                 $msgtype = 'LtiSubmissionReviewRequest';
             }
-            $logger->log('about to initiate login'); // ICON CORE CHANGE
             echo lti_initiate_login($cm->course, $cmid, $lti, $config, $msgtype, '', '', $foruserid);
             $SESSION->lti_initiatelogin_status = true;
             exit;
@@ -96,10 +88,8 @@ require_capability('mod/lti:view', $context);
 
 // Completion and trigger events.
 if ($triggerview) {
-    $logger->log('about to call lti_view with lti:', $lti); // ICON CORE CHANGE
     lti_view($lti, $course, $cm, $context);
 }
 
 $lti->cmid = $cm->id;
-$logger->log('about to call lti_launch_tool with lti:', $lti); // ICON CORE CHANGE
 lti_launch_tool($lti, $foruserid);

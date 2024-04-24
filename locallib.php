@@ -475,7 +475,6 @@ function block_onlinesurvey_get_lti_content($config = null, $context = null, $co
     require_once($CFG->dirroot . '/mod/lti/locallib.php');
 
     if (empty($config)) {
-        $logger->log('config is empty, so about to call block_onlinesurvey_get_launch_config');
         $config = block_onlinesurvey_get_launch_config();
     }
 
@@ -490,7 +489,6 @@ function block_onlinesurvey_get_lti_content($config = null, $context = null, $co
         $content2 = block_onlinesurvey_lti_post_launch_html_curl($parameter, $endpoint, $config);
     } catch (Exception $e) {
         $lticontentstr = $e->getMessage();
-        $logger->log('got error in block_onlinesurvey_get_lti_content(): ' . $e->getMessage());
         echo $lticontentstr;
         return '';
     }
@@ -508,9 +506,6 @@ function block_onlinesurvey_get_lti_content($config = null, $context = null, $co
 
         if (!empty($re)) {
             $surveycount = preg_match_all($re, $content2, $matches, PREG_SET_ORDER, 0);
-            $logger->log('got surveycount: ', $surveycount);
-            $logger->log('got matches: ', $matches);
-            $logger->log('$config->survey_show_popupinfo: ', $config->survey_show_popupinfo);
             $SESSION->block_onlinesurvey_curl_checked = true;
 
             if (!empty($matches) && !empty($config->survey_show_popupinfo)) {
@@ -583,9 +578,6 @@ function block_onlinesurvey_lti_get_launch_data($config = null, $nonce = '', $me
 {
     global $CFG, $PAGE, $USER, $DB, $SESSION;
 
-//    $logger2 = new \block_onlinesurvey\Logger('block_onlinesurvey_lti_get_launch_data.txt', \block_onlinesurvey\Logger::LEVEL_VERBOSE);
-    $logger2 = new \block_onlinesurvey\Logger('', \block_onlinesurvey\Logger::LEVEL_VERBOSE);
-    $logger2->log('called block_onlinesurvey_lti_get_launch_data with config:', $config);
     require_once($CFG->dirroot . '/mod/lti/locallib.php');
     if (empty($config)) {
         $config = get_config("block_onlinesurvey");
@@ -632,35 +624,27 @@ function block_onlinesurvey_lti_get_launch_data($config = null, $nonce = '', $me
     $endpoint = !empty($config->lti_url) ? $config->lti_url : $config['lti_url'];
     $endpoint = trim($endpoint);
 
-    $logger2->log('in line ' . __LINE__);
     // If the current request is using SSL and a secure tool URL is specified, use it.
     if (lti_request_is_using_ssl() && !empty($config->securetoolurl)) {
-        $logger2->log('in line ' . __LINE__);
         $endpoint = trim($config->securetoolurl);
     }
-    $logger2->log('in line ' . __LINE__);
     // If SSL is forced, use the secure tool url if specified. Otherwise, make sure https is on the normal launch URL.
     if (isset($config->forcessl) && ($config->forcessl == '1')) {
         if (!empty($config->securetoolurl)) {
             $endpoint = trim($config->securetoolurl);
         }
-        $logger2->log('about to call lti_ensure_url_is_https, in line ' . __LINE__);
         $endpoint = lti_ensure_url_is_https($endpoint);
-        $logger2->log('called lti_ensure_url_is_https, in line ' . __LINE__);
     } else {
         if (!strstr($endpoint, '://')) {
             $endpoint = 'http://' . $endpoint;
         }
     }
-    $logger2->log('in line ' . __LINE__);
     $orgid = $config->lti_tool_consumer_instance_guid;
 
     if (empty($course)) {
         $course = $PAGE->course;
     }
-    $logger2->log('about to call block_onlinesurvey_build_request_lti, in line ' . __LINE__);
     $allparams = block_onlinesurvey_build_request_lti($config, $course, $messagetype, $foruserid); // analog to lti/locallib.php line 560
-    $logger2->log('called block_onlinesurvey_build_request_lti, got allparams:', $allparams);
     if (!isset($config->id)) {
         $config->id = null;
     }
@@ -714,19 +698,10 @@ function block_onlinesurvey_lti_get_launch_data($config = null, $nonce = '', $me
     // Consumer key currently not used -> $key can be '' -> check "(true or !empty(key))".
     if ((!empty($key) && !empty($secret)) || ($ltiversion === LTI_VERSION_1P3)) { // ICNOTICE: matches mod/lti/locallib.php, lines 632ff
         if ($ltiversion !== LTI_VERSION_1P3) {
-            $logger2->log('not lti version 1p3. current ltiversion:', $ltiversion);
-            $logger2->log('about to call lti_sign_parameters');
             $parms = lti_sign_parameters($requestparams, $endpoint, 'POST', $key, $secret);
-            $logger2->log('called lti_sign_parameters and got parms:', $parms);
         } else {
             $requestparams['https://purl.imsglobal.org/spec/lti/claim/version'] = '1.3.0';
             $requestparams['lti_version'] = '1.3.0';
-            $logger2->log('about to call lti_sign_jwt');
-            $logger2->log('with requestparams:', $requestparams);
-            $logger2->log('with endpoint:', $endpoint);
-            $logger2->log('with key:', $key);
-            $logger2->log('with typeid:', $typeid);
-            $logger2->log('with nonce:', $nonce);
 
 //            $requestparams = block_onlinesurvey_get_dummy_request(); // only use for testing purposes
 
@@ -740,7 +715,6 @@ function block_onlinesurvey_lti_get_launch_data($config = null, $nonce = '', $me
             $requestparams['lti1p3_' . $state] = $state;
             $requestparams['ext_state'] = $state;
             $parms = lti_sign_jwt($requestparams, $endpoint, $key, $typeid, $nonce);
-            $logger2->log('called lti_sign_jwt and got $parms: ', $parms);
         }
 
         $endpointurl = new \moodle_url($endpoint);
@@ -755,7 +729,6 @@ function block_onlinesurvey_lti_get_launch_data($config = null, $nonce = '', $me
             }
         }
     } else {
-        $logger2->log('secret was empty, had to skip the lti_sign procedure');
         // If no key and secret, do the launch unsigned.
         $returnurlparams['unsigned'] = '1';
         $parms = $requestparams;
@@ -921,9 +894,6 @@ function block_onlinesurvey_get_ims_roles($user, $config)
 function block_onlinesurvey_lti_post_launch_html_curl($parameter, $endpoint, $config)
 {
     global $SESSION, $USER;
-//    $logger = new \block_onlinesurvey\Logger('block_onlinesurvey_launch_via_curl.txt', \block_onlinesurvey\Logger::LEVEL_VERY_VERBOSE);
-    $logger = new \block_onlinesurvey\Logger('', \block_onlinesurvey\Logger::LEVEL_VERY_VERBOSE);
-    $logger->log('using curl to launch LTI');
     // Set POST variables.
     $fields = array();
 
@@ -946,10 +916,8 @@ function block_onlinesurvey_lti_post_launch_html_curl($parameter, $endpoint, $co
 //    $fieldsstring = rtrim($fieldsstring, '&');
     if (isset($SESSION->lti_state) && !empty($SESSION->lti_state)) {
         $state = $SESSION->lti_state;
-        $logger->log('Session state is set, so we use that: ', $state);
     } else {
         $state = 'state-' . hash('sha256', random_bytes(64));
-        $logger->log('Session state is NOT set, so we created our own: ', $state);
     }
     $SESSION->lti_state = $state;
     $fields['state'] = $state;
@@ -975,18 +943,11 @@ function block_onlinesurvey_lti_post_launch_html_curl($parameter, $endpoint, $co
         'TIMEOUT' => $timeout,
         'HTTPHEADER' => ['Cookie: ' . $cookies],
     );
-    $logger->log('about to call curl with endpoint:', $endpoint, \block_onlinesurvey\Logger::LEVEL_NORMAL);
-    $logger->log('and $fields:', $fields, \block_onlinesurvey\Logger::LEVEL_NORMAL);
-    $logger->log('and cookies:', $cookies, \block_onlinesurvey\Logger::LEVEL_NORMAL);
 //    $ret = $curl->post($endpoint, $fieldsstring, $curloptions);
     $ret = $curl->post($endpoint, $fields, $curloptions);
-    $logger->log('curl called, still running');
 
     if ($errornumber = $curl->get_errno()) {
         $msgoutput = get_string('error_survey_curl_timeout_msg', 'block_onlinesurvey');
-        $logger->log('got curl error', $curl->get_info());
-        $logger->log('error number: ', $errornumber);
-        $logger->log('response', $curl->get_raw_response());
         $context = context_system::instance();
         if (has_capability('block/onlinesurvey:view_debugdetails', $context)) {
             if (!empty($msgoutput)) {
@@ -998,7 +959,6 @@ function block_onlinesurvey_lti_post_launch_html_curl($parameter, $endpoint, $co
             throw new Exception("$msgoutput");
         }
     } else {
-        $logger->log('No errors in curl call. Got response:', $ret);
         $rawResponse = $curl->get_raw_response();
         foreach ($rawResponse as $responseItem) {
             preg_match('/set-cookie: ([^=]*)=([^;]*)/', $responseItem, $match);
@@ -1006,7 +966,6 @@ function block_onlinesurvey_lti_post_launch_html_curl($parameter, $endpoint, $co
                 $keyName = $match[1];
                 $value = $match[2];
                 $SESSION->$keyName = $value;
-                $logger->log('Setting Cookie: ' . $keyName . ' to ' . $value, \block_onlinesurvey\Logger::LEVEL_NORMAL);
                 if (strpos($keyName, 'lti1p3_') == 0) {
                     $state = substr($keyName, 7);
                     setcookie('state', $state);
@@ -1015,11 +974,8 @@ function block_onlinesurvey_lti_post_launch_html_curl($parameter, $endpoint, $co
                 setcookie($keyName, $value);
             }
         }
-        $logger->log('Got raw response: ', $rawResponse);
         $info = $curl->get_info();
-        $logger->log('Got info: ', $info);
         $security = $curl->get_security();
-        $logger->log('Got security: ', $security);
     }
     // ICTODO: figure out why $state didn't have the expected value here
     $ret = preg_replace('/value="state-[^"]*"/', 'value="' . $state . '"', $ret); // JUST TESTING!
@@ -1030,16 +986,7 @@ function block_onlinesurvey_lti_initiate_login($config, $messagetype = 'basic-lt
                                                $title = '', $text = '', $foruserid = 0)
 {
     global $SESSION;
-//    $logger = new \block_onlinesurvey\Logger('block_onlinesurvey_lti_initiate_login.txt');
-    $logger = new \block_onlinesurvey\Logger();
-    $logger->log('about to call block_onlinesurvey_lti_build_login_request with the following parameters:');
-    $logger->log('config:', $config);
-    $logger->log('messagetype:', $messagetype);
-    $logger->log('foruserid:', $foruserid);
-    $logger->log('title:', $title);
-    $logger->log('text:', $text);
     $params = block_onlinesurvey_lti_build_login_request($config, $messagetype, $foruserid, $title, $text);
-    $logger->log('function called, received params:', $params);
     $r = "<form action=\"" . $config->lti_initiatelogin .
         "\" name=\"ltiInitiateLoginForm\" id=\"ltiInitiateLoginForm\" method=\"post\" " .
         "encType=\"application/x-www-form-urlencoded\">\n";
@@ -1091,8 +1038,6 @@ function block_onlinesurvey_lti_build_login_request($config, $messagetype, $foru
     $ltihint = [];
 
     $endpoint = $config->lti_url;
-//    $logger = new \block_onlinesurvey\Logger('block_onlinesurvey_lti_build_login_request.txt');
-    $logger = new \block_onlinesurvey\Logger();
 
 //    if (($messagetype === 'ContentItemSelectionRequest') && !empty($config->lti_toolurl_ContentItemSelectionRequest)) {
 //        $endpoint = $config->lti_toolurl_ContentItemSelectionRequest;
@@ -1100,8 +1045,7 @@ function block_onlinesurvey_lti_build_login_request($config, $messagetype, $foru
     $launchid = "ltilaunch_$messagetype" . rand();
     $SESSION->$launchid =
         "{$messagetype},{$foruserid}," . base64_encode($title) . ',' . base64_encode($text);
-    $logger->log('\$launchid:', $launchid);
-    $logger->log('\$SESSION->\$launchid:', $SESSION->$launchid);
+
 
     $endpoint = trim($endpoint);
 
@@ -1117,7 +1061,6 @@ function block_onlinesurvey_lti_build_login_request($config, $messagetype, $foru
     $params['lti_message_hint'] = json_encode($ltihint);
     $params['client_id'] = $config->lti_clientid;
     $params['lti_deployment_id'] = block_onlinesurvey_get_lti_typeid();
-    $logger->log('returning params:', $params);
     return $params;
 }
 

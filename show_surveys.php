@@ -25,10 +25,7 @@
 require_once(dirname(__FILE__).'/../../config.php');
 require_once(dirname(__FILE__).'/locallib.php');
 require_once($CFG->dirroot .'/mod/lti/locallib.php');
-require_once(dirname(__FILE__).'/classes/logger.php');
 require_login();
-$logger = new \block_onlinesurvey\Logger('', \block_onlinesurvey\Logger::LEVEL_VERY_VERBOSE);
-$logger->log('called show_surveys.php');
 try {
     $systemcontext = context_system::instance();
     require_capability('block/onlinesurvey:view', $systemcontext);
@@ -78,7 +75,7 @@ try {
         $error = get_string('error_config_not_accessible', 'block_onlinesurvey');
     }
     if ($error) {
-        $logger->log('got error: ' . $error);
+        // log the error if you like
     }
 
     $title = get_string('pluginname', 'block_onlinesurvey');
@@ -121,20 +118,16 @@ try {
         } else if ($debugmode) {
             echo get_string('error_occured', 'block_onlinesurvey', $error);
         }
-        $logger->log('got error: ', $error);
     } else {
-        $logger->log('no errors so far, handling connectiontype:', $connectiontype);
         if ($connectiontype == 'SOAP') {
             block_onlinesurvey_get_soap_content($config, $moodleusername, $moodleemail, $modalzoom);
         } else if ($connectiontype == 'LTI' || $connectiontype == LTI_VERSION_1P3) {
-            $logger->log('getting lti content for config:', $config);
             if ($connectiontype === LTI_VERSION_1P3) {
                 if (!isset($SESSION->lti_initiatelogin_status)) {
                     $msgtype = 'basic-lti-launch-request';
                     if ($action === 'gradeReport') {
                         $msgtype = 'LtiSubmissionReviewRequest';
                     }
-                    $logger->log('about to initiate login'); // ICON CORE CHANGE
                     if ($config->presentatino == BLOCK_ONLINESURVEY_PRESENTATION_BRIEF) {
                         echo block_onlinesurvey_lti_initiate_login_via_curl($config, $msgtype, '', '', $foruserid);
                     } else {
@@ -144,19 +137,14 @@ try {
 //                    $SESSION->lti_initiatelogin_status = true;
                     exit;
                 } else {
-                    $logger->log('lti_initiatelogin_status is already set:', $SESSION->lti_initiatelogin_status);
                     unset($SESSION->lti_initiatelogin_status);
                 }
             }
-            $logger->log('about to call block_onlinesurvey_get_lti_content');
             block_onlinesurvey_get_lti_content($config, $context, $course, $modalzoom);
         }
     }
     echo '</body>';
     echo '</html>';
 } catch(Exception $e) {
-    $logger->log('exception thrown inside show_survey.php. Error message: ' . $e->getMessage());
-    $logger->log('Error code: ' . $e->getCode());
-    $logger->log('in file: ' . $e->getFile());
-    $logger->log('in line: ' . $e->getLine());
+    // nothing here yet - log the exception if you like, or output a message
 }

@@ -20,8 +20,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 namespace block_onlinesurvey\local\ltiopenid;
-require_once($CFG->dirroot . '/blocks/onlinesurvey/classes/logger.php'); // ICON CORE CHANGE
-use block_onlinesurvey\Logger; // ICON CORE CHANGE
 use Firebase\JWT\JWT;
 
 /**
@@ -69,16 +67,9 @@ class jwks_helper {
         $privatekey = self::get_private_key();
         $res = openssl_pkey_get_private($privatekey['key']);
         $details = openssl_pkey_get_details($res);
-//        $logger = new Logger('block_onlinesurvey_jwks_helper.txt'); // ICON CORE CHANGE BEGIN
-        $logger = new Logger(); // ICON CORE CHANGE BEGIN
-        $logger->log('inside mod/lti jwks_helper.php, line ' . __LINE__);
-        $logger->log('got res:', $res);
-        $logger->log('got details:', $res);
-        // ICON CORE CHANGE END
 
         // Avoid passing null values to base64_encode.
         if (!isset($details['rsa']['e']) || !isset($details['rsa']['n'])) {
-            $logger->log('Error in jwks_helper: essential openssl keys not set'); // ICON CORE CHANGE
             throw new \moodle_exception('Error: essential openssl keys not set');
         }
 
@@ -89,7 +80,6 @@ class jwks_helper {
         $jwk['e'] = rtrim(strtr(base64_encode($details['rsa']['e']), '+/', '-_'), '=');
         $jwk['n'] = rtrim(strtr(base64_encode($details['rsa']['n']), '+/', '-_'), '=');
         $jwk['use'] = 'sig';
-        $logger->log('jwk:', $jwk); // ICON CORE CHANGE
         $jwks['keys'][] = $jwk;
         return $jwks;
     }
