@@ -135,8 +135,12 @@ try {
                         $msgtype = 'LtiSubmissionReviewRequest';
                     }
                     $logger->log('about to initiate login'); // ICON CORE CHANGE
-//                    echo block_onlinesurvey_lti_initiate_login($config, $msgtype, '', '', $foruserid);
-                    echo block_onlinesurvey_lti_initiate_login_via_curl($config, $msgtype, '', '', $foruserid);
+                    if ($config->presentatino == BLOCK_ONLINESURVEY_PRESENTATION_BRIEF) {
+                        echo block_onlinesurvey_lti_initiate_login_via_curl($config, $msgtype, '', '', $foruserid);
+                    } else {
+                        echo block_onlinesurvey_lti_initiate_login($config, $msgtype, '', '', $foruserid);
+                    }
+
 //                    $SESSION->lti_initiatelogin_status = true;
                     exit;
                 } else {
