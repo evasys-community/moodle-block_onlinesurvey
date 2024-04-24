@@ -163,8 +163,10 @@ class block_onlinesurvey extends block_base {
      * @return void
      */
     public function get_content() {
-        global $CFG, $USER, $PAGE;
-
+        global $CFG, $USER, $PAGE, $SESSION;
+        if (isset($SESSION->lti_state)) {
+            block_onlinesurvey_remove_outdated_cookies($SESSION->lti_state);
+        }
         // Block settings.
         $config = get_config("block_onlinesurvey");
 
