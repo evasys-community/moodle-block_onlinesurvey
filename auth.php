@@ -184,6 +184,11 @@ if ($modalzoom || $config->presentation != BLOCK_ONLINESURVEY_PRESENTATION_BRIEF
     } else {
         $return = str_replace('<html>', '<html><head><base href="' . $base . '/" /></head>', $return);
     }
+    $return .= '<script>
+// make iframe height match its content
+        var block_onlinesurvey_iframe_height = document.documentElement.offsetHeight + 40; 
+        window.parent.parent.document.getElementById(\'block_onlinesurvey_contentframe\').style.height = block_onlinesurvey_iframe_height + \'px\';
+</script>';
 }
 echo $return;
 //$r = '<form action="' . $redirecturi . "\" name=\"ltiAuthForm\" id=\"ltiAuthForm\" " .
