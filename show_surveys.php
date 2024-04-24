@@ -25,6 +25,9 @@
 require_once(dirname(__FILE__).'/../../config.php');
 require_once(dirname(__FILE__).'/locallib.php');
 require_once($CFG->dirroot .'/mod/lti/locallib.php');
+if (isset($SESSION->lti_state)) {
+    block_onlinesurvey_remove_outdated_cookies($SESSION->lti_state);
+}
 require_login();
 try {
     $systemcontext = context_system::instance();
