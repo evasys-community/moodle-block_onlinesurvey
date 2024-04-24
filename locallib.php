@@ -990,7 +990,8 @@ function block_onlinesurvey_lti_initiate_login($config, $messagetype = 'basic-lt
     $r = "<form action=\"" . $config->lti_initiatelogin .
         "\" name=\"ltiInitiateLoginForm\" id=\"ltiInitiateLoginForm\" method=\"post\" " .
         "encType=\"application/x-www-form-urlencoded\">\n";
-
+    $modalzoom = optional_param('modalZoom', 0, PARAM_INT);
+    $SESSION->modalzoom = $modalzoom;
     foreach ($params as $key => $value) {
         $key = htmlspecialchars($key, ENT_COMPAT);
         $value = htmlspecialchars($value, ENT_COMPAT);
