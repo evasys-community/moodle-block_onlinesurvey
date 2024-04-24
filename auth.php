@@ -174,14 +174,15 @@ if ($config->presentation == BLOCK_ONLINESURVEY_PRESENTATION_BRIEF) {
         $return = block_onlinesurvey_get_summary($return, $config, $modalzoom, $foruserid);
         $return .= '<link rel="stylesheet" href="' .  $CFG->wwwroot . '/blocks/onlinesurvey/style/block_onlinesurvey_iframe_compact.css">';
         $return .= '<link rel="stylesheet" href="' . $CFG->wwwroot . '/blocks/onlinesurvey/lib/fonts/font-awesome-4.7.0/css/font-awesome.min.css">';
+    }
+}
+if ($modalzoom || $config->presentation != BLOCK_ONLINESURVEY_PRESENTATION_BRIEF) {
+    $pathinfo = pathinfo($config->lti_url);
+    $base = $pathinfo['dirname'];
+    if (strpos($return, '<head>') !== false) {
+        $return = str_replace('<head>', '<head><base href="' . $base . '/" />', $return);
     } else {
-        $pathinfo = pathinfo($config->lti_url);
-        $base = $pathinfo['dirname'];
-        if (strpos($return, '<head>') !== false) {
-            $return = str_replace('<head>', '<head><base href="' . $base . '/" />', $return);
-        } else {
-            $return = str_replace('<html>', '<html><head><base href="' . $base . '/" /></head>', $return);
-        }
+        $return = str_replace('<html>', '<html><head><base href="' . $base . '/" /></head>', $return);
     }
 }
 echo $return;
