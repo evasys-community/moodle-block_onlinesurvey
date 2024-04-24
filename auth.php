@@ -166,6 +166,7 @@ $return = block_onlinesurvey_lti_post_launch_html_curl($params, $redirecturi, $c
 if ($config->presentation == BLOCK_ONLINESURVEY_PRESENTATION_BRIEF) {
     $modalzoom = optional_param('modalZoom', 0, PARAM_INT);
     $return = block_onlinesurvey_get_summary($return, $config, $modalzoom, $foruserid);
+    $return .= '<link rel="stylesheet" href="' .  $CFG->wwwroot . '/blocks/onlinesurvey/style/block_onlinesurvey_iframe_compact.css">';
 }
 echo $return;
 //$r = '<form action="' . $redirecturi . "\" name=\"ltiAuthForm\" id=\"ltiAuthForm\" " .
