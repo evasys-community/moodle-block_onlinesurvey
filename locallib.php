@@ -1359,20 +1359,20 @@ function block_onlinesurvey_get_summary($html, $config, $modalzoom = 0, $foruser
     if ($config->presentation == BLOCK_ONLINESURVEY_PRESENTATION_BRIEF && !$modalzoom) {
         $lticontentstr .= block_onlinesurvey_createsummary($surveycount);
     } else {
-        if (empty($context)) {
-            $context = context_system::instance();
-        }
-        if (empty($debuglaunch) || has_capability('block/onlinesurvey:view_debugdetails', $context)) {
-            $lticontentstr .= lti_post_launch_html($parameter, $endpoint, $debuglaunch);
-
-            if ($debuglaunch && has_capability('block/onlinesurvey:view_debugdetails', $context)) {
-                $debuglaunch = false;
-                // $lti_content_str2 = lti_post_launch_html($parameter, $endpoint, $debuglaunch);
-                // echo "$lti_content_str2 <br><br>";
-            }
-        } else {
-            $lticontentstr = get_string('error_debugmode_missing_capability', 'block_onlinesurvey');
-        }
+//        if (empty($context)) {
+//            $context = context_system::instance();
+//        }
+//        if (empty($debuglaunch) || has_capability('block/onlinesurvey:view_debugdetails', $context)) {
+//            $lticontentstr .= lti_post_launch_html($parameter, $endpoint, $debuglaunch);
+//
+//            if ($debuglaunch && has_capability('block/onlinesurvey:view_debugdetails', $context)) {
+//                $debuglaunch = false;
+//                // $lti_content_str2 = lti_post_launch_html($parameter, $endpoint, $debuglaunch);
+//                // echo "$lti_content_str2 <br><br>";
+//            }
+//        } else {
+//            $lticontentstr = get_string('error_debugmode_missing_capability', 'block_onlinesurvey');
+//        }
     }
 
     return $lticontentstr;
