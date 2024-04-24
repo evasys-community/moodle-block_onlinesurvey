@@ -128,11 +128,11 @@ try {
                     if ($action === 'gradeReport') {
                         $msgtype = 'LtiSubmissionReviewRequest';
                     }
-                    if ($config->presentation == BLOCK_ONLINESURVEY_PRESENTATION_BRIEF) {
-                        echo block_onlinesurvey_lti_initiate_login_via_curl($config, $msgtype, '', '', $foruserid);
-                    } else {
+//                    if ($config->presentation == BLOCK_ONLINESURVEY_PRESENTATION_BRIEF) {
+//                        echo block_onlinesurvey_lti_initiate_login_via_curl($config, $msgtype, '', '', $foruserid);
+//                    } else {
                         echo block_onlinesurvey_lti_initiate_login($config, $msgtype, '', '', $foruserid);
-                    }
+//                    }
 
 //                    $SESSION->lti_initiatelogin_status = true;
                     exit;
