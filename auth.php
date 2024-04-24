@@ -164,12 +164,12 @@ unset($SESSION->lti_message_hint);
 $config = block_onlinesurvey_get_launch_config();
 $return = block_onlinesurvey_lti_post_launch_html_curl($params, $redirecturi, $config);
 if ($config->presentation == BLOCK_ONLINESURVEY_PRESENTATION_BRIEF) {
-    if (isset($SESSION->modalzoom)) {
-        $modalzoom = $SESSION->modalzoom;
-        unset($SESSION->modalzoom);
-    } else {
+//    if (isset($SESSION->modalzoom)) {
+//        $modalzoom = $SESSION->modalzoom;
+//        unset($SESSION->modalzoom);
+//    } else {
         $modalzoom = optional_param('modalZoom', 0, PARAM_INT);
-    }
+//    }
     $return = block_onlinesurvey_get_summary($return, $config, $modalzoom, $foruserid);
     if (!$modalzoom) {
         $return .= '<link rel="stylesheet" href="' .  $CFG->wwwroot . '/blocks/onlinesurvey/style/block_onlinesurvey_iframe_compact.css">';
