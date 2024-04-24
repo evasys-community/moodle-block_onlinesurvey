@@ -163,6 +163,10 @@ if (isset($SESSION->lti_state)) {
 unset($SESSION->lti_message_hint);
 $config = block_onlinesurvey_get_launch_config();
 $return = block_onlinesurvey_lti_post_launch_html_curl($params, $redirecturi, $config);
+if ($config->presentation == BLOCK_ONLINESURVEY_PRESENTATION_BRIEF) {
+    $modalzoom = optional_param('modalZoom', 0, PARAM_INT);
+    $return = block_onlinesurvey_get_summary($return, $config, $modalzoom, $foruserid);
+}
 echo $return;
 //$r = '<form action="' . $redirecturi . "\" name=\"ltiAuthForm\" id=\"ltiAuthForm\" " .
 //     "method=\"post\" enctype=\"application/x-www-form-urlencoded\">\n";

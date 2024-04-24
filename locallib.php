@@ -1014,10 +1014,6 @@ function block_onlinesurvey_lti_initiate_login_via_curl($config, $messagetype = 
     $endpoint = $config->lti_initiatelogin;
     $params = block_onlinesurvey_lti_build_login_request($config, $messagetype, $foruserid, $title, $text);
     $content2 = block_onlinesurvey_lti_post_launch_html_curl($params, $endpoint, $config);
-    if ($config->presentation == BLOCK_ONLINESURVEY_PRESENTATION_BRIEF) {
-        $modalzoom = optional_param('modalZoom', 0, PARAM_INT);
-//        $content2 = block_onlinesurvey_get_summary($content2, $config, $modalzoom, $foruserid);
-    }
     return $content2;
 }
 
