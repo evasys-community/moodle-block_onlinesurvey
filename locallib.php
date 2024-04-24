@@ -915,6 +915,7 @@ function block_onlinesurvey_lti_post_launch_html_curl($parameter, $endpoint, $co
         $cookies[] = 'evasys_session_cookie=' . $_COOKIE['evasys_session_cookie'];
     }
     $cookies = implode('; ', $cookies);
+    block_onlinesurvey_remove_outdated_cookies($state);
     $curloptions = array(
         'RETURNTRANSFER' => 1,
         'FRESH_CONNECT' => true,
