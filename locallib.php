@@ -1359,13 +1359,6 @@ function block_onlinesurvey_get_summary($html, $config, $modalzoom = 0, $foruser
     if ($config->presentation == BLOCK_ONLINESURVEY_PRESENTATION_BRIEF && !$modalzoom) {
         $lticontentstr .= block_onlinesurvey_createsummary($surveycount);
     } else {
-        $pathinfo = pathinfo($config->lti_url);
-        $base = $pathinfo['dirname'];
-        if (strpos($lticontentstr, '<head>') !== false) {
-            $lticontentstr = str_replace('<head>', '<head><base href="' . $base . '/" />', $lticontentstr);
-        } else {
-            $lticontentstr = str_replace('<html>', '<html><head><base href="' . $base . '/" /></head>', $lticontentstr);
-        }
 
 //        if (empty($context)) {
 //            $context = context_system::instance();
