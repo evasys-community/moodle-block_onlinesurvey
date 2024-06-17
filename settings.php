@@ -306,17 +306,6 @@ if ($ADMIN->fulltree) {
     );
 
 
-    // LTI password.
-    $settings->add(
-            new admin_setting_configpasswordunmask(
-                    'block_onlinesurvey/lti_password',
-                    get_string('setting_survey_lti_password', 'block_onlinesurvey', null, true),
-                    get_string('setting_survey_lti_password_desc', 'block_onlinesurvey', null, true),
-                    ''
-            )
-    );
-
-
     // Custom parameters.
     $settings->add(
             new admin_setting_configtextarea(
@@ -368,10 +357,40 @@ if ($ADMIN->fulltree) {
     unset($rolenames);
     unset($choices);
 
+    /*************************/
+    /* LTI 1.0 settings.
+    /*************************/
+
+    // Heading.
+    $settings->add(
+        new admin_setting_heading('block_onlinesurvey/setting_heading_lti10',
+            get_string('setting_heading_lti10', 'block_onlinesurvey', null, true),
+            get_string('setting_heading_lti10_desc', 'block_onlinesurvey', null, true)
+        )
+    );
+
+    // LTI password.
+    $settings->add(
+        new admin_setting_configpasswordunmask(
+            'block_onlinesurvey/lti_password',
+            get_string('setting_survey_lti_password', 'block_onlinesurvey', null, true),
+            get_string('setting_survey_lti_password_desc', 'block_onlinesurvey', null, true),
+            ''
+        )
+    );
+
 
     /*************************/
     /* LTI 1.3 settings.
     /*************************/
+
+    // Heading.
+    $settings->add(
+        new admin_setting_heading('block_onlinesurvey/setting_heading_lti13',
+            get_string('setting_heading_lti13', 'block_onlinesurvey', null, true),
+            get_string('setting_heading_lti13_desc', 'block_onlinesurvey', null, true)
+        )
+    );
 
     $keyoptions = [
         LTI_RSA_KEY => get_string('keytype_rsa', 'lti'),

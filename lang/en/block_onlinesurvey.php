@@ -98,6 +98,8 @@ $string['setting_survey_timeout_desc'] = 'Maximum response time (in seconds) of 
 /* LTI 1.3 settings
 /*************************/
 $string['onlyrequiredforlti13'] = '<br><em>Only required for LTI 1.3</em>';
+$string['setting_heading_lti13'] = 'LTI 1.3 settings';
+$string['setting_heading_lti13_desc'] = 'The settings in this section define how the evasys block will communicate with evasys.<br /><em>These settings are only required if you selected "LTI 1.3" in the "Communication protocol" setting.</em>';
 $string['publickey_help'] = 'The public key (in PEM format) provided by the tool to allow signatures of incoming messages and service requests to be verified.<br>
 <em>Only required if key type is set to RSA</em>';
 $string['publickeyset'] = 'Public keyset';
@@ -140,6 +142,9 @@ $string['setting_soap_request_eachtime_desc'] = 'If activated, the data which is
 
 $string['setting_heading_lti'] = 'LTI settings';
 $string['setting_heading_lti_desc'] = 'The settings in this section define how the evasys block will communicate with evasys.<br /><em>These settings are only required if you selected "LTI" or "LTI 1.3" in the "Communication protocol" setting.</em>';
+
+$string['setting_heading_lti10'] = 'LTI 1.0 settings';
+$string['setting_heading_lti10_desc'] = 'The settings in this section are only required if you chose LTI for communication protocol setting, but not LTI 1.3';
 
 $string['setting_survey_lti_url'] = 'evasys LTI provider URL';
 $string['setting_survey_lti_url_desc'] = 'URL of the LTI provider PHP file on the evasys server (https://[SERVERNAME]/customer/lti/lti_provider.php).';
