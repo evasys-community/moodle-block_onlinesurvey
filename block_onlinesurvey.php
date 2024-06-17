@@ -214,7 +214,6 @@ class block_onlinesurvey extends block_base {
             // Testing reveals that the iframe requires the permissions "allow-same-origin allow-scripts",
             // hence the sandbox attribute can not be used.
             $source = $config->show_spinner ? 'about:blank' : $url;
-            $PAGE->requires->js_call_amd('block_onlinesurvey/compactview', 'init');
             $this->content->text .= '<iframe id="block_onlinesurvey_contentframe" '.
                     'class="'.$connectionclass.' '.$presentationclass.'" src="'.$source.'"></iframe>';
 
