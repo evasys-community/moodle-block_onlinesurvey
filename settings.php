@@ -373,14 +373,6 @@ if ($ADMIN->fulltree) {
     /* LTI 1.3 settings.
     /*************************/
 
-    // Heading.
-    $settings->add(
-        new admin_setting_heading('block_onlinesurvey/setting_heading_lti13',
-            get_string('setting_heading_lti13', 'block_onlinesurvey', null, true),
-            get_string('setting_heading_lti13_desc', 'block_onlinesurvey', null, true)
-        )
-    );
-
     $keyoptions = [
         LTI_RSA_KEY => get_string('keytype_rsa', 'lti'),
         LTI_JWK_KEYSET => get_string('keytype_keyset', 'lti'),
@@ -388,7 +380,8 @@ if ($ADMIN->fulltree) {
     $setting = new admin_setting_configselect(
         'block_onlinesurvey/lti_keytype',
         get_string('keytype', 'lti', null, true),
-        get_string('keytype_help', 'lti', null, true),
+        get_string('keytype_help', 'lti', null, true) .
+        get_string('onlyrequiredforlti13', 'block_onlinesurvey'),
         LTI_JWK_KEYSET,
         $keyoptions
     );
@@ -399,7 +392,8 @@ if ($ADMIN->fulltree) {
         new admin_setting_configtextarea(
             'block_onlinesurvey/lti_publickey',
             get_string('publickey', 'lti', null, true),
-            get_string('publickey_help', 'block_onlinesurvey', null, true),
+            get_string('publickey_help', 'block_onlinesurvey', null, true) .
+            get_string('onlyrequiredforlti13', 'block_onlinesurvey'),
             '',
             PARAM_TEXT
     );
@@ -410,7 +404,9 @@ if ($ADMIN->fulltree) {
         new admin_setting_configtext(
             'block_onlinesurvey/lti_initiatelogin',
             get_string('initiatelogin', 'lti', null, true),
-            get_string('initiatelogin_help', 'lti', null, true) . '<br>' . get_string('setting_lti_initiatelogin_desc', 'block_onlinesurvey'),
+            get_string('initiatelogin_help', 'lti', null, true) . '<br>' .
+            get_string('setting_lti_initiatelogin_desc', 'block_onlinesurvey') .
+            get_string('onlyrequiredforlti13', 'block_onlinesurvey'),
             '',
             PARAM_URL,
             64
@@ -422,7 +418,9 @@ if ($ADMIN->fulltree) {
         new admin_setting_configtextarea(
             'block_onlinesurvey/lti_redirectionuris',
             get_string('redirectionuris', 'lti', null, true),
-            get_string('redirectionuris_help', 'lti', null, true) . '<br>' . get_string('setting_lti_initiatelogin_desc', 'block_onlinesurvey'),
+            get_string('redirectionuris_help', 'lti', null, true) . '<br>' .
+            get_string('setting_lti_initiatelogin_desc', 'block_onlinesurvey') .
+            get_string('onlyrequiredforlti13', 'block_onlinesurvey'),
             '',
             PARAM_TEXT,
             60,
