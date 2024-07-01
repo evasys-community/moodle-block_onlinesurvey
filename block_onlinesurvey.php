@@ -23,7 +23,8 @@
  */
 
 defined('MOODLE_INTERNAL') || die();
-
+require_once($CFG->dirroot . '/mod/lti/locallib.php');
+require_once(__DIR__ . '/locallib.php');
 /**
  * Onlinesurvey block.
  *
@@ -120,32 +121,31 @@ class block_onlinesurvey extends block_base {
                         $this->isconfigured = false;
                         $this->error = "WSDL namespace parse error";
                     }
-                } else if ($this->connectiontype == 'LTI') {
+                } else if ($this->connectiontype == 'LTI' || $this->connectiontype == LTI_VERSION_1P3) {
                     // Quick check of some LTI settings.
-                    if (empty($config->lti_url) || empty($config->lti_password) || empty($config->lti_learnermapping)) {
+                    $this->isconfigured = true;
+
+                    $errorinfo = '';
+                    if (empty($config->lti_url)) {
+                        $errorinfo .= get_string('error_lti_url_missing', 'block_onlinesurvey').'<br>';
+                    }
+                    if (empty($config->lti_password) && $this->connectiontype == 'LTI') {
+                        $errorinfo .= get_string('error_lti_password_missing', 'block_onlinesurvey').'<br>';
+                    }
+                    if (empty($config->lti_learnermapping)) {
+                        $errorinfo .= get_string('error_lti_learnermapping_missing', 'block_onlinesurvey').'<br>';
+                    }
+
+                    if (!empty($errorinfo)) {
                         $this->isconfigured = false;
                         $this->error = get_string('error_lti_settings_error', 'block_onlinesurvey');
-
-                        $errorinfo = '';
-                        if (empty($config->lti_url)) {
-                            $errorinfo .= get_string('error_lti_url_missing', 'block_onlinesurvey').'<br>';
-                        }
-                        if (empty($config->lti_password)) {
-                            $errorinfo .= get_string('error_lti_password_missing', 'block_onlinesurvey').'<br>';
-                        }
-                        if (empty($config->lti_learnermapping)) {
-                            $errorinfo .= get_string('error_lti_learnermapping_missing', 'block_onlinesurvey').'<br>';
-                        }
 
                         $context = context_system::instance();
                         if (has_capability('block/onlinesurvey:view_debugdetails', $context)) {
                             if (!empty($errorinfo)) {
-                                $this->error .= "<br>".$errorinfo;
+                                $this->error .= "<br>" . $errorinfo;
                             }
                         }
-
-                    } else {
-                        $this->isconfigured = true;
                     }
                 }
             } else {
@@ -164,8 +164,10 @@ class block_onlinesurvey extends block_base {
      * @return void
      */
     public function get_content() {
-        global $CFG, $USER;
-
+        global $CFG, $USER, $PAGE, $SESSION;
+        if (isset($SESSION->lti_state)) {
+            block_onlinesurvey_remove_outdated_cookies($SESSION->lti_state);
+        }
         // Block settings.
         $config = get_config("block_onlinesurvey");
 
@@ -277,6 +279,10 @@ class block_onlinesurvey extends block_base {
         return true;
     }
 
+    function instance_allow_config() {
+        return true;
+    }
+
     /**
      * Returns false which means that only one instance is allowed.
      *
@@ -313,5 +319,23 @@ class block_onlinesurvey extends block_base {
      */
     public function get_title() {
         return $this->title;
+    }
+
+
+    /**
+     * Return the plugin config settings for external functions.
+     *
+     * @return stdClass the configs for both the block instance and plugin
+     * @since Moodle 3.8
+     */
+    public function get_config_for_external() {
+        // Return all settings for all users since it is safe (no private keys, etc..).
+        $instanceconfigs = !empty($this->config) ? $this->config : new stdClass();
+        $pluginconfigs = get_config('block_onlinesurvey');
+
+        return (object) [
+            'instance' => $instanceconfigs,
+            'plugin' => $pluginconfigs,
+        ];
     }
 }

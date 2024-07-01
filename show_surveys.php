@@ -24,101 +24,123 @@
 
 require_once(dirname(__FILE__).'/../../config.php');
 require_once(dirname(__FILE__).'/locallib.php');
-
+require_once($CFG->dirroot .'/mod/lti/locallib.php');
+if (isset($SESSION->lti_state)) {
+    block_onlinesurvey_remove_outdated_cookies($SESSION->lti_state);
+}
 require_login();
-$systemcontext = context_system::instance();
-require_capability('block/onlinesurvey:view', $systemcontext);
-
-global $USER, $PAGE;
+try {
+    $systemcontext = context_system::instance();
+    require_capability('block/onlinesurvey:view', $systemcontext);
+    $action = optional_param('action', '', PARAM_TEXT);
+    $foruserid = optional_param('user', 0, PARAM_INT);
+    global $USER, $PAGE;
 
 // Block settings.
-$config = get_config("block_onlinesurvey");
-$error = '';
-$debugmode = false;
+    $config = block_onlinesurvey_get_launch_config();
+    $error = '';
 
-$css = array();
+    $css = array();
 
-if (isset($config)) {
+    if (isset($config)) {
 
-    $connectiontype = $config->connectiontype;
-    $debugmode = $config->survey_debug;
+        $connectiontype = $config->connectiontype;
+        $debugmode = $config->survey_debug;
 
-    // Session information.
-    if ($moodleuserid = $USER->id) {
-        $moodleusername = $USER->username;
-        $moodleemail = $USER->email;
-        $context = null;
-        $course = null;
+        // Session information.
+        if ($moodleuserid = $USER->id) {
+            $moodleusername = $USER->username;
+            $moodleemail = $USER->email;
+            $context = null;
+            $course = null;
 
-        $contextid = optional_param('ctxid', 2, PARAM_INT);
-        if (!empty($contextid)) {
-            $context = context::instance_by_id($contextid);
+            $contextid = optional_param('ctxid', 2, PARAM_INT);
+            if (!empty($contextid)) {
+                $context = context::instance_by_id($contextid);
+            }
+
+            $modalzoom = optional_param('modalZoom', 0, PARAM_INT);
+
+            if ($config->presentation == BLOCK_ONLINESURVEY_PRESENTATION_BRIEF && !$modalzoom) {
+                $css[] = $CFG->wwwroot . '/blocks/onlinesurvey/style/block_onlinesurvey_iframe_compact.css';
+            }
+
+            if ($connectiontype == 'SOAP') {
+                $css[] = $CFG->wwwroot . '/blocks/onlinesurvey/style/block_onlinesurvey_iframe_detail_soap.css';
+            }
+
+            $css[] = $CFG->wwwroot . '/blocks/onlinesurvey/lib/fonts/font-awesome-4.7.0/css/font-awesome.min.css';
+        } else {
+            $error = get_string('error_userid_not_found', 'block_onlinesurvey') . '<br>';
         }
-
-        $modalzoom = optional_param('modalZoom', 0, PARAM_INT);
-
-        if ($config->presentation == BLOCK_ONLINESURVEY_PRESENTATION_BRIEF && !$modalzoom) {
-            $css[] = $CFG->wwwroot.'/blocks/onlinesurvey/style/block_onlinesurvey_iframe_compact.css';
-        }
-
-        if ($connectiontype == 'SOAP') {
-            $css[] = $CFG->wwwroot.'/blocks/onlinesurvey/style/block_onlinesurvey_iframe_detail_soap.css';
-        }
-
-        $css[] = $CFG->wwwroot.'/blocks/onlinesurvey/lib/fonts/font-awesome-4.7.0/css/font-awesome.min.css';
     } else {
-        $error = get_string('error_userid_not_found', 'block_onlinesurvey').'<br>';
+        $error = get_string('error_config_not_accessible', 'block_onlinesurvey');
     }
-} else {
-    $error = get_string('error_config_not_accessible', 'block_onlinesurvey');
-}
-
-$title = get_string('pluginname', 'block_onlinesurvey');
-if (isset($config) && !empty($config)) {
-
-    // Get block title from block setting.
-    if (!empty($config->blocktitle)) {
-        $context = context_system::instance();
-        $PAGE->set_context($context);
-        $title = format_string($config->blocktitle);
+    if ($error) {
+        // log the error if you like
     }
-}
 
-echo '<html><head><title>'.$title.'</title>';
-foreach ($css as $file) {
-    echo '<link rel="stylesheet" href="' . $file . '">';
-}
-if (!empty($config->additionalcss)) {
-    echo '<style>'.$config->additionalcss.'</style>';
-}
-echo '</head>';
+    $title = get_string('pluginname', 'block_onlinesurvey');
+    if (isset($config) && !empty($config)) {
 
-$bodyclasses = array();
-if (isset($PAGE->theme->name)) {
-    $bodyclasses[] = 'theme_'.$PAGE->theme->name;
-}
-if ($modalzoom) {
-    $bodyclasses[] = 'zoom_modal';
-} else {
-    $bodyclasses[] = 'zoom_block';
-}
-echo '<body class="'.implode(' ', $bodyclasses).'">';
-
-if (!empty($error)) {
-    $context = context_system::instance();
-    if (has_capability('moodle/site:config', $context)) {
-        if ($error) {
-            echo  get_string('error_occured', 'block_onlinesurvey', $error);
+        // Get block title from block setting.
+        if (!empty($config->blocktitle)) {
+            $context = context_system::instance();
+            $PAGE->set_context($context);
+            $title = format_string($config->blocktitle);
         }
-    } else if ($debugmode) {
-        echo  get_string('error_occured', 'block_onlinesurvey', $error);
     }
-} else {
-    if ($connectiontype == 'SOAP') {
-        block_onlinesurvey_get_soap_content($config, $moodleusername, $moodleemail, $modalzoom);
-    } else if ($connectiontype == 'LTI') {
-        block_onlinesurvey_get_lti_content($config, $context, $course, $modalzoom);
+
+    echo '<html><head><title>' . $title . '</title>';
+    foreach ($css as $file) {
+        echo '<link rel="stylesheet" href="' . $file . '">';
     }
+    if (!empty($config->additionalcss)) {
+        echo '<style>' . $config->additionalcss . '</style>';
+    }
+    echo '</head>';
+
+    $bodyclasses = array();
+    if (isset($PAGE->theme->name)) {
+        $bodyclasses[] = 'theme_' . $PAGE->theme->name;
+    }
+    if ($modalzoom) {
+        $bodyclasses[] = 'zoom_modal';
+    } else {
+        $bodyclasses[] = 'zoom_block';
+    }
+    echo '<body class="' . implode(' ', $bodyclasses) . '">';
+
+    if (!empty($error)) {
+        $context = context_system::instance();
+        if (has_capability('moodle/site:config', $context)) {
+            if ($error) {
+                echo get_string('error_occured', 'block_onlinesurvey', $error);
+            }
+        } else if ($debugmode) {
+            echo get_string('error_occured', 'block_onlinesurvey', $error);
+        }
+    } else {
+        if ($connectiontype == 'SOAP') {
+            block_onlinesurvey_get_soap_content($config, $moodleusername, $moodleemail, $modalzoom);
+        } else if ($connectiontype == 'LTI' || $connectiontype == LTI_VERSION_1P3) {
+            if ($connectiontype === LTI_VERSION_1P3) {
+                if (!isset($SESSION->lti_initiatelogin_status)) {
+                    $msgtype = 'basic-lti-launch-request';
+                    if ($action === 'gradeReport') {
+                        $msgtype = 'LtiSubmissionReviewRequest';
+                    }
+                    echo block_onlinesurvey_lti_initiate_login($config, $msgtype, '', '', $foruserid);
+                    exit;
+                } else {
+                    unset($SESSION->lti_initiatelogin_status);
+                }
+            }
+            block_onlinesurvey_get_lti_content($config, $context, $course, $modalzoom);
+        }
+    }
+    echo '</body>';
+    echo '</html>';
+} catch(Exception $e) {
+    // nothing here yet - log the exception if you like, or output a message
 }
-echo '</body>';
-echo '</html>';

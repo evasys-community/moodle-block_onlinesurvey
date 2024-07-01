@@ -30,6 +30,7 @@ defined('MOODLE_INTERNAL') || die();
 
 $string['pluginname'] = 'Evaluations (evasys)';
 $string['lti'] = 'LTI';
+$string['lti13'] = 'LTI 1.3';
 $string['soap'] = 'SOAP';
 
 
@@ -93,6 +94,24 @@ $string['setting_customfieldnumber'] = 'Custom field No.';
 $string['setting_survey_timeout'] = 'Connection timeout';
 $string['setting_survey_timeout_desc'] = 'Maximum response time (in seconds) of the evasys server. If the evasys server didn\'t answer within this time, the request is aborted and the surveys are not shown to the user.';
 
+/*************************/
+/* LTI 1.3 settings
+/*************************/
+$string['onlyrequiredforlti13'] = '<br><em>Only required for LTI 1.3</em>';
+$string['setting_heading_lti13'] = 'LTI 1.3 settings';
+$string['setting_heading_lti13_desc'] = 'The settings in this section define how the evasys block will communicate with evasys.<br /><em>These settings are only required if you selected "LTI 1.3" in the "Communication protocol" setting.</em>';
+$string['publickey_help'] = 'The public key (in PEM format) provided by the tool to allow signatures of incoming messages and service requests to be verified.<br>
+<em>Only required if key type is set to RSA</em>';
+$string['publickeyset'] = 'Public keyset';
+$string['accesstoken'] = 'Access token';
+$string['authrequest'] = 'Auth request';
+$string['publickeyset_help'] = 'Public keyset from where this site will retrieve the tool\'s public key to allow signatures of incoming messages and service requests to be verified.<br>
+<em>Only required if key type is set to Keyset URL</em>';
+$string['setting_lti_initiatelogin_desc'] = '<em>Usually the same as in the lti_url setting above (https://[SERVERNAME]/customer/lti/lti_provider.php).</em>';
+$string['setting_lti_redirectionuris_desc'] = '<em>Usually the same as in the lti_url setting above (https://[SERVERNAME]/customer/lti/lti_provider.php).</em>';
+$string['lti13_infos'] = 'Connection data for LTI 1.3:';
+$string['deploymentid'] = 'Deployment id';
+$string['clientid'] = 'Client id';
 
 /*************************/
 /* SOAP settings.
@@ -122,13 +141,17 @@ $string['setting_soap_request_eachtime_desc'] = 'If activated, the data which is
 /*************************/
 
 $string['setting_heading_lti'] = 'LTI settings';
-$string['setting_heading_lti_desc'] = 'The settings in this section define how the evasys block will communicate with evasys.<br /><em>These settings are only required if you selected "LTI" in the "Communication protocol" setting.</em>';
+$string['setting_heading_lti_desc'] = 'The settings in this section define how the evasys block will communicate with evasys.<br /><em>These settings are only required if you selected "LTI" or "LTI 1.3" in the "Communication protocol" setting.</em>';
+
+$string['setting_heading_lti10'] = 'LTI 1.0 settings';
+$string['setting_heading_lti10_desc'] = 'The settings in this section are only required if you chose LTI for communication protocol setting, but not LTI 1.3';
 
 $string['setting_survey_lti_url'] = 'evasys LTI provider URL';
 $string['setting_survey_lti_url_desc'] = 'URL of the LTI provider PHP file on the evasys server (https://[SERVERNAME]/customer/lti/lti_provider.php).';
 
 $string['setting_survey_lti_password'] = 'evasys LTI password';
-$string['setting_survey_lti_password_desc'] = 'Password of the evasys LTI interface.';
+$string['setting_survey_lti_password_desc'] = 'Password of the evasys LTI interface.<br>
+<em>Not required for LTI 1.3!</em>';
 
 $string['setting_lti_customparameters'] = 'evasys LTI Custom parameter';
 $string['setting_lti_customparameters_desc'] = 'Here the custom parameters are stored, which can be used to define settings for displaying the surveys, e.g. whether the student view should also display completed surveys (learner_show_completed_surveys=1) or whether the reports of the surveys can also be called up in the instructor view (instructor_show_report=1). Each parameter has to be added on a separate line. For detailed information on the available parameters, please consult the evasys LTI manual.';

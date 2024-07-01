@@ -15,18 +15,18 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Plugin "Evaluations (evasys)"
+ * This library exposes functions for LTI Dynamic Registration.
  *
- * @package    block_onlinesurvey
- * @copyright  2018 Soon Systems GmbH on behalf of evasys GmbH
+ * @package    mod_lti
+ * @copyright  2020 Claude Vervoort (Cengage), Carlos Costa, Adrian Hutchinson (Macgraw Hill)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+namespace mod_lti\local\ltiopenid;
 
-defined('MOODLE_INTERNAL') || die();
-
-$plugin->version = 2024040903;
-$plugin->component = 'block_onlinesurvey';
-$plugin->release = 'v4.0-r2';
-$plugin->requires = 2022041900;
-$plugin->supported = [400, 403];
-$plugin->maturity = MATURITY_STABLE;
+/**
+ * Exception when transforming the registration to LTI config.
+ *
+ * Code is the HTTP Error code.
+ */
+class registration_exception extends \Exception {
+}
