@@ -27,6 +27,7 @@ defined('MOODLE_INTERNAL') || die();
 if ($ADMIN->fulltree) {
 
     require_once($CFG->dirroot . '/blocks/onlinesurvey/locallib.php');
+    require_once($CFG->dirroot . '/mod/lti/locallib.php');
 
     /*************************/
     /* Appearance settings.
@@ -151,6 +152,7 @@ if ($ADMIN->fulltree) {
     $communicationoptions = array();
     $communicationoptions["SOAP"] = get_string('soap', 'block_onlinesurvey', null, true);
     $communicationoptions["LTI"] = get_string('lti', 'block_onlinesurvey', null, true);
+    $communicationoptions[LTI_VERSION_1P3] = get_string('lti13', 'block_onlinesurvey', null, true);
     $settings->add(
             new admin_setting_configselect('block_onlinesurvey/connectiontype',
                     get_string('setting_communication_interface', 'block_onlinesurvey', null, true),
@@ -204,7 +206,6 @@ if ($ADMIN->fulltree) {
                     PARAM_INT
             )
     );
-
 
     /*************************/
     /* SOAP settings.
@@ -305,17 +306,6 @@ if ($ADMIN->fulltree) {
     );
 
 
-    // LTI password.
-    $settings->add(
-            new admin_setting_configpasswordunmask(
-                    'block_onlinesurvey/lti_password',
-                    get_string('setting_survey_lti_password', 'block_onlinesurvey', null, true),
-                    get_string('setting_survey_lti_password_desc', 'block_onlinesurvey', null, true),
-                    ''
-            )
-    );
-
-
     // Custom parameters.
     $settings->add(
             new admin_setting_configtextarea(
@@ -367,6 +357,132 @@ if ($ADMIN->fulltree) {
     unset($rolenames);
     unset($choices);
 
+    /*************************/
+    /* LTI 1.0 settings.
+    /*************************/
+
+    // Heading.
+    $settings->add(
+        new admin_setting_heading('block_onlinesurvey/setting_heading_lti10',
+            get_string('setting_heading_lti10', 'block_onlinesurvey', null, true),
+            get_string('setting_heading_lti10_desc', 'block_onlinesurvey', null, true)
+        )
+    );
+
+    // LTI password.
+    $settings->add(
+        new admin_setting_configpasswordunmask(
+            'block_onlinesurvey/lti_password',
+            get_string('setting_survey_lti_password', 'block_onlinesurvey', null, true),
+            get_string('setting_survey_lti_password_desc', 'block_onlinesurvey', null, true),
+            ''
+        )
+    );
+
+
+    /*************************/
+    /* LTI 1.3 settings.
+    /*************************/
+
+    // Heading.
+    $settings->add(
+        new admin_setting_heading('block_onlinesurvey/setting_heading_lti13',
+            get_string('setting_heading_lti13', 'block_onlinesurvey', null, true),
+            get_string('setting_heading_lti13_desc', 'block_onlinesurvey', null, true)
+        )
+    );
+
+    $keyoptions = [
+        LTI_RSA_KEY => get_string('keytype_rsa', 'lti'),
+        LTI_JWK_KEYSET => get_string('keytype_keyset', 'lti'),
+    ];
+    $setting = new admin_setting_configselect(
+        'block_onlinesurvey/lti_keytype',
+        get_string('keytype', 'lti', null, true),
+        get_string('keytype_help', 'lti', null, true) .
+        get_string('onlyrequiredforlti13', 'block_onlinesurvey'),
+        LTI_JWK_KEYSET,
+        $keyoptions
+    );
+    $setting->set_updatedcallback('block_onlinesurvey_settings_updated');
+    $settings->add($setting);
+
+    $setting =
+        new admin_setting_configtextarea(
+            'block_onlinesurvey/lti_publickey',
+            get_string('publickey', 'lti', null, true),
+            get_string('publickey_help', 'block_onlinesurvey', null, true) .
+            get_string('onlyrequiredforlti13', 'block_onlinesurvey'),
+            '',
+            PARAM_TEXT
+    );
+    $setting->set_updatedcallback('block_onlinesurvey_settings_updated');
+    $settings->add($setting);
+
+    $setting =
+        new admin_setting_configtext(
+            'block_onlinesurvey/lti_initiatelogin',
+            get_string('initiatelogin', 'lti', null, true),
+            get_string('initiatelogin_help', 'lti', null, true) . '<br>' .
+            get_string('setting_lti_initiatelogin_desc', 'block_onlinesurvey') .
+            get_string('onlyrequiredforlti13', 'block_onlinesurvey'),
+            '',
+            PARAM_URL,
+            64
+        );
+    $setting->set_updatedcallback('block_onlinesurvey_settings_updated');
+    $settings->add($setting);
+
+    $setting =
+        new admin_setting_configtextarea(
+            'block_onlinesurvey/lti_redirectionuris',
+            get_string('redirectionuris', 'lti', null, true),
+            get_string('redirectionuris_help', 'lti', null, true) . '<br>' .
+            get_string('setting_lti_initiatelogin_desc', 'block_onlinesurvey') .
+            get_string('onlyrequiredforlti13', 'block_onlinesurvey'),
+            '',
+            PARAM_TEXT,
+            60,
+            3
+        );
+    $setting->set_updatedcallback('block_onlinesurvey_settings_updated');
+    $settings->add($setting);
+
+    $typeconfig = block_onlinesurvey_get_lti_type_config();
+    if ($typeconfig) {
+        $displayitems = ['publickeyset', 'accesstoken', 'authrequest'];
+        foreach($displayitems as $displayitem) {
+            if (array_key_exists($displayitem, $typeconfig) && !empty($typeconfig[$displayitem])) {
+                $setting =
+                    new admin_setting_configempty(
+                        'block_onlinesurvey/lti_' . $displayitem,
+                        get_string($displayitem, 'block_onlinesurvey', null, true),
+                        $typeconfig[$displayitem]
+                    );
+                $settings->add($setting);
+            }
+        }
+    }
+    $deploymentid = block_onlinesurvey_get_lti_typeid();
+    if (!empty($deploymentid)) {
+        $settings->add(
+            new admin_setting_configempty(
+                'block_onlinesurvey/lti_deploymentid',
+                get_string('deploymentid', 'block_onlinesurvey', null, true),
+                $deploymentid
+            )
+        );
+        $clientid = block_onlinesurvey_get_clientid($deploymentid);
+        if (!empty($clientid)) {
+            $settings->add(
+                new admin_setting_configempty(
+                    'block_onlinesurvey/lti_clientid',
+                    get_string('clientid', 'block_onlinesurvey', null, true),
+                    $clientid
+                )
+            );
+        }
+    }
 
     /*************************/
     /* Expert settings.

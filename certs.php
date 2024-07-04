@@ -15,18 +15,25 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Plugin "Evaluations (evasys)"
+ * This file returns an array of available public keys
  *
- * @package    block_onlinesurvey
- * @copyright  2018 Soon Systems GmbH on behalf of evasys GmbH
+ * @package    mod_lti
+ * @copyright  2019 Stephen Vickers
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+use block_onlinesurvey\local\ltiopenid\jwks_helper;
 
-defined('MOODLE_INTERNAL') || die();
+define('NO_DEBUG_DISPLAY', true);
+define('NO_MOODLE_COOKIES', true);
 
-$plugin->version = 2024040903;
-$plugin->component = 'block_onlinesurvey';
-$plugin->release = 'v4.0-r2';
-$plugin->requires = 2022041900;
-$plugin->supported = [400, 403];
-$plugin->maturity = MATURITY_STABLE;
+require_once(__DIR__ . '/../../config.php');
+require_once(__DIR__ . '/classes/local/ltiopenid/jwks_helper.php');
+
+@header('Content-Type: application/json; charset=utf-8');
+try {
+    $jwks = jwks_helper::get_jwks();
+    $json = json_encode($jwks, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
+    echo $json;
+} catch(Exception $e) {
+    // nothing here yet
+}
