@@ -134,8 +134,8 @@ evasys GmbH\
 www.evasys.de
 
 Current maintainer and developer:\
-Moodle partner lern.link\
-www.lernlink.de
+ICON Vernetzte Kommunikation GmbH\
+www.iconnewmedia.de
 
 
 Credits
