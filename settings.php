@@ -421,6 +421,19 @@ if ($ADMIN->fulltree) {
 
     $setting =
         new admin_setting_configtext(
+            'block_onlinesurvey/lti_publickeyset',
+            get_string('publickeyset', 'lti', null, true),
+            get_string('publickeyset_help', 'block_onlinesurvey', null, true) .
+            get_string('onlyrequiredforlti13', 'block_onlinesurvey'),
+            '',
+            PARAM_TEXT,
+            80
+        );
+    $setting->set_updatedcallback('block_onlinesurvey_settings_updated');
+    $settings->add($setting);
+
+    $setting =
+        new admin_setting_configtext(
             'block_onlinesurvey/lti_initiatelogin',
             get_string('initiatelogin', 'lti', null, true),
             get_string('initiatelogin_help', 'lti', null, true) . '<br>' .
@@ -428,7 +441,7 @@ if ($ADMIN->fulltree) {
             get_string('onlyrequiredforlti13', 'block_onlinesurvey'),
             '',
             PARAM_URL,
-            64
+            80
         );
     $setting->set_updatedcallback('block_onlinesurvey_settings_updated');
     $settings->add($setting);
@@ -449,8 +462,21 @@ if ($ADMIN->fulltree) {
     $settings->add($setting);
 
     $typeconfig = block_onlinesurvey_get_lti_type_config();
+
     if ($typeconfig) {
-        $displayitems = ['publickeyset', 'accesstoken', 'authrequest'];
+        $type = block_onlinesurvey_get_lti_type();
+        if ($type) {
+            $urls = block_onlinesurvey_get_tool_type_urls($type);
+            $setting =
+                new admin_setting_configempty(
+                    'block_onlinesurvey/publickeysetplatform',
+                    get_string('publickeysetplatform', 'block_onlinesurvey', null, true),
+                    $urls['publickeysetplatform']
+                );
+            $settings->add($setting);
+        }
+
+        $displayitems = ['accesstoken', 'authrequest'];
         foreach($displayitems as $displayitem) {
             if (array_key_exists($displayitem, $typeconfig) && !empty($typeconfig[$displayitem])) {
                 $setting =
