@@ -549,6 +549,11 @@ function block_onlinesurvey_get_lti_content($config = null, $context = null, $co
             $context = context_system::instance();
         }
         if (empty($debuglaunch) || has_capability('block/onlinesurvey:view_debugdetails', $context)) {
+            foreach($parameter as &$value) {
+                if (is_object($value) || is_array($value)) {
+                    $value = json_encode($value);
+                }
+            }
             $lticontentstr .= lti_post_launch_html($parameter, $endpoint, $debuglaunch);
 
             if ($debuglaunch && has_capability('block/onlinesurvey:view_debugdetails', $context)) {
@@ -885,7 +890,11 @@ function block_onlinesurvey_lti_post_launch_html_curl($parameter, $endpoint, $co
     // Construct html for the launch parameters.
     foreach ($parameter as $key => $value) {
         $key = htmlspecialchars($key);
-        $value = htmlspecialchars($value);
+        if (is_string($value)) {
+            $value = htmlspecialchars($value);
+        } else {
+            $value = json_encode($value);
+        }
         if ($key != "ext_submit") {
             $fields[$key] = $value;
         }
@@ -1129,13 +1138,15 @@ function block_onlinesurvey_get_params()
     if (isset($config->typeid)) {
         $ltitype['id'] = $config->typeid;
         $type = lti_get_type($config->typeid);
-        $urls = block_onlinesurvey_get_tool_type_urls($type);
-        set_config('lti_publickeyset', $urls['publickeyset'], 'block_onlinesurvey');
-        set_config('lti_authrequest', $urls['authrequest'], 'block_onlinesurvey');
-        set_config('lti_accesstoken', $urls['accesstoken'], 'block_onlinesurvey');
-        $config->lti_publickeyset = $urls['publickeyset'];
-        $config->lti_authrequest = $urls['authrequest'];
-        $config->lti_accesstoken = $urls['accesstoken'];
+        if ($type) {
+            $urls = block_onlinesurvey_get_tool_type_urls($type);
+            set_config('lti_publickeyset', $urls['publickeyset'], 'block_onlinesurvey');
+            set_config('lti_authrequest', $urls['authrequest'], 'block_onlinesurvey');
+            set_config('lti_accesstoken', $urls['accesstoken'], 'block_onlinesurvey');
+            $config->lti_publickeyset = $urls['publickeyset'];
+            $config->lti_authrequest = $urls['authrequest'];
+            $config->lti_accesstoken = $urls['accesstoken'];
+        }
     }
     $configparams = [];
     foreach ($settings2config as $key) {
@@ -1204,6 +1215,9 @@ function block_onlinesurvey_get_launch_config()
 function block_onlinesurvey_get_accesstoken($typeid)
 {
     $type = lti_get_type($typeid);
+    if (!$type) {
+        return '';
+    }
     $urls = block_onlinesurvey_get_tool_type_urls($type);
     set_config('lti_accesstoken', $urls['accesstoken'], 'block_onlinesurvey');
     return $urls['accesstoken'];
@@ -1212,6 +1226,9 @@ function block_onlinesurvey_get_accesstoken($typeid)
 function block_onlinesurvey_get_authrequest($typeid)
 {
     $type = lti_get_type($typeid);
+    if (!$type) {
+        return '';
+    }
     $urls = block_onlinesurvey_get_tool_type_urls($type);
     set_config('lti_authrequest', $urls['authrequest'], 'block_onlinesurvey');
     return $urls['authrequest'];
