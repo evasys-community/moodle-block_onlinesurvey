@@ -892,8 +892,8 @@ function block_onlinesurvey_lti_post_launch_html_curl($parameter, $endpoint, $co
         $key = htmlspecialchars($key);
         if (is_string($value)) {
             $value = htmlspecialchars($value);
-//        } else {
-//            $value = json_encode($value);
+        } else {
+            $value = json_encode($value);
         }
         if ($key != "ext_submit") {
             $fields[$key] = $value;
