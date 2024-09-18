@@ -131,6 +131,7 @@ try {
         }
     }
     global $OUTPUT;
+    $data['css'] = $css;
     echo $OUTPUT->render_from_template('block_onlinesurvey/show_surveys', $data);
 } catch(Exception $e) {
     // nothing here yet - log the exception if you like, or output a message
