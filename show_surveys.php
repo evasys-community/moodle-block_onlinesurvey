@@ -62,14 +62,14 @@ try {
             $modalzoom = optional_param('modalZoom', 0, PARAM_INT);
 
             if ($config->presentation == BLOCK_ONLINESURVEY_PRESENTATION_BRIEF && !$modalzoom) {
-                $css[] = $CFG->wwwroot . '/blocks/onlinesurvey/style/block_onlinesurvey_iframe_compact.css';
+                $css[] = ['file' => $CFG->wwwroot . '/blocks/onlinesurvey/style/block_onlinesurvey_iframe_compact.css'];
             }
 
             if ($connectiontype == 'SOAP') {
-                $css[] = $CFG->wwwroot . '/blocks/onlinesurvey/style/block_onlinesurvey_iframe_detail_soap.css';
+                $css[] = ['file' => $CFG->wwwroot . '/blocks/onlinesurvey/style/block_onlinesurvey_iframe_detail_soap.css'];
             }
 
-            $css[] = $CFG->wwwroot . '/blocks/onlinesurvey/lib/fonts/font-awesome-4.7.0/css/font-awesome.min.css';
+            $css[] = ['file' => $CFG->wwwroot . '/blocks/onlinesurvey/lib/fonts/font-awesome-4.7.0/css/font-awesome.min.css'];
         } else {
             $error = get_string('error_userid_not_found', 'block_onlinesurvey') . '<br>';
         }
@@ -90,15 +90,10 @@ try {
             $title = format_string($config->blocktitle);
         }
     }
+    $data = [];
+    $data['title'] = $title;
 
-    echo '<html><head><title>' . $title . '</title>';
-    foreach ($css as $file) {
-        echo '<link rel="stylesheet" href="' . $file . '">';
-    }
-    if (!empty($config->additionalcss)) {
-        echo '<style>' . $config->additionalcss . '</style>';
-    }
-    echo '</head>';
+    $data['additionalcss'] = $config->additionalcss;
 
     $bodyclasses = array();
     if (isset($PAGE->theme->name)) {
@@ -109,20 +104,16 @@ try {
     } else {
         $bodyclasses[] = 'zoom_block';
     }
-    echo '<body class="' . implode(' ', $bodyclasses) . '">';
+    $data['bodyclasses'] = implode(',', $bodyclasses);
 
     if (!empty($error)) {
         $context = context_system::instance();
-        if (has_capability('moodle/site:config', $context)) {
-            if ($error) {
-                echo get_string('error_occured', 'block_onlinesurvey', $error);
-            }
-        } else if ($debugmode) {
-            echo get_string('error_occured', 'block_onlinesurvey', $error);
+        if (has_capability('moodle/site:config', $context) || $debugmode) {
+            $data['error'] = $error;
         }
     } else {
         if ($connectiontype == 'SOAP') {
-            block_onlinesurvey_get_soap_content($config, $moodleusername, $moodleemail, $modalzoom);
+            $data['content'] =  block_onlinesurvey_get_soap_content($config, $moodleusername, $moodleemail, $modalzoom);
         } else if ($connectiontype == 'LTI' || $connectiontype == LTI_VERSION_1P3) {
             if ($connectiontype === LTI_VERSION_1P3) {
                 if (!isset($SESSION->lti_initiatelogin_status)) {
@@ -136,11 +127,11 @@ try {
                     unset($SESSION->lti_initiatelogin_status);
                 }
             }
-            block_onlinesurvey_get_lti_content($config, $context, $course, $modalzoom);
+            $data['content'] = block_onlinesurvey_get_lti_content($config, $context, $course, $modalzoom);
         }
     }
-    echo '</body>';
-    echo '</html>';
+    global $OUTPUT;
+    echo $OUTPUT->render_from_template('block_onlinesurvey/show_surveys', $data);
 } catch(Exception $e) {
     // nothing here yet - log the exception if you like, or output a message
 }

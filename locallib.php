@@ -202,7 +202,7 @@ function block_onlinesurvey_get_soap_content($config = null, $moodleusername = '
         }
     }
 
-    echo $soapcontentstr;
+    return $soapcontentstr;
 }
 
 /**
@@ -463,7 +463,7 @@ function block_onlinesurvey_get_lti_content($config = null, $context = null, $co
     global $CFG, $SESSION;
 
     require_once($CFG->dirroot . '/mod/lti/locallib.php');
-
+    $lticontentstr = '';
     if (empty($config)) {
         $config = block_onlinesurvey_get_launch_config();
     }
@@ -482,9 +482,7 @@ function block_onlinesurvey_get_lti_content($config = null, $context = null, $co
     try {
         $content2 = block_onlinesurvey_lti_post_launch_html_curl($parameter, $endpoint, $config);
     } catch (Exception $e) {
-        $lticontentstr = $e->getMessage();
-        echo $lticontentstr;
-        return '';
+        return $e->getMessage();
     }
 
     // Search in $content2 for e.g.: <div class="cell participate centered">.
@@ -505,7 +503,7 @@ function block_onlinesurvey_get_lti_content($config = null, $context = null, $co
 
             if (!empty($matches) && !empty($config->survey_show_popupinfo)) {
                 // Check to display dialog is (also) done in JS function "evasysGeneratePopupinfo".
-                echo '<script language="JavaScript">if (typeof window.parent.evasysGeneratePopupinfo == "function") { ' .
+                $lticontentstr .= '<script language="JavaScript">if (typeof window.parent.evasysGeneratePopupinfo == "function") { ' .
                     'window.parent.evasysGeneratePopupinfo(); }</script>';
             }
         }
@@ -562,7 +560,7 @@ function block_onlinesurvey_get_lti_content($config = null, $context = null, $co
         }
     }
 
-    echo $lticontentstr;
+    return $lticontentstr;
 }
 
 /**

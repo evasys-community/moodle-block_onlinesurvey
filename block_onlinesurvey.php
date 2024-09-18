@@ -164,7 +164,7 @@ class block_onlinesurvey extends block_base {
      * @return void
      */
     public function get_content() {
-        global $CFG, $USER, $PAGE, $SESSION;
+        global $CFG, $USER, $OUTPUT, $SESSION;
         if (isset($SESSION->lti_state)) {
             block_onlinesurvey_remove_outdated_cookies($SESSION->lti_state);
         }
@@ -184,60 +184,37 @@ class block_onlinesurvey extends block_base {
         $this->content = new stdClass();
         $this->content->text = '';
         if ($this->moodleuserid && $this->isconfigured) {
+            $data = [];
+            $data['showspinner'] = $config->show_spinner;
 
             $context = $this->page->context;
             $course = $this->page->course;
             $urlparams = 'ctxid='.$context->id.'&cid='.$course->id;
             $url = $CFG->wwwroot.'/blocks/onlinesurvey/show_surveys.php?'.$urlparams;
 
-            if ($config->show_spinner) {
-                $this->content->text .= '<div id="block_onlinesurvey_surveys_content" class="block_onlinesurvey_is-loading">';
-                $this->content->text .= '<div class="block_onlinesurvey_surveys_loading">'.
-                        '<div class="block_onlinesurvey_lds-spinner"><div></div><div></div><div></div><div></div><div></div><div>'.
-                        '</div><div></div><div></div><div></div><div></div><div></div><div></div></div></div>';
-            } else {
-                $this->content->text .= '<div id="block_onlinesurvey_surveys_content">';
-            }
-
             if ($config->connectiontype == 'LTI') {
-                $connectionclass = 'block_onlinesurvey_lti';
+                $data['connectionclass'] = 'block_onlinesurvey_lti';
             } else if ($config->connectiontype == 'SOAP') {
-                $connectionclass = 'block_onlinesurvey_soap';
+                $data['connectionclass'] = 'block_onlinesurvey_soap';
             }
 
             if ($config->presentation == 'brief') {
-                $presentationclass = 'block_onlinesurvey_compact';
+                $data['presentationclass'] = 'block_onlinesurvey_compact';
             } else if ($config->presentation == 'detailed') {
-                $presentationclass = 'block_onlinesurvey_detailed';
+                $data['presentationclass'] = 'block_onlinesurvey_detailed';
             }
 
             // Testing reveals that the iframe requires the permissions "allow-same-origin allow-scripts",
             // hence the sandbox attribute can not be used.
-            $source = $config->show_spinner ? 'about:blank' : $url;
-            $this->content->text .= '<iframe id="block_onlinesurvey_contentframe" '.
-                    'class="'.$connectionclass.' '.$presentationclass.'" src="'.$source.'"></iframe>';
-
+            $data['source'] = $config->show_spinner ? 'about:blank' : $url;
+            $data['detailed'] =  $config->presentation == 'detailed';
+            $data['zoom'] = $config->offer_zoom == true;
             // If we are showing detailed mode.
-            if ($config->presentation == 'detailed') {
-                // If enabled, add the 'All surveys' button as directly visible.
-                if ($config->offer_zoom == true) {
-                    $this->content->text .= '<div class="block_onlinesurvey_allsurveys"><button class="btn btn-secondary" ' .
-                            'onClick="event.stopPropagation(); '.
-                            'document.getElementById(\'block_onlinesurvey_surveys_content\').click();">' .
-                            get_string('allsurveys', 'block_onlinesurvey') . '</button></div>';
-
-                    // Otherwise, add the 'Zoom survey list' button as hidden.
-                } else {
-                    $this->content->text .= '<div class="block_onlinesurvey_allsurveys"><button class="btn btn-secondary" ' .
-                            'onClick="event.stopPropagation(); '.
-                            'document.getElementById(\'block_onlinesurvey_surveys_content\').click();">' .
-                            get_string('zoomsurveylist', 'block_onlinesurvey') . '</button></div>';
-                    $this->page->requires->css('/blocks/onlinesurvey/style/block_onlinesurvey_offerzoom.css');
-                }
+            if ($config->presentation == 'detailed' && $config->offer_zoom != true) {
+                $this->page->requires->css('/blocks/onlinesurvey/style/block_onlinesurvey_offerzoom.css');
             }
 
-            $this->content->text .= '</div>';
-
+            $this->content->text = $OUTPUT->render_from_template('block_onlinesurvey/block_content', $data);
             if ($config->survey_popupinfo_title != '') {
                 $popupinfotitle = format_string($config->survey_popupinfo_title);
             } else {

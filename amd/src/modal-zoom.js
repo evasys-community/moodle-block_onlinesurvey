@@ -1,4 +1,5 @@
-define(['core/templates', 'core/str'], function(templates) {
+define(['jquery', 'core/templates', 'core/modal', 'core/modal_factory', 'core/modal_events'],
+    function($, templates, Modal, ModalFactory, ModalEvents) {
 
     var modalTitle = '';
     var modalZoomSelector = '#block_onlinesurvey_surveys_content';
@@ -23,8 +24,9 @@ define(['core/templates', 'core/str'], function(templates) {
 
         var originalIframe = modalZoomElem.querySelector('iframe');
 
+        var modalPromise = null;
         var templatePromise = null;
-
+        modalPromise = ModalFactory.create({type: ModalFactory.types.DEFAULT, large: true, title: modalTitle});
         if (originalIframe !== null) {
             // Open from Moodle page, i.e., onlinesurvey iframe exists.
             templatePromise = templates.render('block_onlinesurvey/modal-iframe', {
@@ -42,43 +44,15 @@ define(['core/templates', 'core/str'], function(templates) {
             });
         }
 
-        templatePromise.done(function(source) {
-
-            var div = document.createElement('div');
-            div.innerHTML = source;
-
-            var modalContainer = div.firstChild;
-
-            document.body.insertBefore(modalContainer, document.body.firstChild);
-            document.body.className += ' block_onlinesurvey_custom-modal-open';
-
-            var closeCallback = function() {
-
-                document.body.className = document.body.className.replace(' block_onlinesurvey_custom-modal-open', '');
-
+        $.when(templatePromise, modalPromise).done(function(source, iframemodal) {
+            iframemodal.setBody(source);
+            iframemodal.getModal().addClass('modal-xl');
+            iframemodal.getRoot().on(ModalEvents.hidden, function() {
+                // Refresh when hidden.
                 doRefresh();
-
-                modalContainer.className += ' fading';
-
-                setTimeout(function() {
-                    if (modalContainer.parentNode !== null) {
-                        modalContainer.parentNode.removeChild(modalContainer);
-                    }
-                }, 250);
-            };
-
-            modalContainer.querySelector('.block_onlinesurvey_custom-modal_close-button')
-                .addEventListener('click', function(e) {
-                    e.preventDefault();
-                    return closeCallback(e);
-                });
-
-            modalContainer.addEventListener('click', function(e) {
-                e.preventDefault();
-
-                return e.target !== modalContainer ?
-                    false : closeCallback(e);
             });
+
+            iframemodal.show();
         });
     };
 
@@ -112,46 +86,21 @@ define(['core/templates', 'core/str'], function(templates) {
                 // Save data to sessionStorage.
                 sessionStorage.setItem('onlinesurvey_popupinfo', userlogintime);
 
-                var templatePromise = templates.render('block_onlinesurvey/popupinfo', {
-                    title: popupinfotitle,
-                    content: popupinfocontent
-                });
-
-                templatePromise.done(function(source) {
-
-                    var div = document.createElement('div');
-                    div.innerHTML = source;
-
-                    var modalContainer = div.firstChild;
-
-                    document.body.insertBefore(modalContainer, document.body.firstChild);
-                    document.body.className += ' block_onlinesurvey_custom-modal-open popupinfo';
-
-                    var closeCallback = function() {
-
-                        document.body.className = document.body.className.replace(' block_onlinesurvey_custom-modal-open', '');
-
-                        modalContainer.className += ' fading';
-
-                        setTimeout(function() {
-                            if (modalContainer.parentNode !== null) {
-                                modalContainer.parentNode.removeChild(modalContainer);
-                            }
-                        }, 250);
-                    };
-
-                    modalContainer.querySelector('.block_onlinesurvey_custom-modal_close-button')
-                    .addEventListener('click', function(e) {
-                        e.preventDefault();
-                        return closeCallback(e);
+                var modalPromise = ModalFactory.create(
+                    {
+                        type:ModalFactory.types.DEFAULT,
+                        body: popupinfocontent,
+                        title: popupinfotitle,
+                        large: true
+                    }
+                );
+                $.when(modalPromise).then(function(popupmodal) {
+                    popupmodal.getModal().addClass('modal-xl');
+                    popupmodal.getRoot().on(ModalEvents.hidden, function() {
+                        // Refresh when hidden.
+                        doRefresh();
                     });
-
-                    modalContainer.addEventListener('click', function(e) {
-                        e.preventDefault();
-
-                        return e.target !== modalContainer ?
-                                false : closeCallback(e);
-                    });
+                    popupmodal.show();
                 });
             }
         }
