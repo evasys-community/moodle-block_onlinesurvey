@@ -131,6 +131,7 @@ try {
         }
     }
     global $OUTPUT;
+    $css[] = ['file' => $CFG->wwwroot . '/blocks/onlinesurvey/style/block_onlinesurvey_modal-zoom.css'];
     $data['css'] = $css;
     echo $OUTPUT->render_from_template('block_onlinesurvey/show_surveys', $data);
 } catch(Exception $e) {
