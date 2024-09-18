@@ -520,8 +520,6 @@ function block_onlinesurvey_get_lti_content($config = null, $context = null, $co
         }
     }
 
-    $lticontentstr = '';
-
     if ($config->survey_hide_empty && $surveycount > 0 && !$modalzoom) {
         $lticontentstr .= block_onlinesurvey_viewscript();
     }
