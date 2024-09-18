@@ -45,8 +45,7 @@ require_once($CFG->dirroot . '/mod/lti/locallib.php');
  * @param int $modalzoom indicates if the modal list popup is open or not
  * @return string
  */
-function block_onlinesurvey_get_soap_content($config = null, $moodleusername = '', $moodleemail = '', $modalzoom = 0)
-{
+function block_onlinesurvey_get_soap_content($config = null, $moodleusername = '', $moodleemail = '', $modalzoom = 0) {
     global $SESSION;
 
     $surveyurl = 'indexstud.php?type=html&user_tan=';
@@ -212,8 +211,7 @@ function block_onlinesurvey_get_soap_content($config = null, $moodleusername = '
  * @param int $surveycount number of surveys
  * @return string
  */
-function block_onlinesurvey_createsummary($surveycount)
-{
+function block_onlinesurvey_createsummary($surveycount) {
     $offerzoom = get_config('block_onlinesurvey', 'offer_zoom');
     if ($surveycount == 0 && $offerzoom == false) {
         $contentstr = "<div id=\"block_onlinesurvey_area\" class=\"block_onlinesurvey_area\">";
@@ -277,8 +275,7 @@ function block_onlinesurvey_createsummary($surveycount)
  *
  * @return string
  */
-function block_onlinesurvey_viewscript()
-{
+function block_onlinesurvey_viewscript() {
     return '<script language="JavaScript">' . "\n" .
         '   var hiddenelements = parent.document.getElementsByClassName("block_onlinesurvey");' . "\n" .
         '   for (var i = 0; i < hiddenelements.length; i++) {' . "\n" .
@@ -292,8 +289,7 @@ function block_onlinesurvey_viewscript()
  *
  * @return string
  */
-function block_onlinesurvey_surveybuttonscript()
-{
+function block_onlinesurvey_surveybuttonscript() {
     return '<script language="JavaScript">' . "\n" .
         '   var hiddenelements = parent.document.getElementsByClassName("block_onlinesurvey_allsurveys");' . "\n" .
         '   for (var i = 0; i < hiddenelements.length; i++) {' . "\n" .
@@ -308,8 +304,7 @@ function block_onlinesurvey_surveybuttonscript()
  * @param int $surveycount The number of open surveys.
  * @return string
  */
-function block_onlinesurvey_highlightscript($surveycount)
-{
+function block_onlinesurvey_highlightscript($surveycount) {
     if ($surveycount > 0 && $surveycount <= 3) {
         $surveycountclass = 'block_onlinesurvey_surveycount_' . $surveycount;
     }
@@ -331,8 +326,7 @@ function block_onlinesurvey_highlightscript($surveycount)
  *
  * @return string
  */
-function block_onlinesurvey_donthighlightscript()
-{
+function block_onlinesurvey_donthighlightscript() {
     return '<script language="JavaScript">' . "\n" .
         '   var parentelements = parent.document.getElementsByClassName("block_onlinesurvey");' . "\n" .
         '   for (var i = 0; i < parentelements.length; i++) {' . "\n" .
@@ -347,8 +341,7 @@ function block_onlinesurvey_donthighlightscript()
  * @param object $soapconfigobj Object containing data for SOAP request.
  * @return object Object containing surveys if present and errors or warnings of the onlinesurvey_soap_client
  */
-function block_onlinesurvey_get_surveys($soapconfigobj)
-{
+function block_onlinesurvey_get_surveys($soapconfigobj) {
     $retval = new stdClass();
     $retval->error = null;
     $retval->warning = null;
@@ -407,8 +400,7 @@ function block_onlinesurvey_get_surveys($soapconfigobj)
  * @param Array|object|string $err
  * @return string human readable representation of an error
  */
-function block_onlinesurvey_handle_error($err)
-{
+function block_onlinesurvey_handle_error($err) {
     $error = '';
     if (is_array($err)) {
         // Configuration validation error.
@@ -430,8 +422,7 @@ function block_onlinesurvey_handle_error($err)
  * @param object $e should be an exception
  * @return string formatted error message of the excetion
  */
-function block_onlinesurvey_print_exceptions($e)
-{
+function block_onlinesurvey_print_exceptions($e) {
     if (get_class($e) == "SoapFault") {
         $msg = "{$e->faultstring}";
 
@@ -468,9 +459,9 @@ function block_onlinesurvey_print_exceptions($e)
  * @param int $modalzoom indicates if the modal list popup is open or not
  * @return string
  */
-function block_onlinesurvey_get_lti_content($config = null, $context = null, $course = null, $modalzoom = 0, $foruserid = 0)
-{
+function block_onlinesurvey_get_lti_content($config = null, $context = null, $course = null, $modalzoom = 0, $foruserid = 0) {
     global $CFG, $SESSION;
+
     require_once($CFG->dirroot . '/mod/lti/locallib.php');
 
     if (empty($config)) {
@@ -478,7 +469,11 @@ function block_onlinesurvey_get_lti_content($config = null, $context = null, $co
     }
 
     $courseid = (!empty($course->id)) ? $course->id : 1;
-    list($endpoint, $parameter) = block_onlinesurvey_lti_get_launch_data($config, '', '', $foruserid);
+    if ($config->connectiontype == LTI_VERSION_1P3) {
+        list($endpoint, $parameter) = block_onlinesurvey_lti_get_launch_data($config, '', '', $foruserid);
+    } else {
+        list($endpoint, $parameter) = block_onlinesurvey_get_launch_data($config, $context, $course);
+    }
     $debuglaunch = $config->survey_debug;
 
     $surveycount = 0;
@@ -505,6 +500,7 @@ function block_onlinesurvey_get_lti_content($config = null, $context = null, $co
 
         if (!empty($re)) {
             $surveycount = preg_match_all($re, $content2, $matches, PREG_SET_ORDER, 0);
+
             $SESSION->block_onlinesurvey_curl_checked = true;
 
             if (!empty($matches) && !empty($config->survey_show_popupinfo)) {
@@ -567,6 +563,118 @@ function block_onlinesurvey_get_lti_content($config = null, $context = null, $co
     }
 
     echo $lticontentstr;
+}
+
+/**
+ * Return the endpoint and parameter for lti request based on the block settings.
+ * This function uses '/mod/lti/locallib.php'.
+ * @param string $config block settings of "block_onlinesurvey"
+ * @param string $context optional context for LTI request - not yet supported by LTI provider
+ * @param string $course optional course for LTI request - not yet supported by LTI provider
+ * @return multitype:string
+ */
+function block_onlinesurvey_get_launch_data($config = null, $context = null, $course = null) {
+    global $CFG, $PAGE;
+
+    require_once($CFG->dirroot.'/mod/lti/locallib.php');
+
+    if (empty($config)) {
+        $config = get_config("block_onlinesurvey");
+    }
+    // Default the organizationid if not specified.
+    if (empty($config->lti_tool_consumer_instance_guid)) {
+        $urlparts = parse_url($CFG->wwwroot);
+        $config->lti_tool_consumer_instance_guid = $urlparts['host'];
+    }
+
+    $key = '';
+    if (!empty($config->lti_password)) {
+        $secret = $config->lti_password;
+    } else if (is_array($config) && !empty($config['lti_password'])) {
+        $secret = $config['lti_password'];
+    } else {
+        $secret = '';
+    }
+
+    $endpoint = !empty($config->lti_url) ? $config->lti_url : $config['lti_url'];
+    $endpoint = trim($endpoint);
+
+    // If the current request is using SSL and a secure tool URL is specified, use it.
+    if (lti_request_is_using_ssl() && !empty($config->securetoolurl)) {
+        $endpoint = trim($config->securetoolurl);
+    }
+
+    // If SSL is forced, use the secure tool url if specified. Otherwise, make sure https is on the normal launch URL.
+    if (isset($config->forcessl) && ($config->forcessl == '1')) {
+        if (!empty($config->securetoolurl)) {
+            $endpoint = trim($config->securetoolurl);
+        }
+
+        $endpoint = lti_ensure_url_is_https($endpoint);
+    } else {
+        if (!strstr($endpoint, '://')) {
+            $endpoint = 'http://' . $endpoint;
+        }
+    }
+
+    $orgid = $config->lti_tool_consumer_instance_guid;
+
+    if (empty($course)) {
+        $course = $PAGE->course;
+    }
+
+    $allparams = block_onlinesurvey_build_request_lti($config, $course);
+
+    if (!isset($config->id)) {
+        $config->id = null;
+    }
+    $requestparams = $allparams;
+    $requestparams = array_merge($requestparams, lti_build_standard_message($config, $orgid, false));
+    $customstr = '';
+    if (isset($config->lti_customparameters)) {
+        $customstr = $config->lti_customparameters;
+    }
+
+    // The function 'lti_build_custom_parameters' expects some parameters that are not part of the block setting -
+    // so we build "dummys".
+    $toolproxy = new stdClass();
+    $tool = new stdClass();
+    $tool->ltiversion = LTI_VERSION_1;
+    $tool->parameter = '';
+    $tool->enabledcapability = array();
+    $instance = null;
+    $instructorcustomstr = null;
+
+    $requestparams = array_merge($requestparams, lti_build_custom_parameters($toolproxy, $tool, $instance, $allparams, $customstr,
+        $instructorcustomstr, false));
+
+    $target = 'iframe';
+    if (!empty($target)) {
+        $requestparams['launch_presentation_document_target'] = $target;
+    }
+
+    // Consumer key currently not used -> $key can be '' -> check "(true or !empty(key))".
+    if ((true or !empty($key)) && !empty($secret)) {
+        $parms = lti_sign_parameters($requestparams, $endpoint, "POST", $key, $secret);
+
+        $endpointurl = new \moodle_url($endpoint);
+        $endpointparams = $endpointurl->params();
+
+        // Strip querystring params in endpoint url from $parms to avoid duplication.
+        if (!empty($endpointparams) && !empty($parms)) {
+            foreach (array_keys($endpointparams) as $paramname) {
+                if (isset($parms[$paramname])) {
+                    unset($parms[$paramname]);
+                }
+            }
+        }
+    } else {
+        // If no key and secret, do the launch unsigned.
+        $returnurlparams['unsigned'] = '1';
+        $parms = $requestparams;
+    }
+
+    return array($endpoint, $parms);
 }
 
 /**
@@ -822,8 +930,7 @@ function block_onlinesurvey_build_request_lti($config, $course, $messagetype, $f
  * @param object $config block settings of "block_onlinesurvey"
  * @return string A role string suitable for passing with an LTI launch
  */
-function block_onlinesurvey_get_ims_roles($user, $config)
-{
+function block_onlinesurvey_get_ims_roles($user, $config) {
     global $DB;
 
     $roles = array();
@@ -881,8 +988,7 @@ function block_onlinesurvey_get_ims_roles($user, $config)
  * @param object $config the plugin configuration
  * @return string result of the curl LTI request
  */
-function block_onlinesurvey_lti_post_launch_html_curl($parameter, $endpoint, $config)
-{
+function block_onlinesurvey_lti_post_launch_html_curl($parameter, $endpoint, $config) {
     global $SESSION, $USER;
     // Set POST variables.
     $fields = array();
@@ -934,6 +1040,7 @@ function block_onlinesurvey_lti_post_launch_html_curl($parameter, $endpoint, $co
 
     if ($errornumber = $curl->get_errno()) {
         $msgoutput = get_string('error_survey_curl_timeout_msg', 'block_onlinesurvey');
+
         $context = context_system::instance();
         if (has_capability('block/onlinesurvey:view_debugdetails', $context)) {
             if (!empty($msgoutput)) {
