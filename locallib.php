@@ -840,9 +840,10 @@ function block_onlinesurvey_lti_get_launch_data($config = null, $nonce = '', $me
  * @param object $config block settings of "block_onlinesurvey"
  * @param object $course course that is used for some context attributes
  * @param string $messagetype LTI Message Type for this launch
+ * @param int $foruserid
  * @return multitype:string NULL
  */
-function block_onlinesurvey_build_request_lti($config, $course, $messagetype, $foruserid = 0)
+function block_onlinesurvey_build_request_lti($config, $course, $messagetype = null, $foruserid = 0)
 {
     global $USER;
 
