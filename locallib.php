@@ -869,10 +869,10 @@ function block_onlinesurvey_build_request_lti($config, $course, $messagetype = n
 
     // E-mail address is evaluated in EVERY case, even if it is decided to use the Username instead.
     $requestparams['lis_person_contact_email_primary'] = $USER->email;
-    $requestparams['lis_person_name_given'] = $USER->firstname;
-    $requestparams['lis_person_name_family'] = $USER->lastname;
-    $requestparams['lis_person_name_full'] = fullname($USER);
-    $requestparams['ext_user_username'] = $USER->username;
+//    $requestparams['lis_person_name_given'] = $USER->firstname;
+//    $requestparams['lis_person_name_family'] = $USER->lastname;
+//    $requestparams['lis_person_name_full'] = fullname($USER);
+//    $requestparams['ext_user_username'] = $USER->username;
 
     // the data below will later be stored/converted in:
 //    $requestparams["https://purl.imsglobal.org/spec/lti/claim/resource_link"] = [
@@ -880,22 +880,22 @@ function block_onlinesurvey_build_request_lti($config, $course, $messagetype = n
 //        "description" => "",
 //        "id"=> "1",
 //    ];
-    $requestparams['resource_link_title'] = $config->blocktitle;
-    $requestparams['resource_link_description'] = $config->blocktitle;
+//    $requestparams['resource_link_title'] = $config->blocktitle;
+//    $requestparams['resource_link_description'] = $config->blocktitle;
     $requestparams['resource_link_id'] = block_onlinesurvey_get_lti_typeid();
 
 
     $requestparams['ext_lms'] = 'moodle-2';
-    $requestparams["https://purl.imsglobal.org/spec/lti/claim/ext"] = [
-        "user_username" => $USER->username,
-        "lms" => "moodle-2",
-    ];
+//    $requestparams["https://purl.imsglobal.org/spec/lti/claim/ext"] = [
+//        "user_username" => $USER->username,
+//        "lms" => "moodle-2",
+//    ];
 
-    $requestparams["email"] = $USER->email;
+//    $requestparams["email"] = $USER->email;
     if ($foruserid) {
         $requestparams['for_user_id'] = $foruserid;
     }
-    $requestparams["https://purl.imsglobal.org/spec/lti/claim/version"] = '1.3.0';
+//    $requestparams["https://purl.imsglobal.org/spec/lti/claim/version"] = '1.3.0';
 
     if (strpos($roles, 'Learner') !== false) {
         if ($config->useridentifier == 'email') {
