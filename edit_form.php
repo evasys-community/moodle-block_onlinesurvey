@@ -35,8 +35,14 @@ class block_onlinesurvey_edit_form extends block_edit_form
         $config = get_config('block_onlinesurvey');
         $lticonfig = block_onlinesurvey_get_lti_type_config();
         if ($config->connectiontype == LTI_VERSION_1P3 && $lticonfig) {
-            $displayitems = ['publickeyset', 'accesstoken', 'authrequest', 'deploymentid', 'clientid'];
+
+            $displayitems = ['publickeysetplatform', 'accesstoken', 'authrequest', 'deploymentid', 'clientid'];
             $headerdisplayedyet = false;
+            $type = block_onlinesurvey_get_lti_type();
+            if ($type) {
+                $urls = block_onlinesurvey_get_tool_type_urls($type);
+                $lticonfig['publickeysetplatform'] = $urls['publickeysetplatform'];
+            }
             $lticonfig['deploymentid'] = block_onlinesurvey_get_lti_typeid();
             $lticonfig['clientid'] = block_onlinesurvey_get_clientid($lticonfig['deploymentid']);
             foreach($displayitems as $displayitem) {

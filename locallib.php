@@ -1220,9 +1220,10 @@ function block_onlinesurvey_get_params()
         'lti_clientid',
         'lti_keytype',
         'lti_publickey',
-        'lti_publickeyset',
-        'lti_accesstoken',
-        'lti_authrequest',
+        'lti_publickeyset', // tool keyset
+        'publickeysetplatform', // platform keyset
+        'accesstoken',
+        'authrequest',
         'lti_initiatelogin',
         'lti_redirectionuris'
     ];
@@ -1243,10 +1244,10 @@ function block_onlinesurvey_get_params()
         $type = lti_get_type($config->typeid);
         if ($type) {
             $urls = block_onlinesurvey_get_tool_type_urls($type);
-            set_config('lti_publickeyset', $urls['publickeyset'], 'block_onlinesurvey');
-            set_config('lti_authrequest', $urls['authrequest'], 'block_onlinesurvey');
-            set_config('lti_accesstoken', $urls['accesstoken'], 'block_onlinesurvey');
-            $config->lti_publickeyset = $urls['publickeyset'];
+            set_config('publickeysetplatform', $urls['publickeyset'], 'block_onlinesurvey');
+            set_config('authrequest', $urls['authrequest'], 'block_onlinesurvey');
+            set_config('accesstoken', $urls['accesstoken'], 'block_onlinesurvey');
+            $config->publickeysetplatform = $urls['publickeyset'];
             $config->lti_authrequest = $urls['authrequest'];
             $config->lti_accesstoken = $urls['accesstoken'];
         }
@@ -1322,7 +1323,7 @@ function block_onlinesurvey_get_accesstoken($typeid)
         return '';
     }
     $urls = block_onlinesurvey_get_tool_type_urls($type);
-    set_config('lti_accesstoken', $urls['accesstoken'], 'block_onlinesurvey');
+    set_config('accesstoken', $urls['accesstoken'], 'block_onlinesurvey');
     return $urls['accesstoken'];
 }
 
@@ -1333,7 +1334,7 @@ function block_onlinesurvey_get_authrequest($typeid)
         return '';
     }
     $urls = block_onlinesurvey_get_tool_type_urls($type);
-    set_config('lti_authrequest', $urls['authrequest'], 'block_onlinesurvey');
+    set_config('authrequest', $urls['authrequest'], 'block_onlinesurvey');
     return $urls['authrequest'];
 }
 
@@ -1351,7 +1352,7 @@ function block_onlinesurvey_get_tool_type_urls(\stdClass $type) {
     );
 
     $url = new moodle_url('/blocks/onlinesurvey/certs.php');
-    $urls['publickeyset'] = $url->out();
+    $urls['publickeysetplatform'] = $url->out();
     $url = new moodle_url('/blocks/onlinesurvey/token.php');
     $urls['accesstoken'] = $url->out();
     $url = new moodle_url('/blocks/onlinesurvey/auth.php');
