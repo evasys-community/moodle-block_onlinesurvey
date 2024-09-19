@@ -465,25 +465,24 @@ if ($ADMIN->fulltree) {
 
     if ($typeconfig) {
         $type = block_onlinesurvey_get_lti_type();
-        if ($type) {
-            $urls = block_onlinesurvey_get_tool_type_urls($type);
-            $setting =
-                new admin_setting_configempty(
-                    'block_onlinesurvey/publickeysetplatform',
-                    get_string('publickeysetplatform', 'block_onlinesurvey', null, true),
-                    $urls['publickeysetplatform']
-                );
-            $settings->add($setting);
-        }
+
+        $urls = block_onlinesurvey_get_tool_type_urls($type);
+        $setting =
+            new admin_setting_configempty(
+                'block_onlinesurvey/publickeysetplatform',
+                get_string('publickeysetplatform', 'block_onlinesurvey', null, true),
+                $urls['publickeysetplatform']
+            );
+        $settings->add($setting);
 
         $displayitems = ['accesstoken', 'authrequest'];
         foreach($displayitems as $displayitem) {
-            if (array_key_exists($displayitem, $typeconfig) && !empty($typeconfig[$displayitem])) {
+            if (array_key_exists($displayitem, $urls) && !empty($urls[$displayitem])) {
                 $setting =
                     new admin_setting_configempty(
                         'block_onlinesurvey/lti_' . $displayitem,
                         get_string($displayitem, 'block_onlinesurvey', null, true),
-                        $typeconfig[$displayitem]
+                        $urls[$displayitem]
                     );
                 $settings->add($setting);
             }
