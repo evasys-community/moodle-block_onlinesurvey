@@ -1341,11 +1341,14 @@ function block_onlinesurvey_get_authrequest($typeid)
  *
  * @return array The urls of the tool type
  */
-function block_onlinesurvey_get_tool_type_urls(\stdClass $type) {
-    $urls = array(
-        'icon' => get_tool_type_icon_url($type),
-        'edit' => get_tool_type_edit_url($type),
-    );
+function block_onlinesurvey_get_tool_type_urls(\stdClass $type = null) {
+    $urls = [];
+    if (!is_null($type)) {
+        $urls = array(
+            'icon' => get_tool_type_icon_url($type),
+            'edit' => get_tool_type_edit_url($type),
+        );
+    }
 
     $url = new moodle_url('/blocks/onlinesurvey/certs.php');
     $urls['publickeysetplatform'] = $url->out();

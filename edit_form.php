@@ -39,12 +39,11 @@ class block_onlinesurvey_edit_form extends block_edit_form
             $displayitems = ['publickeysetplatform', 'accesstoken', 'authrequest', 'deploymentid', 'clientid'];
             $headerdisplayedyet = false;
             $type = block_onlinesurvey_get_lti_type();
-            if ($type) {
-                $urls = block_onlinesurvey_get_tool_type_urls($type);
-                $lticonfig['publickeysetplatform'] = $urls['publickeysetplatform'];
-                $lticonfig['authrequest'] = $urls['authrequest'];
-                $lticonfig['accesstoken'] = $urls['accesstoken'];
-            }
+            $urls = block_onlinesurvey_get_tool_type_urls($type);
+            $lticonfig['publickeysetplatform'] = $urls['publickeysetplatform'];
+            $lticonfig['authrequest'] = $urls['authrequest'];
+            $lticonfig['accesstoken'] = $urls['accesstoken'];
+
             $lticonfig['deploymentid'] = block_onlinesurvey_get_lti_typeid();
             $lticonfig['clientid'] = block_onlinesurvey_get_clientid($lticonfig['deploymentid']);
             foreach($displayitems as $displayitem) {
