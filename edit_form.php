@@ -47,7 +47,7 @@ class block_onlinesurvey_edit_form extends block_edit_form
             $lticonfig['deploymentid'] = block_onlinesurvey_get_lti_typeid();
             $lticonfig['clientid'] = block_onlinesurvey_get_clientid($lticonfig['deploymentid']);
             foreach($displayitems as $displayitem) {
-                if (array_key_exists($displayitem, $lticonfig) && !empty($lticonfig[$displayitem])) {
+                if (array_key_exists($displayitem, $lticonfig)) { // && !empty($lticonfig[$displayitem])) {
                     if (!$headerdisplayedyet) {
                         $mform->addElement('header', 'infoheader', get_string('lti13_infos', 'block_onlinesurvey'));
                         $headerdisplayedyet = true;
