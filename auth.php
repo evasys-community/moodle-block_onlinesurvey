@@ -119,7 +119,7 @@ if (isset($state)) {
 } else {
     $state = $SESSION->lti_state;
 }
-
+die('so far so good ' . __FILE__ . ' ' . __LINE__); // ICUNDO!
 if ($ok) {
     $config = get_config('block_onlinesurvey');
     require_login();
@@ -137,7 +137,7 @@ if ($ok) {
 }
 
 $params['lti1p3_' . $SESSION->lti_state] = $SESSION->lti_state;
-die('so far so good ' . __FILE__ . ' ' . __LINE__); // ICUNDO!
+
 if (isset($SESSION->lti_state)) {
     setcookie('lti1p3_' . $SESSION->lti_state, $SESSION->lti_state);
     block_onlinesurvey_remove_outdated_cookies($SESSION->lti_state);
