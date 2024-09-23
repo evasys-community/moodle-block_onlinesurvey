@@ -983,6 +983,7 @@ function block_onlinesurvey_get_ims_roles($user, $config) {
  */
 function block_onlinesurvey_lti_post_launch_html_curl($parameter, $endpoint, $config) {
     global $SESSION, $USER;
+    ob_get_clean(); // ICUNDO
     echo "TEST " . __FILE__ . " " . __LINE__; // ICUNDO
     exit; // ICUNDO
     // Set POST variables.
