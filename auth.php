@@ -125,8 +125,9 @@ if ($ok) {
     require_login();
     $context = context_system::instance();
     $lti = get_config('block_onlinesurvey');
-    die('so far so good ' . __FILE__ . ' ' . __LINE__); // ICUNDO!
+
     list($endpoint, $params) = block_onlinesurvey_lti_get_launch_data($lti, $nonce, $messagetype, $foruserid);
+    die('so far so good ' . __FILE__ . ' ' . __LINE__); // ICUNDO!
     $params['state'] = $state;
     setcookie('state', $state, ['samesite' => 'None']);
     setcookie('lti1p3_' . $state, $state, ['samesite' => 'None', 'path' => '/']);
