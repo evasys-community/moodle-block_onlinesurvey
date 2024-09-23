@@ -1029,6 +1029,8 @@ function block_onlinesurvey_lti_post_launch_html_curl($parameter, $endpoint, $co
         'TIMEOUT' => $timeout,
         'HTTPHEADER' => ['Cookie: ' . $cookies],
     );
+    echo "TEST " . __FILE__ . " " . __LINE__; // ICUNDO
+    exit; // ICUNDO
     $ret = $curl->get($endpoint, $fields, $curloptions);
 
     if ($errornumber = $curl->get_errno()) {
