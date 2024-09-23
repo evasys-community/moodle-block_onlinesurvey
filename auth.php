@@ -75,7 +75,7 @@ if ($ok && ($responsetype !== 'id_token')) {
 if ($ok) {
     $launchid = $ltimessagehint->launchid;
     list($messagetype, $foruserid, $titleb64, $textb64) = explode(',', $SESSION->$launchid, 7);
-    unset($SESSION->$launchid);
+//    unset($SESSION->$launchid); // ICUNDO!
     $config = lti_get_type_type_config($typeid);
     $ok = ($clientid === $config->lti_clientid);
     if (!$ok) {
@@ -115,7 +115,7 @@ if ($ok && !empty($prompt) && ($prompt !== 'none')) {
     $desc = 'Invalid prompt';
 }
 if (isset($state)) {
-    $SESSION->lti_state = $state;
+//    $SESSION->lti_state = $state; // ICUNDO!
 } else {
     $state = $SESSION->lti_state;
 }
@@ -141,10 +141,10 @@ if ($ok) {
 $params['lti1p3_' . $SESSION->lti_state] = $SESSION->lti_state;
 
 if (isset($SESSION->lti_state)) {
-    setcookie('lti1p3_' . $SESSION->lti_state, $SESSION->lti_state);
-    block_onlinesurvey_remove_outdated_cookies($SESSION->lti_state);
+//    setcookie('lti1p3_' . $SESSION->lti_state, $SESSION->lti_state); // ICUNDO!
+//    block_onlinesurvey_remove_outdated_cookies($SESSION->lti_state); // ICUNDO!
 }
-unset($SESSION->lti_message_hint);
+//unset($SESSION->lti_message_hint);  // ICUNDO!
 $config = block_onlinesurvey_get_launch_config();
 
 $return = block_onlinesurvey_lti_post_launch_html_curl($params, $redirecturi, $config);
