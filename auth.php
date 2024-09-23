@@ -126,7 +126,6 @@ if ($ok) {
     $context = context_system::instance();
     $lti = get_config('block_onlinesurvey');
     list($endpoint, $params) = block_onlinesurvey_lti_get_launch_data($lti, $nonce, $messagetype, $foruserid);
-    die('so far so good ' . __FILE__ . ' ' . __LINE__); // ICUNDO!
     $params['state'] = $state;
     setcookie('state', $state, ['samesite' => 'None']);
     setcookie('lti1p3_' . $state, $state, ['samesite' => 'None', 'path' => '/']);
@@ -174,6 +173,7 @@ if ($modalzoom || $config->presentation != BLOCK_ONLINESURVEY_PRESENTATION_BRIEF
 }
 file_put_contents($CFG->dataroot . '/block_onlinesurvey_auth_output.txt', $return, FILE_APPEND); // ICUNDO!
 send_headers('text/html; charset=utf-8'); // ICUNDO!
+die('so far so good ' . __FILE__ . ' ' . __LINE__); // ICUNDO!
 echo "TEST!"; // ICUNDO
 //echo $return; // ICUNDO!
 //$r = '<form action="' . $redirecturi . "\" name=\"ltiAuthForm\" id=\"ltiAuthForm\" " .
