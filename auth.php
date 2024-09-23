@@ -128,9 +128,9 @@ if ($ok) {
 
     list($endpoint, $params) = block_onlinesurvey_lti_get_launch_data($lti, $nonce, $messagetype, $foruserid);
     $params['state'] = $state;
-    setcookie('state', $state, ['samesite' => 'None']);
-    setcookie('lti1p3_' . $state, $state, ['samesite' => 'None', 'path' => '/']);
-    die('so far so good ' . __FILE__ . ' ' . __LINE__); // ICUNDO!
+//    setcookie('state', $state, ['samesite' => 'None']);
+//    setcookie('lti1p3_' . $state, $state, ['samesite' => 'None', 'path' => '/']);
+//    die('so far so good ' . __FILE__ . ' ' . __LINE__); // ICUNDO!
 } else {
     $params['error'] = $error;
     if (!empty($desc)) {
