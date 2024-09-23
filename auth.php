@@ -160,9 +160,9 @@ if ($modalzoom || $config->presentation != BLOCK_ONLINESURVEY_PRESENTATION_BRIEF
     $pathinfo = pathinfo($config->lti_url);
     $base = $pathinfo['dirname'];
     if (strpos($return, '<head>') !== false) {
-        $return = str_replace('<head>', '<head><base href="' . $base . '/" />', $return);
+//        $return = str_replace('<head>', '<head><base href="' . $base . '/" />', $return); // ICUNDO
     } else {
-        $return = str_replace('<html>', '<html><head><base href="' . $base . '/" /></head>', $return);
+//        $return = str_replace('<html>', '<html><head><base href="' . $base . '/" /></head>', $return); // ICUNDO
     }
     $return .= '<script>
 // make iframe height match its content
