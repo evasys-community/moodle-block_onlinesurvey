@@ -1031,7 +1031,7 @@ function block_onlinesurvey_lti_post_launch_html_curl($parameter, $endpoint, $co
         'HTTPHEADER' => ['Cookie: ' . $cookies],
     );
 
-    $ret = $curl->get($endpoint, $fields, $curloptions);
+    $ret = $curl->post($endpoint, $fields, $curloptions);
 
     if ($errornumber = $curl->get_errno()) {
         $msgoutput = get_string('error_survey_curl_timeout_msg', 'block_onlinesurvey');
