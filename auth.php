@@ -137,13 +137,14 @@ if ($ok) {
 }
 
 $params['lti1p3_' . $SESSION->lti_state] = $SESSION->lti_state;
+die('so far so good ' . __FILE__ . ' ' . __LINE__); // ICUNDO!
 if (isset($SESSION->lti_state)) {
     setcookie('lti1p3_' . $SESSION->lti_state, $SESSION->lti_state);
     block_onlinesurvey_remove_outdated_cookies($SESSION->lti_state);
 }
 unset($SESSION->lti_message_hint);
 $config = block_onlinesurvey_get_launch_config();
-die('so far so good ' . __FILE__ . ' ' . __LINE__); // ICUNDO!
+
 $return = block_onlinesurvey_lti_post_launch_html_curl($params, $redirecturi, $config);
 
 if ($config->presentation == BLOCK_ONLINESURVEY_PRESENTATION_BRIEF) {
