@@ -144,6 +144,7 @@ if (isset($SESSION->lti_state)) {
 unset($SESSION->lti_message_hint);
 $config = block_onlinesurvey_get_launch_config();
 $return = block_onlinesurvey_lti_post_launch_html_curl($params, $redirecturi, $config);
+die('so far so good ' . __FILE__ . ' ' . __LINE__); // ICUNDO!
 if ($config->presentation == BLOCK_ONLINESURVEY_PRESENTATION_BRIEF) {
     if (isset($SESSION->modalzoom)) {
         $modalzoom = $SESSION->modalzoom;
@@ -173,7 +174,7 @@ if ($modalzoom || $config->presentation != BLOCK_ONLINESURVEY_PRESENTATION_BRIEF
 }
 file_put_contents($CFG->dataroot . '/block_onlinesurvey_auth_output.txt', $return, FILE_APPEND); // ICUNDO!
 send_headers('text/html; charset=utf-8'); // ICUNDO!
-die('so far so good ' . __FILE__ . ' ' . __LINE__); // ICUNDO!
+
 echo "TEST!"; // ICUNDO
 //echo $return; // ICUNDO!
 //$r = '<form action="' . $redirecturi . "\" name=\"ltiAuthForm\" id=\"ltiAuthForm\" " .
