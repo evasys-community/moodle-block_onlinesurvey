@@ -119,12 +119,13 @@ if (isset($state)) {
 } else {
     $state = $SESSION->lti_state;
 }
-die('so far so good ' . __FILE__ . ' ' . __LINE__); // ICUNDO!
+
 if ($ok) {
     $config = get_config('block_onlinesurvey');
     require_login();
     $context = context_system::instance();
     $lti = get_config('block_onlinesurvey');
+    die('so far so good ' . __FILE__ . ' ' . __LINE__); // ICUNDO!
     list($endpoint, $params) = block_onlinesurvey_lti_get_launch_data($lti, $nonce, $messagetype, $foruserid);
     $params['state'] = $state;
     setcookie('state', $state, ['samesite' => 'None']);
