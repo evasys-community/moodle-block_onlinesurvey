@@ -37,7 +37,7 @@ if (!isloggedin() && empty($_POST['repost'])) {
     echo $output->footer();
     return;
 }
-
+die('so far so good ' . __FILE__ . ' ' . __LINE__); // ICUNDO!
 $scope = optional_param('scope', '', PARAM_TEXT);
 $responsetype = optional_param('response_type', '', PARAM_TEXT);
 $clientid = optional_param('client_id', '', PARAM_TEXT);
