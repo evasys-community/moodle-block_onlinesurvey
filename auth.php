@@ -171,6 +171,7 @@ if ($modalzoom || $config->presentation != BLOCK_ONLINESURVEY_PRESENTATION_BRIEF
 </script>';
 }
 file_put_contents($CFG->dataroot . '/block_onlinesurvey_auth_output.txt', $return, FILE_APPEND);
+send_headers('text/html; charset=utf-8');
 echo $return;
 //$r = '<form action="' . $redirecturi . "\" name=\"ltiAuthForm\" id=\"ltiAuthForm\" " .
 //     "method=\"post\" enctype=\"application/x-www-form-urlencoded\">\n";
