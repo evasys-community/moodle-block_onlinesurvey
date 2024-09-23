@@ -773,6 +773,7 @@ function block_onlinesurvey_lti_get_launch_data($config = null, $nonce = '', $me
         $USER->id,
         $servicesalt,
         $typeid));
+    $requestparams['lis_result_sourcedid'] = $basicoutcome->lis_result_sourcedid;
     $serviceurl = new \moodle_url('/mod/lti/service.php');
     $serviceurl = $serviceurl->out();
     $forcessl = false;
@@ -783,6 +784,7 @@ function block_onlinesurvey_lti_get_launch_data($config = null, $nonce = '', $me
         $serviceurl = lti_ensure_url_is_https($serviceurl);
     }
     $basicoutcome->lis_outcome_service_url = $serviceurl;
+    $requestparams['lis_outcome_service_url'] = $serviceurl;
     if ($foruserid) {
         $requestparams['for_user_id'] = $foruserid;
     }
