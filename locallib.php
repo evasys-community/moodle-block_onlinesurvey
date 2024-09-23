@@ -841,8 +841,7 @@ function block_onlinesurvey_lti_get_launch_data($config = null, $nonce = '', $me
  * @param int $foruserid
  * @return multitype:string NULL
  */
-function block_onlinesurvey_build_request_lti($config, $course, $messagetype = null, $foruserid = 0)
-{
+function block_onlinesurvey_build_request_lti($config, $course, $messagetype = null, $foruserid = 0) {
     global $USER;
 
     $roles = block_onlinesurvey_get_ims_roles($USER, $config);
@@ -1030,7 +1029,7 @@ function block_onlinesurvey_lti_post_launch_html_curl($parameter, $endpoint, $co
         'TIMEOUT' => $timeout,
         'HTTPHEADER' => ['Cookie: ' . $cookies],
     );
-    $ret = $curl->post($endpoint, $fields, $curloptions);
+    $ret = $curl->get($endpoint, $fields, $curloptions);
 
     if ($errornumber = $curl->get_errno()) {
         $msgoutput = get_string('error_survey_curl_timeout_msg', 'block_onlinesurvey');
