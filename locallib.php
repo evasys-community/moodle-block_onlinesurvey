@@ -1023,7 +1023,7 @@ function block_onlinesurvey_lti_post_launch_html_curl($parameter, $endpoint, $co
         $cookies[] = 'evasys_session_cookie=' . $_COOKIE['evasys_session_cookie'];
     }
     $cookies = implode('; ', $cookies);
-    block_onlinesurvey_remove_outdated_cookies($state);
+//    block_onlinesurvey_remove_outdated_cookies($state); // ICUNDO!
     $curloptions = array(
         'RETURNTRANSFER' => 1,
         'FRESH_CONNECT' => true,
@@ -1056,10 +1056,10 @@ function block_onlinesurvey_lti_post_launch_html_curl($parameter, $endpoint, $co
                 $SESSION->$keyName = $value;
                 if (strpos($keyName, 'lti1p3_') == 0) {
                     $state = substr($keyName, 7);
-                    setcookie('state', $state);
+//                    setcookie('state', $state);  // ICUNDO!
                     $SESSION->lti_state = $state;
                 }
-                setcookie($keyName, $value);
+//                setcookie($keyName, $value); // ICUNDO!
             }
         }
     }
