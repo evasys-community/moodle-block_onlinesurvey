@@ -170,6 +170,7 @@ if ($modalzoom || $config->presentation != BLOCK_ONLINESURVEY_PRESENTATION_BRIEF
         window.parent.parent.document.getElementById(\'block_onlinesurvey_contentframe\').style.height = block_onlinesurvey_iframe_height + \'px\';
 </script>';
 }
+file_put_contents($CFG->dataroot . '/block_onlinesurvey_auth_output.txt', $return, FILE_APPEND);
 echo $return;
 //$r = '<form action="' . $redirecturi . "\" name=\"ltiAuthForm\" id=\"ltiAuthForm\" " .
 //     "method=\"post\" enctype=\"application/x-www-form-urlencoded\">\n";
