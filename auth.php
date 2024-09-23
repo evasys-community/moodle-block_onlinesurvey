@@ -143,8 +143,9 @@ if (isset($SESSION->lti_state)) {
 }
 unset($SESSION->lti_message_hint);
 $config = block_onlinesurvey_get_launch_config();
-$return = block_onlinesurvey_lti_post_launch_html_curl($params, $redirecturi, $config);
 die('so far so good ' . __FILE__ . ' ' . __LINE__); // ICUNDO!
+$return = block_onlinesurvey_lti_post_launch_html_curl($params, $redirecturi, $config);
+
 if ($config->presentation == BLOCK_ONLINESURVEY_PRESENTATION_BRIEF) {
     if (isset($SESSION->modalzoom)) {
         $modalzoom = $SESSION->modalzoom;
