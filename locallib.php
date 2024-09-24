@@ -648,6 +648,7 @@ function block_onlinesurvey_get_launch_data($config = null, $context = null, $co
     if (!empty($target)) {
         $requestparams['launch_presentation_document_target'] = $target;
     }
+    $requestparams['launch_presentation_return_url'] = $CFG->wwwroot . '/blocks/onlinesurvey/show_surveys.php';
 
     // Consumer key currently not used -> $key can be '' -> check "(true or !empty(key))".
     if ((true or !empty($key)) && !empty($secret)) {
@@ -767,6 +768,7 @@ function block_onlinesurvey_lti_get_launch_data($config = null, $nonce = '', $me
     if (!empty($target)) {
         $requestparams['launch_presentation_document_target'] = $target;
     }
+    $requestparams['launch_presentation_return_url'] = $CFG->wwwroot . '/blocks/onlinesurvey/show_surveys.php';
     $basicoutcome = new \stdClass();
     $servicesalt = $DB->get_field('lti_types_config', 'value', ['typeid' => $typeid, 'name' => 'servicesalt']);
     $basicoutcome->lis_result_sourcedid = json_encode(lti_build_sourcedid($typeid,
