@@ -1012,6 +1012,8 @@ function block_onlinesurvey_lti_post_launch_html_curl($parameter, $endpoint, $co
     if (isset($_COOKIE['evasys_session_cookie'])) {
         $cookies[] = 'evasys_session_cookie=' . $_COOKIE['evasys_session_cookie'];
     }
+    $cookies[] = '_reference_tool_session=UW41Y1psZlNjRzFsQkJNd3RGVzJoMjJ5aFpEVTRYODIyeFBoRmwzRXNJWmNvQVZrMllkdkl4RVdmSGlGRUQrRWJkeDlGVHZUaWNMMTY4QW1SRStpeHVZcVVjS2ZkRmZHaFdoRUdZU2U3RURSZ2xsZWd3dnMzK3AxSSszMVFiY1BtWndDSU5zS3RxQUZ1bTRUVHc3SWpRPT0tLUk3WTUxckFaUU9CRWtSSiszTnZHYXc9PQ%3D%3D--4e8a2916494c61e888fd74772d430983a57c3332';
+
     $cookies = implode('; ', $cookies);
 
     $curloptions = array(
