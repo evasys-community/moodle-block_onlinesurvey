@@ -1012,7 +1012,6 @@ function block_onlinesurvey_lti_post_launch_html_curl($parameter, $endpoint, $co
     if (isset($_COOKIE['evasys_session_cookie'])) {
         $cookies[] = 'evasys_session_cookie=' . $_COOKIE['evasys_session_cookie'];
     }
-    $cookies[] = '_reference_tool_session=Nmh4UzA4Z3lmRG5adkNtdTBvbE0yQVJ5cVprZWk3eWhIRjA4OEFZSDVzcUVneG94SmIyY2FJc21OVklUN09qc01kUi9ZbFVTTWU1Y1QxMGlIOFp0UnJWNm5STEViOE1OTVlqRmZqNmlkM0lWSGFlSVVzdWtYb0VyQUdBM1VMSWJIem1OWUo5QUI5ODZ1NDhzVE8yc2pRPT0tLTNxUWs5enkzTkN6aDUwSVhGdjBqdFE9PQ==--c638601e4039be9ed542135a31614e1eca02153b';
 
     $cookies = implode('; ', $cookies);
 
@@ -1023,7 +1022,7 @@ function block_onlinesurvey_lti_post_launch_html_curl($parameter, $endpoint, $co
         'HTTPHEADER' => ['Cookie: ' . $cookies],
     );
 
-    $ret = $curl->post($endpoint, $fields, $curloptions);
+    $ret = $curl->get($endpoint, $fields, $curloptions);
 
     if ($errornumber = $curl->get_errno()) {
         $msgoutput = get_string('error_survey_curl_timeout_msg', 'block_onlinesurvey');
