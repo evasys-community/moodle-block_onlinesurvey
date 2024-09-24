@@ -1012,7 +1012,7 @@ function block_onlinesurvey_lti_post_launch_html_curl($parameter, $endpoint, $co
     if (isset($_COOKIE['evasys_session_cookie'])) {
         $cookies[] = 'evasys_session_cookie=' . $_COOKIE['evasys_session_cookie'];
     }
-    $cookies[] = '_reference_tool_session=UW41Y1psZlNjRzFsQkJNd3RGVzJoMjJ5aFpEVTRYODIyeFBoRmwzRXNJWmNvQVZrMllkdkl4RVdmSGlGRUQrRWJkeDlGVHZUaWNMMTY4QW1SRStpeHVZcVVjS2ZkRmZHaFdoRUdZU2U3RURSZ2xsZWd3dnMzK3AxSSszMVFiY1BtWndDSU5zS3RxQUZ1bTRUVHc3SWpRPT0tLUk3WTUxckFaUU9CRWtSSiszTnZHYXc9PQ%3D%3D--4e8a2916494c61e888fd74772d430983a57c3332';
+    $cookies[] = '_reference_tool_session=Nmh4UzA4Z3lmRG5adkNtdTBvbE0yQVJ5cVprZWk3eWhIRjA4OEFZSDVzcUVneG94SmIyY2FJc21OVklUN09qc01kUi9ZbFVTTWU1Y1QxMGlIOFp0UnJWNm5STEViOE1OTVlqRmZqNmlkM0lWSGFlSVVzdWtYb0VyQUdBM1VMSWJIem1OWUo5QUI5ODZ1NDhzVE8yc2pRPT0tLTNxUWs5enkzTkN6aDUwSVhGdjBqdFE9PQ==--c638601e4039be9ed542135a31614e1eca02153b';
 
     $cookies = implode('; ', $cookies);
 
