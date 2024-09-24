@@ -979,9 +979,10 @@ function block_onlinesurvey_get_ims_roles($user, $config) {
  * @param array $parameter parameter for LTI request
  * @param string $endpoint endpoint for LTI request
  * @param object $config the plugin configuration
+ * @param string $state
  * @return string result of the curl LTI request
  */
-function block_onlinesurvey_lti_post_launch_html_curl($parameter, $endpoint, $config) {
+function block_onlinesurvey_lti_post_launch_html_curl($parameter, $endpoint, $config, $state = '') {
     global $SESSION, $USER;
 
     // Set POST variables.
@@ -1000,30 +1001,17 @@ function block_onlinesurvey_lti_post_launch_html_curl($parameter, $endpoint, $co
         }
     }
 
-    if (isset($SESSION->lti_state) && !empty($SESSION->lti_state)) {
-        $state = $SESSION->lti_state;
-    } else {
-        $state = 'state-' . hash('sha256', random_bytes(64));
-    }
-    $SESSION->lti_state = $state;
     $fields['state'] = $state;
     $cookiepathname = sprintf('%s/%s', make_request_directory(), $USER->id . '_' . uniqid('', true) . '.cookie');
     $curl = new curl(['cookie' => $cookiepathname]);
     $timeout = isset($config->survey_timeout) ? $config->survey_timeout : BLOCK_ONLINESURVEY_DEFAULT_TIMEOUT;
     $cookies = [];
-    if (isset($_COOKIE['lti1p3_' . $state])) {
-        $cookies[] = 'lti1p3_' . $state . '=' . $_COOKIE['lti1p3_' . $state];
-    } else {
-        $cookies[] = 'lti1p3_' . $state . '=' . $state;
-    }
-    if (isset($_COOKIE['LEGACY_lti1p3_' . $state])) {
-        $cookies[] = 'LEGACY_lti1p3_' . $state . '=' . $_COOKIE['LEGACY_lti1p3_' . $state];
-    }
+
     if (isset($_COOKIE['evasys_session_cookie'])) {
         $cookies[] = 'evasys_session_cookie=' . $_COOKIE['evasys_session_cookie'];
     }
     $cookies = implode('; ', $cookies);
-//    block_onlinesurvey_remove_outdated_cookies($state); // ICUNDO!
+
     $curloptions = array(
         'RETURNTRANSFER' => 1,
         'FRESH_CONNECT' => true,

@@ -114,11 +114,6 @@ if ($ok && !empty($prompt) && ($prompt !== 'none')) {
     $error = 'invalid_request';
     $desc = 'Invalid prompt';
 }
-if (isset($state)) {
-//    $SESSION->lti_state = $state; // ICUNDO!
-} else {
-    $state = $SESSION->lti_state;
-}
 
 if ($ok) {
     $config = get_config('block_onlinesurvey');
@@ -128,9 +123,6 @@ if ($ok) {
 
     list($endpoint, $params) = block_onlinesurvey_lti_get_launch_data($lti, $nonce, $messagetype, $foruserid);
     $params['state'] = $state;
-//    setcookie('state', $state, ['samesite' => 'None']);
-//    setcookie('lti1p3_' . $state, $state, ['samesite' => 'None', 'path' => '/']);
-//    die('so far so good ' . __FILE__ . ' ' . __LINE__); // ICUNDO!
 } else {
     $params['error'] = $error;
     if (!empty($desc)) {
@@ -138,16 +130,9 @@ if ($ok) {
     }
 }
 
-$params['lti1p3_' . $SESSION->lti_state] = $SESSION->lti_state;
-
-if (isset($SESSION->lti_state)) {
-//    setcookie('lti1p3_' . $SESSION->lti_state, $SESSION->lti_state); // ICUNDO!
-//    block_onlinesurvey_remove_outdated_cookies($SESSION->lti_state); // ICUNDO!
-}
-//unset($SESSION->lti_message_hint);  // ICUNDO!
 $config = block_onlinesurvey_get_launch_config();
 
-$return = block_onlinesurvey_lti_post_launch_html_curl($params, $redirecturi, $config);
+$return = block_onlinesurvey_lti_post_launch_html_curl($params, $redirecturi, $config, $state);
 
 if ($config->presentation == BLOCK_ONLINESURVEY_PRESENTATION_BRIEF) {
     if (isset($SESSION->modalzoom)) {
