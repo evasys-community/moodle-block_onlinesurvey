@@ -75,7 +75,7 @@ if ($ok && ($responsetype !== 'id_token')) {
 if ($ok) {
     $launchid = $ltimessagehint->launchid;
     list($messagetype, $foruserid, $titleb64, $textb64) = explode(',', $SESSION->$launchid, 7);
-//    unset($SESSION->$launchid); // ICUNDO!
+    unset($SESSION->$launchid);
     $config = lti_get_type_type_config($typeid);
     $ok = ($clientid === $config->lti_clientid);
     if (!$ok) {
@@ -114,15 +114,20 @@ if ($ok && !empty($prompt) && ($prompt !== 'none')) {
     $error = 'invalid_request';
     $desc = 'Invalid prompt';
 }
-
+if (isset($state)) {
+    $SESSION->lti_state = $state;
+} else {
+    $state = $SESSION->lti_state;
+}
 if ($ok) {
     $config = get_config('block_onlinesurvey');
     require_login();
     $context = context_system::instance();
     $lti = get_config('block_onlinesurvey');
-
     list($endpoint, $params) = block_onlinesurvey_lti_get_launch_data($lti, $nonce, $messagetype, $foruserid);
     $params['state'] = $state;
+    setcookie('state', $state, ['samesite' => 'None']);
+    setcookie('lti1p3_' . $state, $state, ['samesite' => 'None', 'path' => '/']);
 } else {
     $params['error'] = $error;
     if (!empty($desc)) {
@@ -130,6 +135,12 @@ if ($ok) {
     }
 }
 
+$params['lti1p3_' . $SESSION->lti_state] = $SESSION->lti_state;
+if (isset($SESSION->lti_state)) {
+    setcookie('lti1p3_' . $SESSION->lti_state, $SESSION->lti_state);
+    block_onlinesurvey_remove_outdated_cookies($SESSION->lti_state);
+}
+unset($SESSION->lti_message_hint);
 $config = block_onlinesurvey_get_launch_config();
 
 $return = block_onlinesurvey_lti_post_launch_html_curl($params, $redirecturi, $config, $state);
@@ -151,9 +162,9 @@ if ($modalzoom || $config->presentation != BLOCK_ONLINESURVEY_PRESENTATION_BRIEF
     $pathinfo = pathinfo($config->lti_url);
     $base = $pathinfo['dirname'];
     if (strpos($return, '<head>') !== false) {
-//        $return = str_replace('<head>', '<head><base href="' . $base . '/" />', $return); // ICUNDO
+        $return = str_replace('<head>', '<head><base href="' . $base . '/" />', $return);
     } else {
-//        $return = str_replace('<html>', '<html><head><base href="' . $base . '/" /></head>', $return); // ICUNDO
+        $return = str_replace('<html>', '<html><head><base href="' . $base . '/" /></head>', $return);
     }
     $return .= '<script>
 // make iframe height match its content

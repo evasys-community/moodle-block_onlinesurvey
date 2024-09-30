@@ -1003,30 +1003,40 @@ function block_onlinesurvey_lti_post_launch_html_curl($parameter, $endpoint, $co
         }
     }
 
+    if (isset($SESSION->lti_state) && !empty($SESSION->lti_state)) {
+        $state = $SESSION->lti_state;
+    } else {
+        $state = 'state-' . hash('sha256', random_bytes(64));
+    }
+    $SESSION->lti_state = $state;
     $fields['state'] = $state;
     $cookiepathname = sprintf('%s/%s', make_request_directory(), $USER->id . '_' . uniqid('', true) . '.cookie');
     $curl = new curl(['cookie' => $cookiepathname]);
     $timeout = isset($config->survey_timeout) ? $config->survey_timeout : BLOCK_ONLINESURVEY_DEFAULT_TIMEOUT;
     $cookies = [];
-
+    if (isset($_COOKIE['lti1p3_' . $state])) {
+        $cookies[] = 'lti1p3_' . $state . '=' . $_COOKIE['lti1p3_' . $state];
+    } else {
+        $cookies[] = 'lti1p3_' . $state . '=' . $state;
+    }
+    if (isset($_COOKIE['LEGACY_lti1p3_' . $state])) {
+        $cookies[] = 'LEGACY_lti1p3_' . $state . '=' . $_COOKIE['LEGACY_lti1p3_' . $state];
+    }
     if (isset($_COOKIE['evasys_session_cookie'])) {
         $cookies[] = 'evasys_session_cookie=' . $_COOKIE['evasys_session_cookie'];
     }
-
     $cookies = implode('; ', $cookies);
-
+    block_onlinesurvey_remove_outdated_cookies($state);
     $curloptions = array(
         'RETURNTRANSFER' => 1,
         'FRESH_CONNECT' => true,
         'TIMEOUT' => $timeout,
         'HTTPHEADER' => ['Cookie: ' . $cookies],
     );
-
-    $ret = $curl->get($endpoint, $fields, $curloptions);
+    $ret = $curl->post($endpoint, $fields, $curloptions);
 
     if ($errornumber = $curl->get_errno()) {
         $msgoutput = get_string('error_survey_curl_timeout_msg', 'block_onlinesurvey');
-
         $context = context_system::instance();
         if (has_capability('block/onlinesurvey:view_debugdetails', $context)) {
             if (!empty($msgoutput)) {
@@ -1044,13 +1054,13 @@ function block_onlinesurvey_lti_post_launch_html_curl($parameter, $endpoint, $co
             if ($match) {
                 $keyName = $match[1];
                 $value = $match[2];
-//                $SESSION->$keyName = $value; // ICUNDO!
+                $SESSION->$keyName = $value;
                 if (strpos($keyName, 'lti1p3_') == 0) {
                     $state = substr($keyName, 7);
-//                    setcookie('state', $state);  // ICUNDO!
-//                    $SESSION->lti_state = $state; // ICUNDO!
+                    setcookie('state', $state);
+                    $SESSION->lti_state = $state;
                 }
-//                setcookie($keyName, $value); // ICUNDO!
+                setcookie($keyName, $value);
             }
         }
     }
