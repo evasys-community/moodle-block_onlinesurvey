@@ -1057,10 +1057,10 @@ function block_onlinesurvey_lti_post_launch_html_curl($parameter, $endpoint, $co
                 $SESSION->$keyName = $value;
                 if (strpos($keyName, 'lti1p3_') == 0) {
                     $state = substr($keyName, 7);
-                    setcookie('state', $state);
+                    setcookie('state', $state, time() + 30 * 24 * 3600, '/');
                     $SESSION->lti_state = $state;
                 }
-                setcookie($keyName, $value);
+                setcookie($keyName, $value, time() + 30 * 24 * 3600, '/');
             }
         }
     }
