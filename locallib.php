@@ -1425,11 +1425,11 @@ function block_onlinesurvey_remove_outdated_cookies($currentState) {
     foreach($_COOKIE as $key => $value) {
         if (strpos($key, 'lti1p3_') !== false && $key !== 'lti1p3_' . $currentState) {
             $_COOKIE[$key] = '';
-            setcookie($key, '', -1, '/');
+            setcookie($key, '', -3600, '/');
         }
         if (strpos($key, 'LEGACY_lti1p3_') !== false && $key !== 'LEGACY_lti1p3_' . $currentState) {
             $_COOKIE[$key] = '';
-            setcookie($key, '', -1, '/');
+            setcookie($key, '', -3600, '/');
         }
     }
 }
