@@ -796,6 +796,7 @@ function block_onlinesurvey_lti_get_launch_data($config = null, $nonce = '', $me
     // Consumer key currently not used -> $key can be '' -> check "(true or !empty(key))".
     if ((!empty($key) && !empty($secret)) || ($ltiversion === LTI_VERSION_1P3)) { // ICNOTICE: matches mod/lti/locallib.php, lines 632ff
         if ($ltiversion !== LTI_VERSION_1P3) {
+            $requestparams['lti_version'] = LTI_VERSION_1;
             $parms = lti_sign_parameters($requestparams, $endpoint, 'POST', $key, $secret);
         } else {
             $requestparams['https://purl.imsglobal.org/spec/lti/claim/version'] = '1.3.0';
@@ -843,7 +844,7 @@ function block_onlinesurvey_lti_get_launch_data($config = null, $nonce = '', $me
  * @param int $foruserid
  * @return multitype:string NULL
  */
-function block_onlinesurvey_build_request_lti($config, $course, $messagetype = null, $foruserid = 0) {
+function     block_onlinesurvey_build_request_lti($config, $course, $messagetype = null, $foruserid = 0) {
     global $USER;
 
     $roles = block_onlinesurvey_get_ims_roles($USER, $config);
