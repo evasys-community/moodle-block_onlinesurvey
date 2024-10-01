@@ -1,0 +1,17 @@
+<html>
+<head>
+    <title>{{title}}</title>
+    {{#css}}
+    <link rel="stylesheet" href="{{file}}">
+    {{/css}}
+    {{#hasadditionalcss}}
+    <style>{{{additionalcss}}}</style>
+    {{/hasadditionalcss}}
+</head>
+<body class="{{bodyclasses}}">
+{{#error}}
+{{#str}}error_occured, block_onlinesurvey, {{error}}{{/str}}
+{{/error}}
+{{{content}}}
+</body>
+</html>

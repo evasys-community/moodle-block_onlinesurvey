@@ -112,6 +112,7 @@ $string['setting_lti_redirectionuris_desc'] = '<em>Usually the same as in the lt
 $string['lti13_infos'] = 'Connection data for LTI 1.3:';
 $string['deploymentid'] = 'Deployment id';
 $string['clientid'] = 'Client id';
+$string['publickeysetplatform'] = 'Public keyset of the Moodle platform';
 
 /*************************/
 /* SOAP settings.

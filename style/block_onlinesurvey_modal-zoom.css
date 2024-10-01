@@ -37,7 +37,7 @@ body.block_onlinesurvey_custom-modal-open {
     z-index: 10;
 }
 
-.block_onlinesurvey_custom-modal iframe {
+.block_onlinesurvey_custom-modal_contentframe {
     border: none;
     height: 500px;
     max-height: 100%;

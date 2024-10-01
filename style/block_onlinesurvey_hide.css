@@ -2,3 +2,8 @@
 .block_onlinesurvey {
     display: none;
 }
+body.editing .block_onlinesurvey.card,
+body.editing .block_onlinesurvey {
+    display: block;
+    opacity: 0.5;
+}
