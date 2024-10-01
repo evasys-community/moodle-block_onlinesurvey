@@ -583,7 +583,7 @@ function block_onlinesurvey_get_launch_data($config = null, $context = null, $co
         $config->lti_tool_consumer_instance_guid = $urlparts['host'];
     }
 
-    $key = '';
+    $key = $config->lti_clientid;
     if (!empty($config->lti_password)) {
         $secret = $config->lti_password;
     } else if (is_array($config) && !empty($config['lti_password'])) {
