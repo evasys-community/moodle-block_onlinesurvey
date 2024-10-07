@@ -169,10 +169,9 @@ if ($modalzoom || $config->presentation != BLOCK_ONLINESURVEY_PRESENTATION_BRIEF
     $return .= '<script>
 // make iframe height match its content
         var block_onlinesurvey_iframe_height = document.documentElement.offsetHeight + 40; 
-        window.parent.parent.document.getElementById(\'block_onlinesurvey_contentframe\').style.height = block_onlinesurvey_iframe_height + \'px\';
+        window.parent.parent.document.querySelector(\'#block_onlinesurvey_contentframe:not(.block_onlinesurvey_compact)\').style.height = block_onlinesurvey_iframe_height + \'px\';
 </script>';
 }
-file_put_contents($CFG->dataroot . '/block_onlinesurvey_auth_output.txt', $return, FILE_APPEND); // ICUNDO!
 
 echo $return;
 //$r = '<form action="' . $redirecturi . "\" name=\"ltiAuthForm\" id=\"ltiAuthForm\" " .
