@@ -166,10 +166,15 @@ if ($modalzoom || $config->presentation != BLOCK_ONLINESURVEY_PRESENTATION_BRIEF
     } else {
         $return = str_replace('<html>', '<html><head><base href="' . $base . '/" /></head>', $return);
     }
+    if ($modalzoom) {
+        $cssselector = '#block_onlinesurvey_custom-modal_contentframe';
+    } else {
+        $cssselector = '#block_onlinesurvey_contentframe';
+    }
     $return .= '<script>
 // make iframe height match its content
         var block_onlinesurvey_iframe_height = document.documentElement.offsetHeight + 40; 
-        window.parent.parent.document.querySelector(\'#block_onlinesurvey_custom-modal_contentframe\').style.height = block_onlinesurvey_iframe_height + \'px\';
+        window.parent.parent.document.querySelector(\'' . $cssselector . '\').style.height = block_onlinesurvey_iframe_height + \'px\';
 </script>';
 }
 
