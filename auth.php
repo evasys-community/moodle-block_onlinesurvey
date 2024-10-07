@@ -169,7 +169,7 @@ if ($modalzoom || $config->presentation != BLOCK_ONLINESURVEY_PRESENTATION_BRIEF
     $return .= '<script>
 // make iframe height match its content
         var block_onlinesurvey_iframe_height = document.documentElement.offsetHeight + 40; 
-        window.parent.parent.document.querySelector(\'#block_onlinesurvey_contentframe:not(.block_onlinesurvey_compact)\').style.height = block_onlinesurvey_iframe_height + \'px\';
+        window.parent.parent.document.querySelector(\'#block_onlinesurvey_custom-modal_contentframe\').style.height = block_onlinesurvey_iframe_height + \'px\';
 </script>';
 }
 
