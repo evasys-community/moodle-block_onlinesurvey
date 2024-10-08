@@ -8,15 +8,6 @@ define(['jquery', 'core/templates', 'core/modal', 'core/modal_factory', 'core/mo
     var popupinfocontent = '';
     var userlogintime = 0;
 
-    var doRefresh = function() {
-        var myElement = document.getElementById("block_onlinesurvey_contentframe");
-        if (myElement) {
-            var oldsrc = myElement.src;
-            myElement.src = '';
-            myElement.src = oldsrc;
-        }
-    };
-
     var handleClickSmallModal = function(e) {
         e.preventDefault();
 
@@ -47,10 +38,6 @@ define(['jquery', 'core/templates', 'core/modal', 'core/modal_factory', 'core/mo
         $.when(templatePromise, modalPromise).done(function(source, iframemodal) {
             iframemodal.setBody(source);
             iframemodal.getModal().addClass('modal-xl');
-            iframemodal.getRoot().on(ModalEvents.hidden, function() {
-                // Refresh when hidden.
-                doRefresh();
-            });
 
             iframemodal.show();
         });
@@ -96,10 +83,6 @@ define(['jquery', 'core/templates', 'core/modal', 'core/modal_factory', 'core/mo
                 );
                 $.when(modalPromise).then(function(popupmodal) {
                     popupmodal.getModal().addClass('modal-xl');
-                    popupmodal.getRoot().on(ModalEvents.hidden, function() {
-                        // Refresh when hidden.
-                        doRefresh();
-                    });
                     popupmodal.show();
                 });
             }
