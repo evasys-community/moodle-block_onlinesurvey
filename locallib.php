@@ -436,6 +436,8 @@ function block_onlinesurvey_print_exceptions($e) {
                     if (isset($detail->sDetails)) {
                         $detail = $detail->sDetails;
                     }
+                } elseif (is_object($detail) && isset($detail->return) && isset($detail->return->sDetails)) {
+                    $detail = $detail->return->sDetails;
                 }
 
                 $msg .= "<br>" . $detail;
