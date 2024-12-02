@@ -126,8 +126,8 @@ if ($ok) {
     $lti = get_config('block_onlinesurvey');
     list($endpoint, $params) = block_onlinesurvey_lti_get_launch_data($lti, $nonce, $messagetype, $foruserid);
     $params['state'] = $state;
-    setcookie('state', $state, ['samesite' => 'None']);
-    setcookie('lti1p3_' . $state, $state, ['samesite' => 'None', 'path' => '/']);
+    setcookie('state', $state, ['samesite' => 'None', 'path' => '/', 'expires' => time() + 30 * 24 * 3600]);
+    setcookie('lti1p3_' . $state, $state, ['samesite' => 'None', 'path' => '/', 'expires' => time() + 30 * 24 * 3600]);
 } else {
     $params['error'] = $error;
     if (!empty($desc)) {
@@ -137,12 +137,14 @@ if ($ok) {
 
 $params['lti1p3_' . $SESSION->lti_state] = $SESSION->lti_state;
 if (isset($SESSION->lti_state)) {
-    setcookie('lti1p3_' . $SESSION->lti_state, $SESSION->lti_state);
+    setcookie('lti1p3_' . $SESSION->lti_state, $SESSION->lti_state, time() + 30 * 24 * 3600, '/');
     block_onlinesurvey_remove_outdated_cookies($SESSION->lti_state);
 }
 unset($SESSION->lti_message_hint);
 $config = block_onlinesurvey_get_launch_config();
-$return = block_onlinesurvey_lti_post_launch_html_curl($params, $redirecturi, $config);
+
+$return = block_onlinesurvey_lti_post_launch_html_curl($params, $redirecturi, $config, $state);
+
 if ($config->presentation == BLOCK_ONLINESURVEY_PRESENTATION_BRIEF) {
     if (isset($SESSION->modalzoom)) {
         $modalzoom = $SESSION->modalzoom;
@@ -164,12 +166,18 @@ if ($modalzoom || $config->presentation != BLOCK_ONLINESURVEY_PRESENTATION_BRIEF
     } else {
         $return = str_replace('<html>', '<html><head><base href="' . $base . '/" /></head>', $return);
     }
+    if ($modalzoom) {
+        $cssselector = '#block_onlinesurvey_custom-modal_contentframe';
+    } else {
+        $cssselector = '#block_onlinesurvey_contentframe';
+    }
     $return .= '<script>
 // make iframe height match its content
         var block_onlinesurvey_iframe_height = document.documentElement.offsetHeight + 40; 
-        window.parent.parent.document.getElementById(\'block_onlinesurvey_contentframe\').style.height = block_onlinesurvey_iframe_height + \'px\';
+        window.parent.parent.document.querySelector(\'' . $cssselector . '\').style.height = block_onlinesurvey_iframe_height + \'px\';
 </script>';
 }
+
 echo $return;
 //$r = '<form action="' . $redirecturi . "\" name=\"ltiAuthForm\" id=\"ltiAuthForm\" " .
 //     "method=\"post\" enctype=\"application/x-www-form-urlencoded\">\n";

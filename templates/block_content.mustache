@@ -1,0 +1,16 @@
+<div id="block_onlinesurvey_surveys_content" {{#showspinner}}class="block_onlinesurvey_is-loading"{{/showspinner}}>
+{{#showspinner}}
+{{>block_onlinesurvey/spinner}}
+   {{/showspinner}}
+    <iframe id="block_onlinesurvey_contentframe" class="{{connectionclass}} {{presentationclass}}" src="{{source}}"></iframe>
+{{#detailed}}
+{{#zoom}}
+    <div class="block_onlinesurvey_allsurveys"><button class="btn btn-secondary" onClick="event.stopPropagation(); document.getElementById('block_onlinesurvey_surveys_content').click();">
+    {{#str}}allsurveys, block_onlinesurvey{{/str}}</button></div>
+{{/zoom}}
+{{^zoom}}
+    <div class="block_onlinesurvey_allsurveys"><button class="btn btn-secondary" onClick="event.stopPropagation(); document.getElementById('block_onlinesurvey_surveys_content').click();">
+    {{#str}}zoomsurveylist, block_onlinesurvey{{/str}}</button></div>
+{{/zoom}}
+{{/detailed}}
+</div>
