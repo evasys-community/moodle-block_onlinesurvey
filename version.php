@@ -24,9 +24,9 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version = 2024040903;
+$plugin->version = 2024120600;
 $plugin->component = 'block_onlinesurvey';
-$plugin->release = 'v4.0-r2';
+$plugin->release = 'v4.5-r1';
 $plugin->requires = 2022041900;
-$plugin->supported = [400, 403];
+$plugin->supported = [400, 405];
 $plugin->maturity = MATURITY_STABLE;
