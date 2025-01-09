@@ -100,8 +100,7 @@ $string['setting_survey_timeout_desc'] = 'Maximum response time (in seconds) of 
 $string['onlyrequiredforlti13'] = '<br><em>Only required for LTI 1.3</em>';
 $string['setting_heading_lti13'] = 'LTI 1.3 settings';
 $string['setting_heading_lti13_desc'] = 'The settings in this section define how the evasys block will communicate with evasys.<br /><em>These settings are only required if you selected "LTI 1.3" in the "Communication protocol" setting.</em>';
-$string['publickey_help'] = 'The public key (in PEM format) provided by the tool to allow signatures of incoming messages and service requests to be verified.<br>
-<em>Only required if key type is set to RSA</em>';
+$string['publickey_help'] = 'The public key (in PEM format) provided by the tool to allow signatures of incoming messages and service requests to be verified.';
 $string['publickeyset'] = 'Public keyset';
 $string['accesstoken'] = 'Access token';
 $string['authrequest'] = 'Auth request';
