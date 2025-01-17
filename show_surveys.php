@@ -133,7 +133,10 @@ try {
     $css[] = ['file' => $CFG->wwwroot . '/blocks/onlinesurvey/style/block_onlinesurvey_modal-zoom.css'];
     $data['css'] = $css;
     $data['script'] = '';
-    if (!$surveysfound) {
+    if ($surveysfound) {
+        $bodyclasses[] = 'evasys_has_surveys';
+        $data['script'] = '<script type="text/javascript">parent.document.getElementsByTagName("body")[0].classList.add("evasys_has_surveys");</script>';
+    } else {
         $bodyclasses[] = 'evasys_no_surveys';
         $data['script'] = '<script type="text/javascript">parent.document.getElementsByTagName("body")[0].classList.add("evasys_no_surveys");</script>';
     }

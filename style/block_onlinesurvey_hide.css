@@ -1,6 +1,10 @@
-body.evasys_no_surveys .block_onlinesurvey.card,
-body.evasys_no_surveys .block_onlinesurvey {
+body .block_onlinesurvey.card,
+body .block_onlinesurvey {
     display: none;
+}
+body.evasys_has_surveys .block_onlinesurvey.card,
+body.evasys_has_surveys .block_onlinesurvey {
+    display: block;
 }
 body.evasys_no_surveys.editing .block_onlinesurvey.card,
 body.evasys_no_surveys.editing .block_onlinesurvey {
