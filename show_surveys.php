@@ -104,7 +104,6 @@ try {
     } else {
         $bodyclasses[] = 'zoom_block';
     }
-    $data['bodyclasses'] = implode(',', $bodyclasses);
 
     if (!empty($error)) {
         $context = context_system::instance();
@@ -136,6 +135,7 @@ try {
     if (!$surveysfound) {
         $bodyclasses[] = 'evasys_no_surveys';
     }
+    $data['bodyclasses'] = implode(' ', $bodyclasses);
     echo $OUTPUT->render_from_template('block_onlinesurvey/show_surveys', $data);
 } catch(Exception $e) {
     // nothing here yet - log the exception if you like, or output a message
