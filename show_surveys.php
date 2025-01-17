@@ -135,7 +135,7 @@ try {
     $data['script'] = '';
     if (!$surveysfound) {
         $bodyclasses[] = 'evasys_no_surveys';
-        $data['script'] = '<script type="text/javascript">parent.document.getElementsByTagName("body")[0].classList.add("evasys_no_surveys");</script>]';
+        $data['script'] = '<script type="text/javascript">parent.document.getElementsByTagName("body")[0].classList.add("evasys_no_surveys");</script>';
     }
     $data['bodyclasses'] = implode(' ', $bodyclasses);
     echo $OUTPUT->render_from_template('block_onlinesurvey/show_surveys', $data);
