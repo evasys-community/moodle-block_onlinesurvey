@@ -130,9 +130,12 @@ try {
             $data['content'] = block_onlinesurvey_get_lti_content($config, $context, $course, $modalzoom);
         }
     }
-    global $OUTPUT;
+    global $OUTPUT, $surveysfound;
     $css[] = ['file' => $CFG->wwwroot . '/blocks/onlinesurvey/style/block_onlinesurvey_modal-zoom.css'];
     $data['css'] = $css;
+    if (!$surveysfound) {
+        $bodyclasses[] = 'evasys_no_surveys';
+    }
     echo $OUTPUT->render_from_template('block_onlinesurvey/show_surveys', $data);
 } catch(Exception $e) {
     // nothing here yet - log the exception if you like, or output a message

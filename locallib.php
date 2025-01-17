@@ -46,7 +46,7 @@ require_once($CFG->dirroot . '/mod/lti/locallib.php');
  * @return string
  */
 function block_onlinesurvey_get_soap_content($config = null, $moodleusername = '', $moodleemail = '', $modalzoom = 0) {
-    global $SESSION;
+    global $SESSION, $surveysfound;
 
     $surveyurl = 'indexstud.php?type=html&user_tan=';
 
@@ -212,6 +212,10 @@ function block_onlinesurvey_get_soap_content($config = null, $moodleusername = '
  * @return string
  */
 function block_onlinesurvey_createsummary($surveycount) {
+    $hideempty = get_config('block_onlinesurvey', 'survey_hide_empty');
+    if ($hideempty && $surveycount == 0) {
+        return '';
+    }
     $offerzoom = get_config('block_onlinesurvey', 'offer_zoom');
     if ($surveycount == 0 && $offerzoom == false) {
         $contentstr = "<div id=\"block_onlinesurvey_area\" class=\"block_onlinesurvey_area\">";
@@ -305,6 +309,10 @@ function block_onlinesurvey_surveybuttonscript() {
  * @return string
  */
 function block_onlinesurvey_highlightscript($surveycount) {
+    $hideempty = get_config('block_onlinesurvey', 'survey_hide_empty');
+    if ($hideempty && $surveycount == 0) {
+        return '';
+    }
     if ($surveycount > 0 && $surveycount <= 3) {
         $surveycountclass = 'block_onlinesurvey_surveycount_' . $surveycount;
     }
@@ -462,7 +470,7 @@ function block_onlinesurvey_print_exceptions($e) {
  * @return string
  */
 function block_onlinesurvey_get_lti_content($config = null, $context = null, $course = null, $modalzoom = 0, $foruserid = 0) {
-    global $CFG, $SESSION;
+    global $CFG, $SESSION, $surveysfound;
 
     require_once($CFG->dirroot . '/mod/lti/locallib.php');
     $lticontentstr = '';
@@ -522,7 +530,7 @@ function block_onlinesurvey_get_lti_content($config = null, $context = null, $co
         }
     }
 
-    if ($config->survey_hide_empty && $surveycount > 0 && !$modalzoom) {
+    if ((!$config->survey_hide_empty || $surveycount > 0) && !$modalzoom) {
         $lticontentstr .= block_onlinesurvey_viewscript();
     }
 
@@ -532,11 +540,11 @@ function block_onlinesurvey_get_lti_content($config = null, $context = null, $co
 
     if ($surveycount > 0 && !$modalzoom) {
         $lticontentstr .= block_onlinesurvey_highlightscript($surveycount);
-    } else if ($surveycount == 0 && !$modalzoom) {
+    } else if ($surveycount == 0 && !$modalzoom && !$config->survey_hide_empty) {
         $lticontentstr .= block_onlinesurvey_donthighlightscript();
     }
 
-    if ($config->presentation == BLOCK_ONLINESURVEY_PRESENTATION_BRIEF && !$modalzoom) {
+    if ($config->presentation == BLOCK_ONLINESURVEY_PRESENTATION_BRIEF && !$modalzoom && ($surveycount > 0 || !$config->survey_hide_empty)) {
         $lticontentstr .= block_onlinesurvey_createsummary($surveycount);
     } else {
         if (empty($context)) {
@@ -559,7 +567,7 @@ function block_onlinesurvey_get_lti_content($config = null, $context = null, $co
             $lticontentstr = get_string('error_debugmode_missing_capability', 'block_onlinesurvey');
         }
     }
-
+    $surveysfound = $surveycount > 0;
     return $lticontentstr;
 }
 

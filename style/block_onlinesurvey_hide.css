@@ -1,9 +1,9 @@
-.block_onlinesurvey.card,
-.block_onlinesurvey {
+body.evasys_no_surveys .block_onlinesurvey.card,
+body.evasys_no_surveys .block_onlinesurvey {
     display: none;
 }
-body.editing .block_onlinesurvey.card,
-body.editing .block_onlinesurvey {
+body.evasys_no_surveys.editing .block_onlinesurvey.card,
+body.evasys_no_surveys.editing .block_onlinesurvey {
     display: block;
     opacity: 0.5;
 }
