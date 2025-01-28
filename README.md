@@ -7,7 +7,7 @@ Moodle block plugin which allows you to quickly and easily integrate survey info
 Moodle requirements
 -------------------
 
-This plugin requires Moodle 4.0+
+This plugin currently supports Moodle 4.5 and LTI 1.3
 
 
 evasys requirements
