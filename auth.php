@@ -181,11 +181,12 @@ if (hassurveys) {
     console.log("no surveys, not showing block");
 }
 
-console.log("content_height", content_height);
 function evasys_set_iframe_height() {
     var content_height = document.documentElement.offsetHeight;
+    console.log("content_height", content_height);
     if (content_height == 0) {
         window.setTimeout(evasys_set_iframe_height, 100);
+        return;
     }
     var block_onlinesurvey_iframe_height = content_height + 40;
     window.parent.parent.document.querySelector(\'' . $cssselector . '\').style.height = block_onlinesurvey_iframe_height + \'px\';
