@@ -37,7 +37,7 @@ if (!isloggedin() && empty($_POST['repost'])) {
     echo $output->footer();
     return;
 }
-
+$PAGE->set_context(context_system::instance());
 $scope = optional_param('scope', '', PARAM_TEXT);
 $responsetype = optional_param('response_type', '', PARAM_TEXT);
 $clientid = optional_param('client_id', '', PARAM_TEXT);
@@ -144,7 +144,7 @@ unset($SESSION->lti_message_hint);
 $config = block_onlinesurvey_get_launch_config();
 
 $return = block_onlinesurvey_lti_post_launch_html_curl($params, $redirecturi, $config, $state);
-
+$modalzoom = 0;
 if ($config->presentation == BLOCK_ONLINESURVEY_PRESENTATION_BRIEF) {
     if (isset($SESSION->modalzoom)) {
         $modalzoom = $SESSION->modalzoom;
