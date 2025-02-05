@@ -175,17 +175,25 @@ if ($modalzoom || $config->presentation != BLOCK_ONLINESURVEY_PRESENTATION_BRIEF
 // make iframe height match its content
       function ready(fn) {
   if (document.readyState !== \'loading\') {
+  console.log("not loading page anymore, call function", fn);
     fn();
   } else {
+          console.log("not loaded yet, listening to DOMContentLoaded before calling function", fn);
     document.addEventListener(\'DOMContentLoaded \', fn);
   }
 }
 ready(function(){
+    console.log("ready");
      var hassurveys = document.querySelectorAll(\'.cell.survey\').length > 0;
         if (hassurveys) {
+            console.log("has surveys, show block");
             window.parent.parent.document.querySelector(\'body\').classList.add(\'evasys_has_surveys\');
+        } else {
+            console.log("no surveys, not showing block");
         }
-        var block_onlinesurvey_iframe_height = document.documentElement.offsetHeight + 40;
+        var content_height = document.documentElement.offsetHeight;
+        console.log("content_height", content_height);
+        var block_onlinesurvey_iframe_height = content_height + 40;
         window.parent.parent.document.querySelector(\'' . $cssselector . '\').style.height = block_onlinesurvey_iframe_height + \'px\';
 });
 </script>';
