@@ -173,13 +173,21 @@ if ($modalzoom || $config->presentation != BLOCK_ONLINESURVEY_PRESENTATION_BRIEF
     }
     $return .= '<script>
 // make iframe height match its content
-      
-        var hassurveys = document.querySelectorAll(\'.cell.survey\').length > 0;
+      function ready(fn) {
+  if (document.readyState !== \'loading\') {
+    fn();
+  } else {
+    document.addEventListener(\'DOMContentLoaded \', fn);
+  }
+}
+ready(function(){
+     var hassurveys = document.querySelectorAll(\'.cell.survey\').length > 0;
         if (hassurveys) {
             window.parent.parent.document.querySelector(\'body\').classList.add(\'evasys_has_surveys\');
         }
         var block_onlinesurvey_iframe_height = document.documentElement.offsetHeight + 40;
         window.parent.parent.document.querySelector(\'' . $cssselector . '\').style.height = block_onlinesurvey_iframe_height + \'px\';
+});
 </script>';
 }
 
