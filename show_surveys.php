@@ -25,6 +25,7 @@
 require_once(dirname(__FILE__).'/../../config.php');
 require_once(dirname(__FILE__).'/locallib.php');
 require_once($CFG->dirroot .'/mod/lti/locallib.php');
+$PAGE->set_context(context_system::instance());
 if (isset($SESSION->lti_state)) {
     block_onlinesurvey_remove_outdated_cookies($SESSION->lti_state);
 }
@@ -104,7 +105,6 @@ try {
     } else {
         $bodyclasses[] = 'zoom_block';
     }
-    $data['bodyclasses'] = implode(',', $bodyclasses);
 
     if (!empty($error)) {
         $context = context_system::instance();
@@ -130,9 +130,18 @@ try {
             $data['content'] = block_onlinesurvey_get_lti_content($config, $context, $course, $modalzoom);
         }
     }
-    global $OUTPUT;
+    global $OUTPUT, $surveysfound;
     $css[] = ['file' => $CFG->wwwroot . '/blocks/onlinesurvey/style/block_onlinesurvey_modal-zoom.css'];
     $data['css'] = $css;
+    $data['script'] = '';
+    if ($surveysfound) {
+        $bodyclasses[] = 'evasys_has_surveys';
+        $data['script'] = '<script type="text/javascript">parent.document.getElementsByTagName("body")[0].classList.add("evasys_has_surveys");</script>';
+    } else {
+        $bodyclasses[] = 'evasys_no_surveys';
+        $data['script'] = '<script type="text/javascript">parent.document.getElementsByTagName("body")[0].classList.add("evasys_no_surveys");</script>';
+    }
+    $data['bodyclasses'] = implode(' ', $bodyclasses);
     echo $OUTPUT->render_from_template('block_onlinesurvey/show_surveys', $data);
 } catch(Exception $e) {
     // nothing here yet - log the exception if you like, or output a message

@@ -37,7 +37,7 @@ if (!isloggedin() && empty($_POST['repost'])) {
     echo $output->footer();
     return;
 }
-
+$PAGE->set_context(context_system::instance());
 $scope = optional_param('scope', '', PARAM_TEXT);
 $responsetype = optional_param('response_type', '', PARAM_TEXT);
 $clientid = optional_param('client_id', '', PARAM_TEXT);
@@ -144,7 +144,7 @@ unset($SESSION->lti_message_hint);
 $config = block_onlinesurvey_get_launch_config();
 
 $return = block_onlinesurvey_lti_post_launch_html_curl($params, $redirecturi, $config, $state);
-
+$modalzoom = 0;
 if ($config->presentation == BLOCK_ONLINESURVEY_PRESENTATION_BRIEF) {
     if (isset($SESSION->modalzoom)) {
         $modalzoom = $SESSION->modalzoom;
@@ -173,8 +173,15 @@ if ($modalzoom || $config->presentation != BLOCK_ONLINESURVEY_PRESENTATION_BRIEF
     }
     $return .= '<script>
 // make iframe height match its content
-        var block_onlinesurvey_iframe_height = document.documentElement.offsetHeight + 40; 
-        window.parent.parent.document.querySelector(\'' . $cssselector . '\').style.height = block_onlinesurvey_iframe_height + \'px\';
+ var hassurveys = document.querySelectorAll(\'.cell.survey\').length > 0;
+if (hassurveys) {
+    window.parent.parent.document.querySelector(\'body\').classList.add(\'evasys_has_surveys\');
+}
+var content_height = document.documentElement.offsetHeight;
+if (content_height > 0) {
+    var block_onlinesurvey_iframe_height = content_height + 40;
+    window.parent.parent.document.querySelector(\'' . $cssselector . '\').style.height = block_onlinesurvey_iframe_height + \'px\';
+}
 </script>';
 }
 
