@@ -497,7 +497,7 @@ function block_onlinesurvey_get_lti_content($config = null, $context = null, $co
 
     // Search in $content2 for e.g.: <div class="cell participate centered">.
     // If match found and survey_show_popupinfo is set, add code to generate popup.
-    if (!empty($content2)) {
+    if (!empty($content2) && $content2 !== "Invalid request.") {
         if (isset($config->lti_regex_learner) && !empty($config->lti_regex_learner)) {
             $re = $config->lti_regex_learner;
 
@@ -635,7 +635,7 @@ function block_onlinesurvey_get_launch_data($config = null, $context = null, $co
         $config->id = null;
     }
     $requestparams = $allparams;
-    $requestparams = array_merge($requestparams, lti_build_standard_message($config, $orgid, false));
+    $requestparams = array_merge($requestparams, lti_build_standard_message($config, $orgid, "")); // ICTODO: check if changing 3rd param from false to "" affects LTI 1.3
     $customstr = '';
     if (isset($config->lti_customparameters)) {
         $customstr = $config->lti_customparameters;
@@ -996,7 +996,7 @@ function block_onlinesurvey_get_ims_roles($user, $config) {
  * @return string result of the curl LTI request
  */
 function block_onlinesurvey_lti_post_launch_html_curl($parameter, $endpoint, $config, $state = '') {
-    global $SESSION, $USER;
+    global $SESSION, $USER, $CFG;
 
     // Set POST variables.
     $fields = array();
@@ -1020,21 +1020,25 @@ function block_onlinesurvey_lti_post_launch_html_curl($parameter, $endpoint, $co
         $state = 'state-' . hash('sha256', random_bytes(64));
     }
     $SESSION->lti_state = $state;
-    $fields['state'] = $state;
+//    $fields['state'] = $state; // ICTODO: check if commenting this out affects LTI 1.3
+//    unset($fields['state']); // ICUNDO!
     $cookiepathname = sprintf('%s/%s', make_request_directory(), $USER->id . '_' . uniqid('', true) . '.cookie');
-    $curl = new curl(['cookie' => $cookiepathname]);
+//    $curl = new curl(['cookie' => $cookiepathname]);
+    $curl = new curl();
     $timeout = isset($config->survey_timeout) ? $config->survey_timeout : BLOCK_ONLINESURVEY_DEFAULT_TIMEOUT;
     $cookies = [];
     if (isset($_COOKIE['lti1p3_' . $state])) {
-        $cookies[] = 'lti1p3_' . $state . '=' . $_COOKIE['lti1p3_' . $state];
+//        $cookies[] = 'lti1p3_' . $state . '=' . $_COOKIE['lti1p3_' . $state];  // ICUNDO - we still might need this for LTI 1.3
     } else {
-        $cookies[] = 'lti1p3_' . $state . '=' . $state;
+//        $cookies[] = 'lti1p3_' . $state . '=' . $state; // ICUNDO - we still might need this for LTI 1.3
     }
+    $cookies[] = 'state=session_cookie';
     if (isset($_COOKIE['LEGACY_lti1p3_' . $state])) {
-        $cookies[] = 'LEGACY_lti1p3_' . $state . '=' . $_COOKIE['LEGACY_lti1p3_' . $state];
+//        $cookies[] = 'LEGACY_lti1p3_' . $state . '=' . $_COOKIE['LEGACY_lti1p3_' . $state]; // ICUNDO - we still might need this for LTI 1.3
     }
     if (isset($_COOKIE['evasys_session_cookie'])) {
         $cookies[] = 'evasys_session_cookie=' . $_COOKIE['evasys_session_cookie'];
+//        $fields['evasys_session_cookie'] = $_COOKIE['evasys_session_cookie']; // ICTODO: only set this for LTI 1.3
     }
     $cookies = implode('; ', $cookies);
     block_onlinesurvey_remove_outdated_cookies($state);
@@ -1042,8 +1046,36 @@ function block_onlinesurvey_lti_post_launch_html_curl($parameter, $endpoint, $co
         'RETURNTRANSFER' => 1,
         'FRESH_CONNECT' => true,
         'TIMEOUT' => $timeout,
-        'HTTPHEADER' => ['Cookie: ' . $cookies],
     );
+    if (isset($_SERVER['HTTP_USER_AGENT']) && !empty($_SERVER['HTTP_USER_AGENT'])) {
+        $curloptions['CURLOPT_USERAGENT'] = $_SERVER['HTTP_USER_AGENT'];
+    }
+    $curloptions['HTTPHEADER'] = [];
+    $curloptions['HTTPHEADER'][] = "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:138.0) Gecko/20100101 Firefox/138.0";
+    $curloptions['HTTPHEADER'][] = 'Cookie: ' . $cookies;
+    $curloptions['HTTPHEADER'][] = 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8';
+    $curloptions['HTTPHEADER'][] = "Accept-Language: de,en-US;q=0.7,en;q=0.3";
+    $curloptions['HTTPHEADER'][] = "Accept-Encoding: gzip, deflate, br, zstd";
+    $curloptions['HTTPHEADER'][] = "Connection: keep-alive";
+    $curloptions['HTTPHEADER'][] = "Content-Type: application/x-www-form-urlencoded";
+    $curloptions['HTTPHEADER'][] = "Origin: " . $CFG->wwwroot;
+    $curloptions['HTTPHEADER'][] = "Priority: u=4";
+    $curloptions['HTTPHEADER'][] = "Referer: " . $CFG->wwwroot . "/";
+//    $curloptions['HTTPHEADER'][] = "Sec-Fetch-Dest: iframe";
+//    $curloptions['HTTPHEADER'][] = "Sec-Fetch-Mode: navigate";
+//    $curloptions['HTTPHEADER'][] = "Sec-Fetch-Site: cross-site";
+    $curloptions['HTTPHEADER'][] = "Upgrade-Insecure-Requests: 1";
+    $curloptions['CURLOPT_SSL_VERIFYHOST'] = 0;
+    $curloptions['CURLOPT_SSL_VERIFYPEER'] = 0;
+
+    // ICUNDO START: Only for testing - comment out to test against actual Evasys server
+//    $endpoint = 'http://evasys.local/test.php';
+    // ICUNDO END
+    if (isset($fields['resource_link_id']) && (is_null($fields['resource_link_id']) || $fields['resource_link_id'] == "null")) {
+        $fields['resource_link_id'] = '';
+    }
+    $fields = http_build_query($fields);
+    $fields = str_replace('&amp;', '&', $fields);
     $ret = $curl->post($endpoint, $fields, $curloptions);
 
     if ($errornumber = $curl->get_errno()) {
@@ -1084,7 +1116,9 @@ function block_onlinesurvey_lti_initiate_login($config, $messagetype = 'basic-lt
 {
     global $SESSION;
     $params = block_onlinesurvey_lti_build_login_request($config, $messagetype, $foruserid, $title, $text);
-    $r = "<form action=\"" . $config->lti_initiatelogin .
+    $endpoint = $config->lti_initiatelogin;
+//    $endpoint = 'http://evasys.local/test2.php'; // ICUNDO!
+    $r = "<form action=\"" . $endpoint .
         "\" name=\"ltiInitiateLoginForm\" id=\"ltiInitiateLoginForm\" method=\"post\" " .
         "encType=\"application/x-www-form-urlencoded\">\n";
     $modalzoom = optional_param('modalZoom', 0, PARAM_INT);
@@ -1279,7 +1313,11 @@ function block_onlinesurvey_get_params()
 
 function block_onlinesurvey_get_lti_typeid()
 {
-    return get_config('block_onlinesurvey', 'typeid');
+    $typeid = get_config('block_onlinesurvey', 'typeid');
+    if (is_null($typeid)) {
+        $typeid = "";
+    }
+    return $typeid;
 }
 
 function block_onlinesurvey_get_lti_type()
