@@ -1020,7 +1020,7 @@ function block_onlinesurvey_lti_post_launch_html_curl($parameter, $endpoint, $co
         $state = 'state-' . hash('sha256', random_bytes(64));
     }
     $SESSION->lti_state = $state;
-//    $fields['state'] = $state; // ICTODO: check if commenting this out affects LTI 1.3
+    $fields['state'] = $state; // ICTODO: check if commenting this out affects LTI 1.3
 //    unset($fields['state']); // ICUNDO!
     $cookiepathname = sprintf('%s/%s', make_request_directory(), $USER->id . '_' . uniqid('', true) . '.cookie');
 //    $curl = new curl(['cookie' => $cookiepathname]);
@@ -1028,13 +1028,13 @@ function block_onlinesurvey_lti_post_launch_html_curl($parameter, $endpoint, $co
     $timeout = isset($config->survey_timeout) ? $config->survey_timeout : BLOCK_ONLINESURVEY_DEFAULT_TIMEOUT;
     $cookies = [];
     if (isset($_COOKIE['lti1p3_' . $state])) {
-//        $cookies[] = 'lti1p3_' . $state . '=' . $_COOKIE['lti1p3_' . $state];  // ICUNDO - we still might need this for LTI 1.3
+        $cookies[] = 'lti1p3_' . $state . '=' . $_COOKIE['lti1p3_' . $state];
     } else {
-//        $cookies[] = 'lti1p3_' . $state . '=' . $state; // ICUNDO - we still might need this for LTI 1.3
+        $cookies[] = 'lti1p3_' . $state . '=' . $state;
     }
     $cookies[] = 'state=session_cookie';
     if (isset($_COOKIE['LEGACY_lti1p3_' . $state])) {
-//        $cookies[] = 'LEGACY_lti1p3_' . $state . '=' . $_COOKIE['LEGACY_lti1p3_' . $state]; // ICUNDO - we still might need this for LTI 1.3
+        $cookies[] = 'LEGACY_lti1p3_' . $state . '=' . $_COOKIE['LEGACY_lti1p3_' . $state];
     }
     if (isset($_COOKIE['evasys_session_cookie'])) {
         $cookies[] = 'evasys_session_cookie=' . $_COOKIE['evasys_session_cookie'];
