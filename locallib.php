@@ -1022,11 +1022,9 @@ function block_onlinesurvey_lti_post_launch_html_curl($parameter, $endpoint, $co
     }
     $SESSION->lti_state = $state;
     if ($isLTI13) {
-        $fields['state'] = $state; // ICTODO: check if commenting this out affects LTI 1.3
+        $fields['state'] = $state;
     }
-//    unset($fields['state']); // ICUNDO!
-    $cookiepathname = sprintf('%s/%s', make_request_directory(), $USER->id . '_' . uniqid('', true) . '.cookie');
-//    $curl = new curl(['cookie' => $cookiepathname]);
+
     $curl = new curl();
     $timeout = isset($config->survey_timeout) ? $config->survey_timeout : BLOCK_ONLINESURVEY_DEFAULT_TIMEOUT;
     $cookies = [];
@@ -1045,7 +1043,6 @@ function block_onlinesurvey_lti_post_launch_html_curl($parameter, $endpoint, $co
     }
     if (isset($_COOKIE['evasys_session_cookie'])) {
         $cookies[] = 'evasys_session_cookie=' . $_COOKIE['evasys_session_cookie'];
-//        $fields['evasys_session_cookie'] = $_COOKIE['evasys_session_cookie']; // ICTODO: only set this for LTI 1.3
     }
     $cookies = implode('; ', $cookies);
     block_onlinesurvey_remove_outdated_cookies($state);
@@ -1068,16 +1065,10 @@ function block_onlinesurvey_lti_post_launch_html_curl($parameter, $endpoint, $co
     $curloptions['HTTPHEADER'][] = "Origin: " . $CFG->wwwroot;
     $curloptions['HTTPHEADER'][] = "Priority: u=4";
     $curloptions['HTTPHEADER'][] = "Referer: " . $CFG->wwwroot . "/";
-//    $curloptions['HTTPHEADER'][] = "Sec-Fetch-Dest: iframe";
-//    $curloptions['HTTPHEADER'][] = "Sec-Fetch-Mode: navigate";
-//    $curloptions['HTTPHEADER'][] = "Sec-Fetch-Site: cross-site";
     $curloptions['HTTPHEADER'][] = "Upgrade-Insecure-Requests: 1";
     $curloptions['CURLOPT_SSL_VERIFYHOST'] = 0;
     $curloptions['CURLOPT_SSL_VERIFYPEER'] = 0;
 
-    // ICUNDO START: Only for testing - comment out to test against actual Evasys server
-//    $endpoint = 'http://evasys.local/test.php';
-    // ICUNDO END
     if (isset($fields['resource_link_id']) && (is_null($fields['resource_link_id']) || $fields['resource_link_id'] == "null")) {
         $fields['resource_link_id'] = '';
     }
@@ -1124,7 +1115,6 @@ function block_onlinesurvey_lti_initiate_login($config, $messagetype = 'basic-lt
     global $SESSION;
     $params = block_onlinesurvey_lti_build_login_request($config, $messagetype, $foruserid, $title, $text);
     $endpoint = $config->lti_initiatelogin;
-//    $endpoint = 'http://evasys.local/test2.php'; // ICUNDO!
     $r = "<form action=\"" . $endpoint .
         "\" name=\"ltiInitiateLoginForm\" id=\"ltiInitiateLoginForm\" method=\"post\" " .
         "encType=\"application/x-www-form-urlencoded\">\n";
