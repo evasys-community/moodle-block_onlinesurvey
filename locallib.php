@@ -1031,15 +1031,15 @@ function block_onlinesurvey_lti_post_launch_html_curl($parameter, $endpoint, $co
     $isLTI13 = $config->connectiontype == LTI_VERSION_1P3;
     if ($isLTI13) {
         if (isset($_COOKIE['lti1p3_' . $state])) {
-            $cookies[] = 'lti1p3_' . $state . '=' . $_COOKIE['lti1p3_' . $state];
+        //    $cookies[] = 'lti1p3_' . $state . '=' . $_COOKIE['lti1p3_' . $state];
         } else {
-            $cookies[] = 'lti1p3_' . $state . '=' . $state;
+        //    $cookies[] = 'lti1p3_' . $state . '=' . $state;
         }
     }
 
     $cookies[] = 'state=session_cookie';
     if (isset($_COOKIE['LEGACY_lti1p3_' . $state]) && $isLTI13) {
-        $cookies[] = 'LEGACY_lti1p3_' . $state . '=' . $_COOKIE['LEGACY_lti1p3_' . $state];
+      //  $cookies[] = 'LEGACY_lti1p3_' . $state . '=' . $_COOKIE['LEGACY_lti1p3_' . $state];
     }
     if (isset($_COOKIE['evasys_session_cookie'])) {
         $cookies[] = 'evasys_session_cookie=' . $_COOKIE['evasys_session_cookie'];
