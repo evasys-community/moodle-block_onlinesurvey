@@ -21,7 +21,7 @@
  * @copyright  2019 Stephen Vickers
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-global $ok, $DB, $courseid, $id, $nonce, $messagetype, $foruserid, $typeid, $titleb64, $textb64, $error, $SESSION, $redirecturi;
+global $ok, $state, $DB, $CFG, $courseid, $id, $nonce, $messagetype, $foruserid, $typeid, $titleb64, $textb64, $error, $SESSION, $redirecturi;
 if (isset($state)) {
     $SESSION->lti_state = $state;
 } else {
