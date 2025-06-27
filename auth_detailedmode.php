@@ -1,6 +1,5 @@
 <?php
 global $ok, $DB, $courseid, $id, $nonce, $messagetype, $foruserid, $typeid, $titleb64, $textb64, $error, $SESSION, $redirecturi;
-file_put_contents($CFG->dataroot . '/lti_logs/auth_detailedmode.txt', "\r\n" . __LINE__ . "\r\n", FILE_APPEND);
 if ($ok) {
     $config = get_config('block_onlinesurvey');
     require_login();
@@ -13,7 +12,6 @@ if ($ok) {
         $params['error_description'] = $desc;
     }
 }
-file_put_contents($CFG->dataroot . '/lti_logs/auth_detailedmode.txt', "\r\n" . __LINE__ . "\r\n", FILE_APPEND);
 if (isset($state)) {
     $params['state'] = $state;
 }

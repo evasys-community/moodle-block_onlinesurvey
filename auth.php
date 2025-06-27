@@ -26,32 +26,6 @@ require_once(__DIR__ . '/../../config.php');
 require_once($CFG->dirroot . '/mod/lti/locallib.php');
 require_once(__DIR__ . '/locallib.php');
 global $_POST, $_SERVER;
-// ICON CORE CHANGE BEGIN
-ob_start();
-echo "
-####################" . date('d.m.Y H:i:s') . "
-
-SERVER:
-";
-
-var_dump($_SERVER);
-
-echo '
-
-GET:
-';
-var_dump($_GET);
-
-echo '
-
-POST:
-',
-var_dump($_POST);
-
-$dump = ob_get_clean();
-global $CFG;
-file_put_contents($CFG->dataroot . '/lti_logs/block_onlinesurvey_auth_dump.txt', $dump, FILE_APPEND);
-// ICON CORE CHANGE END
 
 if (!isloggedin() && empty($_POST['repost'])) {
     header_remove("Set-Cookie");
