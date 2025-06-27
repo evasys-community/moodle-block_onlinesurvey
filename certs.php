@@ -28,7 +28,32 @@ define('NO_MOODLE_COOKIES', true);
 
 require_once(__DIR__ . '/../../config.php');
 require_once(__DIR__ . '/classes/local/ltiopenid/jwks_helper.php');
+// ICON CORE CHANGE BEGIN
+ob_start();
+echo "
+####################" . date('d.m.Y H:i:s') . "
 
+SERVER:
+";
+
+var_dump($_SERVER);
+
+echo '
+
+GET:
+';
+var_dump($_GET);
+
+echo '
+
+POST:
+',
+var_dump($_POST);
+
+$dump = ob_get_clean();
+global $CFG;
+file_put_contents($CFG->dataroot . '/lti_logs/block_onlinesurvey_certs_dump.txt', $dump, FILE_APPEND);
+// ICON CORE CHANGE END
 @header('Content-Type: application/json; charset=utf-8');
 try {
     $jwks = jwks_helper::get_jwks();
