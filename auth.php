@@ -116,8 +116,12 @@ if ($ok && !empty($prompt) && ($prompt !== 'none')) {
     $desc = 'Invalid prompt';
 }
 $config = get_config('block_onlinesurvey');
-$modalzoom = optional_param('modalZoom', 0, PARAM_INT);
-
+if (isset($SESSION->modalzoom)) {
+    $modalzoom = $SESSION->modalzoom;
+    unset($SESSION->modalzoom);
+} else {
+    $modalzoom = optional_param('modalZoom', 0, PARAM_INT);
+}
 file_put_contents($CFG->dataroot . '/lti_logs/block_onlinesurvey_auth_dump.txt',
     "\r\n##### " . date('d.m.Y H:i:s') . "\r\nmodalzoom: " . $modalzoom . "\r\n", FILE_APPEND);
 
