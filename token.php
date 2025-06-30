@@ -29,32 +29,7 @@ use Firebase\JWT\JWT;
 
 require_once(__DIR__ . '/../../config.php');
 require_once($CFG->dirroot . '/mod/lti/locallib.php');
-// ICON CORE CHANGE BEGIN
-ob_start();
-echo "
-####################" . date('d.m.Y H:i:s') . "
 
-SERVER:
-";
-
-var_dump($_SERVER);
-
-echo '
-
-GET:
-';
-var_dump($_GET);
-
-echo '
-
-POST:
-',
-var_dump($_POST);
-
-$dump = ob_get_clean();
-global $CFG;
-file_put_contents($CFG->dataroot . '/lti_logs/block_onlinesurvey_token_dump.txt', $dump, FILE_APPEND);
-// ICON CORE CHANGE END
 $response = new \mod_lti\local\ltiservice\response();
 
 $contenttype = isset($_SERVER['CONTENT_TYPE']) ? explode(';', $_SERVER['CONTENT_TYPE'], 2)[0] : '';

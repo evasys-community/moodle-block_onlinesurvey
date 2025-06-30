@@ -122,27 +122,10 @@ if (isset($SESSION->modalzoom)) {
 } else {
     $modalzoom = optional_param('modalZoom', 0, PARAM_INT);
 }
-file_put_contents($CFG->dataroot . '/lti_logs/block_onlinesurvey_auth_dump.txt',
-    "\r\n##### " . date('d.m.Y H:i:s') . "\r\nmodalzoom: " . $modalzoom . "\r\n", FILE_APPEND);
 
 if ($config->presentation == BLOCK_ONLINESURVEY_PRESENTATION_BRIEF &&  $modalzoom == 0) {
     include(__DIR__ . '/auth_compactmode.php');
 } else {
     include(__DIR__ . '/auth_detailedmode.php');
 }
-//$r = '<form action="' . $redirecturi . "\" name=\"ltiAuthForm\" id=\"ltiAuthForm\" " .
-//     "method=\"post\" enctype=\"application/x-www-form-urlencoded\">\n";
-//if (!empty($params)) {
-//    foreach ($params as $key => $value) {
-//        $key = htmlspecialchars($key, ENT_COMPAT);
-//        $value = htmlspecialchars($value, ENT_COMPAT);
-//        $r .= "  <input type=\"hidden\" name=\"{$key}\" value=\"{$value}\"/>\n";
-//    }
-//}
-//$r .= "</form>\n";
-//$r .= "<script type=\"text/javascript\">\n" .
-//    "//<![CDATA[\n" .
-//    "document.ltiAuthForm.submit();\n" .
-//    "//]]>\n" .
-//    "</script>\n";
-//echo $r;
+
