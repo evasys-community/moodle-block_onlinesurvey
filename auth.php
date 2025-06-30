@@ -117,6 +117,10 @@ if ($ok && !empty($prompt) && ($prompt !== 'none')) {
 }
 $config = get_config('block_onlinesurvey');
 $modalzoom = optional_param('modalZoom', 0, PARAM_INT);
+
+file_put_contents($CFG->dataroot . '/lti_logs/block_onlinesurvey_auth_dump.txt',
+    "\r\n##### " . date('d.m.Y H:i:s') . "\r\nmodalzoom: " . $modalzoom . "\r\n", FILE_APPEND);
+
 if ($config->presentation == BLOCK_ONLINESURVEY_PRESENTATION_BRIEF &&  $modalzoom == 0) {
     include(__DIR__ . '/auth_compactmode.php');
 } else {
