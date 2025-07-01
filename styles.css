@@ -1,7 +1,7 @@
 /* stylelint-disable max-line-length */
 
 /* Remove any border from the iFrame. */
-.block_onlinesurvey {
+.block_onlinesurvey #block_onlinesurvey_contentframe {
     border: 0;
 }
 #block_onlinesurvey_surveys_content.block_onlinesurvey_detailed,
