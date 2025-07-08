@@ -4,6 +4,10 @@
 .block_onlinesurvey #block_onlinesurvey_contentframe {
     border: 0;
 }
+#block_onlinesurvey_surveys_content.block_onlinesurvey_detailed,
+.block_onlinesurvey_detailed #block_onlinesurvey_contentframe {
+    height: 450px;
+}
 
 /* Set the basic size of the iFrame in compact and detailed view. */
 .block_onlinesurvey #block_onlinesurvey_contentframe {
