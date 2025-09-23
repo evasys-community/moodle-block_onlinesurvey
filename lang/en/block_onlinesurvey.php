@@ -245,3 +245,6 @@ $string['setting_blocktitle_multilangnote'] = 'You can define more than one lang
 /*************************/
 
 $string['upgrade_notice_2020010900'] = 'The recommended version for the Evasys SOAP API was changed from version 51 to version 61. Thus, the plugin settings where automatically modified during the plugin update.<br />The Evasys SOAP WSDL URL was up to now: {$a->old}<br />The Evasys SOAP WSDL URL is now: {$a->new}<br />Please verify that the automatically modified URL is correct.';
+
+
+$string['dontdelete'] = 'don\'t delete!';

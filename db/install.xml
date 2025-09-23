@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+  <XMLDB PATH="blocks/onlinesurvey/db" VERSION="20250923" COMMENT="XMLDB file for Moodle blocks/onlinesurvey">
+    <TABLES>
+      <TABLE NAME="block_onlinesurvey_lti_types" COMMENT="Saves the data from lti_types so we can restore the LTI type in case it gets deleted manually">
+        <FIELDS>
+          <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+          <FIELD NAME="originaltypeid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="id of lti_types from which this entry is a copy"/>
+          <FIELD NAME="name" TYPE="char" LENGTH="255" NOTNULL="true" DEFAULT="basiclti Activity" SEQUENCE="false" COMMENT="Activity name"/>
+          <FIELD NAME="baseurl" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+          <FIELD NAME="tooldomain" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false"/>
+          <FIELD NAME="state" TYPE="int" LENGTH="2" NOTNULL="true" DEFAULT="2" SEQUENCE="false" COMMENT="Active = 1, Pending = 2, Rejected = 3"/>
+          <FIELD NAME="course" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+          <FIELD NAME="coursevisible" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+          <FIELD NAME="ltiversion" TYPE="char" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+          <FIELD NAME="clientid" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false"/>
+          <FIELD NAME="toolproxyid" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="Primary key of related tool proxy (null for LTI 1 tools)"/>
+          <FIELD NAME="enabledcapability" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="Enabled capabilities, one per line (null for LTI 1 tools)"/>
+          <FIELD NAME="parameter" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="Launch parameters, one per line (null for LTI 1 tools)"/>
+          <FIELD NAME="icon" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="URL to icon file"/>
+          <FIELD NAME="secureicon" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="Secure URL to icon file"/>
+          <FIELD NAME="createdby" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+          <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+          <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+          <FIELD NAME="description" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="A description of what this LTI module is."/>
+        </FIELDS>
+        <KEYS>
+          <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        </KEYS>
+        <INDEXES>
+          <INDEX NAME="originaltypeid" UNIQUE="true" FIELDS="originaltypeid"/>
+          <INDEX NAME="course" UNIQUE="false" FIELDS="course"/>
+          <INDEX NAME="tooldomain" UNIQUE="false" FIELDS="tooldomain"/>
+          <INDEX NAME="clientid" UNIQUE="true" FIELDS="clientid"/>
+        </INDEXES>
+      </TABLE>
+      <TABLE NAME="block_onlinesurvey_lti_conf" COMMENT="Basic LTI types configuration">
+        <FIELDS>
+          <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+          <FIELD NAME="typeid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Basic LTI type id"/>
+          <FIELD NAME="name" TYPE="char" LENGTH="100" NOTNULL="true" SEQUENCE="false" COMMENT="Basic LTI param"/>
+          <FIELD NAME="value" TYPE="text" NOTNULL="true" SEQUENCE="false" COMMENT="Param value"/>
+        </FIELDS>
+        <KEYS>
+          <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        </KEYS>
+        <INDEXES>
+          <INDEX NAME="typeid" UNIQUE="false" FIELDS="typeid"/>
+        </INDEXES>
+      </TABLE>
+    </TABLES>
+  </XMLDB>
