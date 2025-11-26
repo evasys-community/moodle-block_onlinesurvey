@@ -180,6 +180,7 @@ class block_onlinesurvey extends block_base {
         if ($this->content !== null) {
             return $this->content;
         }
+        block_onlinesurvey_check_lti_exists();
 
         $this->content = new stdClass();
         $this->content->text = '';

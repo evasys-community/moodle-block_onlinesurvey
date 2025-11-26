@@ -30,7 +30,8 @@ defined('MOODLE_INTERNAL') || die();
  * @return boolean
  */
 function xmldb_block_onlinesurvey_upgrade($oldversion) {
-
+    global $DB;
+    $dbman = $DB->get_manager();
     // From now on, the setting "block_onlinesurvey|setting_survey_server" uses SOAP API Version 61 instead of Version 51.
     if ($oldversion < 2020010903) {
         // Check if the setting is set in this Moodle instance.
@@ -86,6 +87,76 @@ function xmldb_block_onlinesurvey_upgrade($oldversion) {
         // Remember upgrade savepoint.
         upgrade_plugin_savepoint(true, 2020060404, 'block', 'onlinesurvey');
     }
+
+    if ($oldversion < 2025092302) {
+
+        // Define table block_onlinesurvey_lti_types to be created.
+        $table = new xmldb_table('block_onlinesurvey_lti_types');
+
+        // Adding fields to table block_onlinesurvey_lti_types.
+        $table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+        $table->add_field('originaltypeid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('name', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, 'basiclti Activity');
+        $table->add_field('baseurl', XMLDB_TYPE_TEXT, null, null, XMLDB_NOTNULL, null, null);
+        $table->add_field('tooldomain', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('state', XMLDB_TYPE_INTEGER, '2', null, XMLDB_NOTNULL, null, '2');
+        $table->add_field('course', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('coursevisible', XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, '0');
+        $table->add_field('ltiversion', XMLDB_TYPE_CHAR, '10', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('clientid', XMLDB_TYPE_CHAR, '255', null, null, null, null);
+        $table->add_field('toolproxyid', XMLDB_TYPE_INTEGER, '10', null, null, null, null);
+        $table->add_field('enabledcapability', XMLDB_TYPE_TEXT, null, null, null, null, null);
+        $table->add_field('parameter', XMLDB_TYPE_TEXT, null, null, null, null, null);
+        $table->add_field('icon', XMLDB_TYPE_TEXT, null, null, null, null, null);
+        $table->add_field('secureicon', XMLDB_TYPE_TEXT, null, null, null, null, null);
+        $table->add_field('createdby', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('timecreated', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('timemodified', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('description', XMLDB_TYPE_TEXT, null, null, null, null, null);
+
+        // Adding keys to table block_onlinesurvey_lti_types.
+        $table->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
+
+        // Adding indexes to table block_onlinesurvey_lti_types.
+        $table->add_index('originaltypeid', XMLDB_INDEX_UNIQUE, ['originaltypeid']);
+        $table->add_index('course', XMLDB_INDEX_NOTUNIQUE, ['course']);
+        $table->add_index('tooldomain', XMLDB_INDEX_NOTUNIQUE, ['tooldomain']);
+        $table->add_index('clientid', XMLDB_INDEX_UNIQUE, ['clientid']);
+
+        // Conditionally launch create table for block_onlinesurvey_lti_types.
+        if (!$dbman->table_exists($table)) {
+            $dbman->create_table($table);
+        }
+
+
+        // Define table block_onlinesurvey_lti_conf to be created.
+        $table = new xmldb_table('block_onlinesurvey_lti_conf');
+
+        // Adding fields to table block_onlinesurvey_lti_conf.
+        $table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+        $table->add_field('typeid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('name', XMLDB_TYPE_CHAR, '100', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('value', XMLDB_TYPE_TEXT, null, null, XMLDB_NOTNULL, null, null);
+
+        // Adding keys to table block_onlinesurvey_lti_conf.
+        $table->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
+
+        // Adding indexes to table block_onlinesurvey_lti_conf.
+        $table->add_index('typeid', XMLDB_INDEX_NOTUNIQUE, ['typeid']);
+
+        // Conditionally launch create table for block_onlinesurvey_lti_conf.
+        if (!$dbman->table_exists($table)) {
+            $dbman->create_table($table);
+        }
+        $typeid = get_config('block_onlinesurvey', 'typeid');
+        if (!empty($typeid)) {
+            require_once(dirname(__FILE__, 2) . '/locallib.php');
+            block_onlinesurvey_save_lti_type_backup($typeid);
+        }
+        // Onlinesurvey savepoint reached.
+        upgrade_block_savepoint(true, 2025092302, 'onlinesurvey');
+    }
+
 
     return true;
 }

@@ -1188,21 +1188,58 @@ function block_onlinesurvey_lti_build_login_request($config, $messagetype, $foru
 
 function block_onlinesurvey_settings_updated($arg)
 {
+    global $DB;
     $config = get_config('block_onlinesurvey');
     if (!isset($config->typeid)) {
         $typeid = block_onlinesurvey_create_lti_type();
         set_config('typeid', $typeid, 'block_onlinesurvey');
-
+    } else if (!$DB->record_exists('lti_types', ['id' => $config->typeid])) {
+        block_onlinesurvey_restore_deleted_lti_type($config->typeid);
     }
     block_onlinesurvey_update_lti_type();
     $clientid = block_onlinesurvey_get_clientid($config->typeid);
     set_config('lti_clientid', $clientid, 'block_onlinesurvey');
 }
 
+/**
+ * EV-32 - make sure users don't delete the LTI config that our plugin needs - recreate it when necessary
+ * @param $typeid
+ * @return void
+ * @throws \core\exception\moodle_exception
+ * @throws coding_exception
+ * @throws dml_exception
+ */
+function block_onlinesurvey_restore_deleted_lti_type($typeid) {
+    global $DB;
+    $record = $DB->get_record('block_onlinesurvey_lti_types', ['originaltypeid' => $typeid]);
+    if (!$record) {
+        return false;
+        // throw new \core\exception\moodle_exception('failed to restore deleted LTI type');
+    }
+    $dontdelete = get_string('dontdelete', 'block_onlinesurvey');
+    if (strpos($record->name, $dontdelete) === false) {
+        $record->name .= " - " . $dontdelete;
+    }
+
+    $newid = $DB->insert_record('lti_types', $record);
+    $DB->execute('UPDATE {lti_types} SET id = ? WHERE id = ?', [$typeid, $newid]);
+    $DB->execute('INSERT IGNORE INTO {lti_types_config}(typeid, name, value)
+       SELECT typeid, name, value
+       FROM {block_onlinesurvey_lti_conf}
+       WHERE typeid = ?',
+    [$typeid]
+    );
+    return true;
+}
+
 function block_onlinesurvey_get_clientid($typeid)
 {
     global $DB;
     $clientid = $DB->get_field('lti_types', 'clientid', ['id' => $typeid]);
+    if (!$clientid) {
+        block_onlinesurvey_restore_deleted_lti_type($typeid);
+        $clientid = $DB->get_field('lti_types', 'clientid', ['id' => $typeid]);
+    }
     return $clientid;
 }
 
@@ -1210,15 +1247,77 @@ function block_onlinesurvey_create_lti_type()
 {
     global $DB, $USER;
     list($ltitype, $configparams) = block_onlinesurvey_get_params();
-    $id = lti_add_type($ltitype, $configparams);
+    $recordForClientID = $DB->get_record('lti_types', ['clientid' => $ltitype->clientid]);
+    if ($recordForClientID) {
+        $id = $recordForClientID->id;
+        set_config('block_onlinesurvey', 'typeid', $id);
+    } else {
+        $id = lti_add_type($ltitype, $configparams);
+    }
+    block_onlinesurvey_save_lti_type_backup($id);
     return $id;
 }
+
+function block_onlinesurvey_save_lti_type_backup($typeid) {
+    global $DB;
+    $record = $DB->get_record('lti_types', ['id' => $typeid]);
+    if (!$record) {
+        return;
+    }
+    unset($record->id);
+    $record->originaltypeid = $typeid;
+    $DB->insert_record('block_onlinesurvey_lti_types', $record);
+    $DB->execute('INSERT INTO {block_onlinesurvey_lti_conf}(typeid, name, value)
+        SELECT typeid, name, value
+        FROM {lti_types_config}
+        WHERE typeid = ?',
+        [$typeid]
+    );
+}
+
+function block_onlinesurvey_update_lti_type_backup($typeid) {
+    global $DB;
+    $oldRecord = $DB->get_record('block_onlinesurvey_lti_types', ['originaltypeid' => $typeid]);
+    if (!$oldRecord) {
+        block_onlinesurvey_restore_deleted_lti_type($typeid);
+        return;
+    }
+    $ltitype = $DB->get_record('lti_types', ['id' => $typeid]);
+    $ltitype->id = $oldRecord->id;
+    $ltitype->originaltypeid = $typeid;
+    $DB->update_record('block_onlinesurvey_lti_types', $ltitype);
+    $DB->execute('REPLACE INTO {block_onlinesurvey_lti_conf}(typeid, name, value)
+        SELECT typeid, name, value
+        FROM {lti_types_config}
+        WHERE typeid = ?',
+        [$typeid]);
+}
+
+function block_onlinesurvey_check_lti_exists() {
+    global $DB;
+    $typeid = get_config('block_onlinesurvey', 'typeid');
+    if (!$typeid) {
+        return;
+    }
+    if (!$DB->record_exists('lti_types', ['id' => $typeid])) {
+        $restored = block_onlinesurvey_restore_deleted_lti_type($typeid);
+        if (!$restored) {
+            $typeid = block_onlinesurvey_create_lti_type();
+            set_config('typeid', $typeid, 'block_onlinesurvey');
+        }
+    }
+}
+
 
 function block_onlinesurvey_update_lti_type()
 {
     global $DB;
     list($ltitype, $configparams) = block_onlinesurvey_get_params();
+    if (!$DB->record_exists('lti_types', ['id' => $ltitype->id])) {
+        block_onlinesurvey_restore_deleted_lti_type($ltitype->id);
+    }
     lti_update_type($ltitype, $configparams);
+    block_onlinesurvey_update_lti_type_backup($ltitype->typeid);
     $config = get_config('block_onlinesurvey');
     $publickeyset = $DB->get_field('lti_types_config', 'value', ['typeid' => $config->typeid, 'name' => 'publickeyset']);
     set_config('block_onlinesurvey/lti_publickeyset', $publickeyset);
@@ -1334,6 +1433,10 @@ function block_onlinesurvey_get_lti_type_config()
         return null;
     }
     $config = $DB->get_records('lti_types_config', ['typeid' => $typeid], '', 'name,value');
+    if (empty($config)) {
+        block_onlinesurvey_restore_deleted_lti_type($typeid);
+        $config = $DB->get_records('lti_types_config', ['typeid' => $typeid], '', 'name,value');
+    }
     $return = [];
     foreach ($config as $key => $value) {
         $return[$key] = $value->value;

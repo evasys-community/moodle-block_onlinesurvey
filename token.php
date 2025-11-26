@@ -66,6 +66,13 @@ if ($ok) {
 
 if ($ok) {
     $tool = $DB->get_record('lti_types', array('clientid' => $claims['sub']));
+    if (!$tool) {
+        $typeid = $DB->get_field('block_onlinesurvey_lti_types', 'id', ['clientid' => $claims['sub']]);
+        if (!$typeid) {
+            throw new \core\exception\moodle_exception('LTI type not found - invalid client ID');
+        }
+        block_onlinesurvey_restore_deleted_lti_type($typeid);
+    }
     if ($tool) {
         try {
             lti_verify_jwt_signature($tool->id, $claims['sub'], $clientassertion);
