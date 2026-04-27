@@ -193,7 +193,7 @@ class block_onlinesurvey extends block_base {
             $urlparams = 'ctxid='.$context->id.'&cid='.$course->id;
             $url = $CFG->wwwroot.'/blocks/onlinesurvey/show_surveys.php?'.$urlparams;
 
-            if ($config->connectiontype == 'LTI') {
+            if ($config->connectiontype == 'LTI' || $config->connectiontype == LTI_VERSION_1P3) {
                 $data['connectionclass'] = 'block_onlinesurvey_lti';
             } else if ($config->connectiontype == 'SOAP') {
                 $data['connectionclass'] = 'block_onlinesurvey_soap';

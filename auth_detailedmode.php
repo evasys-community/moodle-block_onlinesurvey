@@ -20,8 +20,24 @@ $r = '<form action="' . $redirecturi . "\" name=\"ltiAuthForm\" id=\"ltiAuthForm
     "method=\"post\" enctype=\"application/x-www-form-urlencoded\">\n";
 if (!empty($params)) {
     foreach ($params as $key => $value) {
+        if (!is_string($key)) {
+            try {
+                $key = (string)$key;
+            } catch (Exception $e) {
+                $key = '';
+            }
+        }
         $key = htmlspecialchars($key, ENT_COMPAT);
+
+        if (!is_string($value)) {
+            try {
+                $value = (string)$value;
+            } catch (Exception $e) {
+                $value = '';
+            }
+        }
         $value = htmlspecialchars($value, ENT_COMPAT);
+
         $r .= "  <input type=\"hidden\" name=\"{$key}\" value=\"{$value}\"/>\n";
     }
 }
