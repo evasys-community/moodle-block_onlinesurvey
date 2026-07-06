@@ -1199,14 +1199,15 @@ function block_onlinesurvey_settings_updated($arg)
 {
     global $DB;
     $config = get_config('block_onlinesurvey');
-    if (!isset($config->typeid)) {
+    $typeid = $config->typeid ?? 0;
+    if (!$typeid) {
         $typeid = block_onlinesurvey_create_lti_type();
         set_config('typeid', $typeid, 'block_onlinesurvey');
-    } else if (!$DB->record_exists('lti_types', ['id' => $config->typeid])) {
-        block_onlinesurvey_restore_deleted_lti_type($config->typeid);
+    } else if (!$DB->record_exists('lti_types', ['id' => $typeid])) {
+        block_onlinesurvey_restore_deleted_lti_type($typeid);
     }
     block_onlinesurvey_update_lti_type();
-    $clientid = block_onlinesurvey_get_clientid($config->typeid);
+    $clientid = block_onlinesurvey_get_clientid($typeid);
     set_config('lti_clientid', $clientid, 'block_onlinesurvey');
 }
 
