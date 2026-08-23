@@ -1259,7 +1259,7 @@ function block_onlinesurvey_create_lti_type()
     $recordForClientID = $DB->get_record('lti_types', ['clientid' => $ltitype->clientid]);
     if ($recordForClientID) {
         $id = $recordForClientID->id;
-        set_config('block_onlinesurvey', 'typeid', $id);
+        set_config('typeid', $id, 'block_onlinesurvey');
     } else {
         $id = lti_add_type($ltitype, $configparams);
     }
