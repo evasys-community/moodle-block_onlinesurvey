@@ -1232,12 +1232,17 @@ function block_onlinesurvey_restore_deleted_lti_type($typeid) {
 
     $newid = $DB->insert_record('lti_types', $record);
     $DB->execute('UPDATE {lti_types} SET id = ? WHERE id = ?', [$typeid, $newid]);
-    $DB->execute('INSERT IGNORE INTO {lti_types_config}(typeid, name, value)
-       SELECT typeid, name, value
-       FROM {block_onlinesurvey_lti_conf}
-       WHERE typeid = ?',
-    [$typeid]
-    );
+    $configs = $DB->get_records('block_onlinesurvey_lti_conf', ['typeid' => $typeid]);
+    foreach ($configs as $config) {
+        if ($DB->record_exists('lti_types_config', ['typeid' => $typeid, 'name' => $config->name])) {
+            continue;
+        }
+        $DB->insert_record('lti_types_config', (object) [
+            'typeid' => $typeid,
+            'name' => $config->name,
+            'value' => $config->value,
+        ]);
+    }
     return true;
 }
 
@@ -1295,11 +1300,21 @@ function block_onlinesurvey_update_lti_type_backup($typeid) {
     $ltitype->id = $oldRecord->id;
     $ltitype->originaltypeid = $typeid;
     $DB->update_record('block_onlinesurvey_lti_types', $ltitype);
-    $DB->execute('REPLACE INTO {block_onlinesurvey_lti_conf}(typeid, name, value)
-        SELECT typeid, name, value
-        FROM {lti_types_config}
-        WHERE typeid = ?',
-        [$typeid]);
+    $configs = $DB->get_records('lti_types_config', ['typeid' => $typeid]);
+    foreach ($configs as $config) {
+        $backup = $DB->get_record('block_onlinesurvey_lti_conf', ['typeid' => $typeid, 'name' => $config->name]);
+        $record = (object) [
+            'typeid' => $typeid,
+            'name' => $config->name,
+            'value' => $config->value,
+        ];
+        if ($backup) {
+            $record->id = $backup->id;
+            $DB->update_record('block_onlinesurvey_lti_conf', $record);
+        } else {
+            $DB->insert_record('block_onlinesurvey_lti_conf', $record);
+        }
+    }
 }
 
 function block_onlinesurvey_check_lti_exists() {
@@ -1331,7 +1346,7 @@ function block_onlinesurvey_update_lti_type()
         unset($ltitype->toolproxyid);
     }
     lti_update_type($ltitype, $configparams);
-    block_onlinesurvey_update_lti_type_backup($ltitype->typeid);
+    block_onlinesurvey_update_lti_type_backup($ltitype->id);
     $config = get_config('block_onlinesurvey');
     $publickeyset = $DB->get_field('lti_types_config', 'value', ['typeid' => $config->typeid, 'name' => 'publickeyset']);
     set_config('block_onlinesurvey/lti_publickeyset', $publickeyset);
@@ -1398,6 +1413,13 @@ function block_onlinesurvey_get_params()
         $ltitype['id'] = $config->typeid;
         $type = lti_get_type($config->typeid);
         if ($type) {
+            // Preserve the timecreated, createdby and clientid.
+            $ltitype['timecreated'] = $type->timecreated;
+            $ltitype['createdby'] = $type->createdby;
+            if (empty($ltitype['clientid']) && !empty($type->clientid)) {
+                $ltitype['clientid'] = $type->clientid;
+                $config->lti_clientid = $type->clientid;
+            }
             $urls = block_onlinesurvey_get_tool_type_urls($type);
             set_config('publickeysetplatform', $urls['publickeysetplatform'], 'block_onlinesurvey');
             set_config('authrequest', $urls['authrequest'], 'block_onlinesurvey');
