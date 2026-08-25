@@ -1213,7 +1213,7 @@ function block_onlinesurvey_settings_updated($arg)
 /**
  * EV-32 - make sure users don't delete the LTI config that our plugin needs - recreate it when necessary
  * @param $typeid
- * @return void
+ * @return bool
  * @throws \core\exception\moodle_exception
  * @throws coding_exception
  * @throws dml_exception
@@ -1230,8 +1230,19 @@ function block_onlinesurvey_restore_deleted_lti_type($typeid) {
         $record->name .= " - " . $dontdelete;
     }
 
-    $newid = $DB->insert_record('lti_types', $record);
-    $DB->execute('UPDATE {lti_types} SET id = ? WHERE id = ?', [$typeid, $newid]);
+    $ltitype = clone $record;
+    unset($ltitype->originaltypeid);
+    $ltitype->id = $typeid;
+
+    try {
+        $DB->import_record('lti_types', $ltitype);
+        $DB->get_manager()->reset_sequence('lti_types');
+    } catch (dml_write_exception $e) {
+        // Another request may have restored it first.
+        if (!$DB->record_exists('lti_types', ['id' => $typeid, 'clientid' => $ltitype->clientid, 'baseurl' => $ltitype->baseurl, 'ltiversion' => $ltitype->ltiversion])) {
+            throw $e;
+        }
+    }
     $DB->execute('INSERT IGNORE INTO {lti_types_config}(typeid, name, value)
        SELECT typeid, name, value
        FROM {block_onlinesurvey_lti_conf}
