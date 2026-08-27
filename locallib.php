@@ -1239,8 +1239,14 @@ function block_onlinesurvey_restore_deleted_lti_type($typeid) {
         $DB->get_manager()->reset_sequence('lti_types');
     } catch (dml_write_exception $e) {
         // Another request may have restored it first.
-        if (!$DB->record_exists('lti_types', ['id' => $typeid, 'clientid' => $ltitype->clientid, 'baseurl' => $ltitype->baseurl, 'ltiversion' => $ltitype->ltiversion])) {
-            throw $e;
+        if (!$DB->record_exists('lti_types', ['id' => $typeid, 'clientid' => $ltitype->clientid, 'ltiversion' => $ltitype->ltiversion])) {
+            $message = 'block_onlinesurvey: Tried to restore the LTI type with id ' . $typeid
+                . ' from block_onlinesurvey_lti_types to lti_types but failed: ' . $e->getMessage();
+            if (!empty($e->debuginfo)) {
+                $message .= ' Debug info: ' . $e->debuginfo;
+            }
+            debugging($message, DEBUG_NORMAL);
+            return false;
         }
     }
     $DB->execute('INSERT IGNORE INTO {lti_types_config}(typeid, name, value)
