@@ -1125,12 +1125,9 @@ function block_onlinesurvey_lti_initiate_login($config, $messagetype = 'basic-lt
             continue; // Skip non-string keys - shouldn't happen, but if it does, it's not a valid key
         }
         $key = htmlspecialchars($key, ENT_COMPAT);
-        if (is_string($value)) {
-            $value = htmlspecialchars($value, ENT_COMPAT);
-        } else {
+        if (!is_string($value)) {
             $value = json_encode($value);
         }
-        $r .= "<input type=\"hidden\" name=\"$key\" value=\"$value\" />\n";
         $value = htmlspecialchars($value, ENT_COMPAT);
         $r .= "  <input type=\"hidden\" name=\"{$key}\" value=\"{$value}\"/>\n";
     }
