@@ -1425,7 +1425,7 @@ function block_onlinesurvey_get_params()
             set_config('publickeysetplatform', $urls['publickeysetplatform'], 'block_onlinesurvey');
             set_config('authrequest', $urls['authrequest'], 'block_onlinesurvey');
             set_config('accesstoken', $urls['accesstoken'], 'block_onlinesurvey');
-            $config->publickeysetplatform = $urls['publickeyset'];
+            $config->publickeysetplatform = $urls['publickeysetplatform'];
             $config->lti_authrequest = $urls['authrequest'];
             $config->lti_accesstoken = $urls['accesstoken'];
         }
