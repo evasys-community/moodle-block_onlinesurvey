@@ -180,7 +180,10 @@ class block_onlinesurvey extends block_base {
         if ($this->content !== null) {
             return $this->content;
         }
-        block_onlinesurvey_check_lti_exists();
+        if ($this->isconfigured && $this->moodleuserid &&
+                ($config->connectiontype == 'LTI' || $config->connectiontype == LTI_VERSION_1P3)) {
+            block_onlinesurvey_check_lti_exists();
+        }
 
         $this->content = new stdClass();
         $this->content->text = '';

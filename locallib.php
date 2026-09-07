@@ -1125,12 +1125,9 @@ function block_onlinesurvey_lti_initiate_login($config, $messagetype = 'basic-lt
             continue; // Skip non-string keys - shouldn't happen, but if it does, it's not a valid key
         }
         $key = htmlspecialchars($key, ENT_COMPAT);
-        if (is_string($value)) {
-            $value = htmlspecialchars($value, ENT_COMPAT);
-        } else {
+        if (!is_string($value)) {
             $value = json_encode($value);
         }
-        $r .= "<input type=\"hidden\" name=\"$key\" value=\"$value\" />\n";
         $value = htmlspecialchars($value, ENT_COMPAT);
         $r .= "  <input type=\"hidden\" name=\"{$key}\" value=\"{$value}\"/>\n";
     }
@@ -1213,7 +1210,7 @@ function block_onlinesurvey_settings_updated($arg)
 /**
  * EV-32 - make sure users don't delete the LTI config that our plugin needs - recreate it when necessary
  * @param $typeid
- * @return void
+ * @return bool
  * @throws \core\exception\moodle_exception
  * @throws coding_exception
  * @throws dml_exception
@@ -1230,13 +1227,40 @@ function block_onlinesurvey_restore_deleted_lti_type($typeid) {
         $record->name .= " - " . $dontdelete;
     }
 
+    $ltitype = clone $record;
+    unset($ltitype->originaltypeid);
+    $ltitype->id = $typeid;
+
+    try {
+        $DB->import_record('lti_types', $ltitype);
+        $DB->get_manager()->reset_sequence('lti_types');
+    } catch (dml_write_exception $e) {
+        // Another request may have restored it first.
+        if (!$DB->record_exists('lti_types', ['id' => $typeid, 'clientid' => $ltitype->clientid, 'ltiversion' => $ltitype->ltiversion])) {
+            $message = 'block_onlinesurvey: Tried to restore the LTI type with id ' . $typeid
+                . ' from block_onlinesurvey_lti_types to lti_types but failed: ' . $e->getMessage();
+            if (!empty($e->debuginfo)) {
+                $message .= ' Debug info: ' . $e->debuginfo;
+            }
+            debugging($message, DEBUG_NORMAL);
+            return false;
+        }
+    }
     $newid = $DB->insert_record('lti_types', $record);
     $DB->execute('UPDATE {lti_types} SET id = ? WHERE id = ?', [$typeid, $newid]);
-    $configs = $DB->get_records('block_onlinesurvey_lti_conf', ['typeid' => $typeid]);
+    $configs = $DB->get_records(
+        'block_onlinesurvey_lti_conf',
+        ['typeid' => $typeid]
+    );
+
     foreach ($configs as $config) {
-        if ($DB->record_exists('lti_types_config', ['typeid' => $typeid, 'name' => $config->name])) {
+        if ($DB->record_exists('lti_types_config', [
+            'typeid' => $typeid,
+            'name' => $config->name
+        ])) {
             continue;
         }
+
         $DB->insert_record('lti_types_config', (object) [
             'typeid' => $typeid,
             'name' => $config->name,
@@ -1264,7 +1288,7 @@ function block_onlinesurvey_create_lti_type()
     $recordForClientID = $DB->get_record('lti_types', ['clientid' => $ltitype->clientid]);
     if ($recordForClientID) {
         $id = $recordForClientID->id;
-        set_config('block_onlinesurvey', 'typeid', $id);
+        set_config('typeid', $id, 'block_onlinesurvey');
     } else {
         $id = lti_add_type($ltitype, $configparams);
     }
@@ -1274,6 +1298,12 @@ function block_onlinesurvey_create_lti_type()
 
 function block_onlinesurvey_save_lti_type_backup($typeid) {
     global $DB;
+
+    if ($DB->record_exists('block_onlinesurvey_lti_types', ['originaltypeid' => $typeid])) {
+        block_onlinesurvey_update_lti_type_backup($typeid);
+        return;
+    }
+
     $record = $DB->get_record('lti_types', ['id' => $typeid]);
     if (!$record) {
         return;
@@ -1293,7 +1323,7 @@ function block_onlinesurvey_update_lti_type_backup($typeid) {
     global $DB;
     $oldRecord = $DB->get_record('block_onlinesurvey_lti_types', ['originaltypeid' => $typeid]);
     if (!$oldRecord) {
-        block_onlinesurvey_restore_deleted_lti_type($typeid);
+        block_onlinesurvey_save_lti_type_backup($typeid);
         return;
     }
     $ltitype = $DB->get_record('lti_types', ['id' => $typeid]);
@@ -1424,7 +1454,7 @@ function block_onlinesurvey_get_params()
             set_config('publickeysetplatform', $urls['publickeysetplatform'], 'block_onlinesurvey');
             set_config('authrequest', $urls['authrequest'], 'block_onlinesurvey');
             set_config('accesstoken', $urls['accesstoken'], 'block_onlinesurvey');
-            $config->publickeysetplatform = $urls['publickeyset'];
+            $config->publickeysetplatform = $urls['publickeysetplatform'];
             $config->lti_authrequest = $urls['authrequest'];
             $config->lti_accesstoken = $urls['accesstoken'];
         }
