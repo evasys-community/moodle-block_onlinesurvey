@@ -1286,6 +1286,12 @@ function block_onlinesurvey_create_lti_type()
 
 function block_onlinesurvey_save_lti_type_backup($typeid) {
     global $DB;
+
+    if ($DB->record_exists('block_onlinesurvey_lti_types', ['originaltypeid' => $typeid])) {
+        block_onlinesurvey_update_lti_type_backup($typeid);
+        return;
+    }
+
     $record = $DB->get_record('lti_types', ['id' => $typeid]);
     if (!$record) {
         return;
