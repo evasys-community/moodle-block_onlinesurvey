@@ -1305,7 +1305,7 @@ function block_onlinesurvey_update_lti_type_backup($typeid) {
     global $DB;
     $oldRecord = $DB->get_record('block_onlinesurvey_lti_types', ['originaltypeid' => $typeid]);
     if (!$oldRecord) {
-        block_onlinesurvey_restore_deleted_lti_type($typeid);
+        block_onlinesurvey_save_lti_type_backup($typeid);
         return;
     }
     $ltitype = $DB->get_record('lti_types', ['id' => $typeid]);
