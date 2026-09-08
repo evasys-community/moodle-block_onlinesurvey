@@ -4,6 +4,15 @@ moodle-block_onlinesurvey
 Changes
 -------
 
+### v4.5-r6 (2026-09-07)
+
+* Security: Prevent potential cross-site scripting through unescaped HTML attributes ([#81](https://github.com/evasys-community/moodle-block_onlinesurvey/pull/81)).
+* Bug fixes: Improve the reliability of LTI configuration backup and restore, including duplicate detection, key handling, error handling and primary-key assignment ([#82](https://github.com/evasys-community/moodle-block_onlinesurvey/pull/82), [#83](https://github.com/evasys-community/moodle-block_onlinesurvey/pull/83), [#85](https://github.com/evasys-community/moodle-block_onlinesurvey/pull/85), [#86](https://github.com/evasys-community/moodle-block_onlinesurvey/pull/86), [#87](https://github.com/evasys-community/moodle-block_onlinesurvey/pull/87)).
+* Compatibility: Improve database compatibility, including with MySQL ([#84](https://github.com/evasys-community/moodle-block_onlinesurvey/pull/84)).
+* Reliability: Skip the database health check when the plugin is not configured or LTI is not used ([#88](https://github.com/evasys-community/moodle-block_onlinesurvey/pull/88)).
+
+Thanks to Berthold Busskamp (@berthob98) for these contributions.
+
 ### v4.0-r2
 
 * 2024-02-09 - Add in tested compatability for Moodle up to 4.3.
