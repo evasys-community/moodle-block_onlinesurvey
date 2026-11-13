@@ -6,6 +6,8 @@ Changes
 
 ### Unreleased
 
+* 2026-11-13 - Security: Prevent potential leak of SOAP and LTI credentials through unauthorized access to the block configuration.
+               Please note: After updating the plugin to this plugin version, it is strongly recommended to renew the used SOAP and LTI credentials. Please see the evasys customer mailing regarding this security incident for details.
 * 2026-11-13 - Development: Rename master branch to main, please update your clones.
 
 ### v4.5-r6
