@@ -126,16 +126,16 @@ This plugin has not been tested with Moodle's support for right-to-left (RTL) la
 If you want to use this plugin with a RTL language and it doesn't work as-is, you are free to send us a pull request on Github with modifications.
 
 
-Maintainers & Copyright
------------------------
+Maintainer & Copyright
+----------------------
 
-Product owner:\
+Product owner and maintainer:\
 evasys GmbH\
 www.evasys.de
 
-Current maintainer and developer:\
-ICON Vernetzte Kommunikation GmbH\
-www.iconnewmedia.de
+The maintenance of the plugin is currently assisted by:\
+ssystems GmbH\
+www.ssystems.de
 
 
 Credits
@@ -144,3 +144,12 @@ Credits
 This plugin was initially developed by:\
 Soon-Systems-GmbH\
 www.soon-systems.de
+
+Further maintenance has been carried out by:\
+lern.link GmbH\
+www.lern.link
+
+As well as:\
+ICON Vernetzte Kommunikation GmbH\
+www.iconnewmedia.de
+
