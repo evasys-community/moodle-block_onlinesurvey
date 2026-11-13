@@ -1,0 +1,17 @@
+  name: Moodle Plugin Release
+
+  on:
+    push:
+      tags:
+        - v*
+    workflow_dispatch:
+      inputs:
+        tag:
+          description: 'Git tag to be released'
+          required: true
+
+  jobs:
+    release:
+      uses: moodle-an-hochschulen/moodle-workflows/.github/workflows/moodle-release.yml@main
+      secrets:
+        MOODLE_ORG_TOKEN: ${{ secrets.MOODLE_ORG_TOKEN }}

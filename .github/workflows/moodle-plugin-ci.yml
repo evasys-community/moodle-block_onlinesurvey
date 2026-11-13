@@ -1,0 +1,19 @@
+name: Moodle Plugin CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      moodle-core-branch:
+        description: 'Moodle core branch to test against (if not provided, the branch will be auto-detected)'
+        required: false
+        type: string
+  repository_dispatch:
+    types: [moodle-plugin-ci]
+
+jobs:
+  moodle-plugin-ci:
+    uses: moodle-an-hochschulen/moodle-workflows/.github/workflows/moodle-plugin-ci.yml@main
+    with:
+      moodle-core-branch: ${{ inputs.moodle-core-branch || github.event.client_payload.moodle-core-branch }}
