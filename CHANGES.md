@@ -4,6 +4,10 @@ moodle-block_onlinesurvey
 Changes
 -------
 
+### Unreleased
+
+* 2026-11-13 - Development: Rename master branch to main, please update your clones.
+
 ### v4.5-r6
 
 * 2026-09-07 - Security: Prevent potential cross-site scripting through unescaped HTML attributes, solved by #81, credits to @berthob98.
