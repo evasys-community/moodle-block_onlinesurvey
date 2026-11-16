@@ -1,5 +1,5 @@
-define(['jquery', 'core/templates', 'core/modal', 'core/modal_factory', 'core/modal_events'],
-    function($, templates, Modal, ModalFactory, ModalEvents) {
+define(['jquery', 'core/templates', 'core/modal'],
+    function($, templates, Modal) {
 
     var modalTitle = '';
     var modalZoomSelector = '#block_onlinesurvey_surveys_content';
@@ -17,7 +17,7 @@ define(['jquery', 'core/templates', 'core/modal', 'core/modal_factory', 'core/mo
 
         var modalPromise = null;
         var templatePromise = null;
-        modalPromise = ModalFactory.create({type: ModalFactory.types.DEFAULT, large: true, title: modalTitle});
+        modalPromise = Modal.create({large: true, title: modalTitle});
         if (originalIframe !== null) {
             // Open from Moodle page, i.e., onlinesurvey iframe exists.
             templatePromise = templates.render('block_onlinesurvey/modal-iframe', {
@@ -73,9 +73,8 @@ define(['jquery', 'core/templates', 'core/modal', 'core/modal_factory', 'core/mo
                 // Save data to sessionStorage.
                 sessionStorage.setItem('onlinesurvey_popupinfo', userlogintime);
 
-                var modalPromise = ModalFactory.create(
+                var modalPromise = Modal.create(
                     {
-                        type:ModalFactory.types.DEFAULT,
                         body: popupinfocontent,
                         title: popupinfotitle,
                         large: true
